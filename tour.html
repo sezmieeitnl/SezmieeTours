@@ -415,118 +415,138 @@ function applyLang(){
 }
 
 // 7) 지역/미팅/일정도 네가 index에서 쓰던거로 변환
-function localizeMeeting(tour){
-  const num = Number((tour.id||'').replace(/\D/g,''));
-  const table = I18N_MEETS[lang] || I18N_MEETS['en'];
-  return table && table[num] ? table[num] : tour.meetPoint;
+function getNumFromId(id){
+  return Number(String(id || '').replace(/\D/g, ''));
 }
 
-function localizeSchedule(tour){
-  const num = Number((tour.id||'').replace(/\D/g,''));
-  const table = I18N_SCHEDULES[lang] || I18N_SCHEDULES['en'];
-  return table && table[num] ? table[num] : tour.schedule;
+// 투어 제목 다국어
+function getLocalizedTitle(tour, lang){
+  const n = getNumFromId(tour.id);
+  const pack = (I18N_TOURS[lang] || I18N_TOURS.en || {});
+  return (pack[n] && pack[n].title) ? pack[n].title : tour.name;
 }
 
-function localizeTitle(tour){
-  const num = Number((tour.id||'').replace(/\D/g,''));
-  const table = I18N_TOURS[lang] || I18N_TOURS['en'];
-  return table && table[num] ? table[num].title : tour.name;
+// 투어 설명 다국어
+function getLocalizedDesc(tour, lang){
+  const n = getNumFromId(tour.id);
+  const pack = (I18N_TOURS[lang] || I18N_TOURS.en || {});
+  return (pack[n] && pack[n].desc) ? pack[n].desc : tour.short;
 }
 
-function localizeDesc(tour){
-  const num = Number((tour.id||'').replace(/\D/g,''));
-  const table = I18N_TOURS[lang] || I18N_TOURS['en'];
-  return table && table[num] ? table[num].desc : tour.short;
+// 미팅장소 다국어
+function getLocalizedMeet(tour, lang){
+  const n = getNumFromId(tour.id);
+  const pack = (I18N_MEETS[lang] || I18N_MEETS.en || {});
+  return pack[n] ? pack[n] : tour.meetPoint;
 }
 
-function localizeArea(area){
+// 지역 다국어
+function localizeArea(area, lang){
   const map = AREA_MAP[lang] || {};
   let out = area;
-  AREA_KEYS.forEach(k=>{
+  AREA_KEYS.forEach(k => {
     if (map[k]) {
       out = out.replace(k, map[k]);
     }
   });
   return out;
 }
-
 // 8) 실제로 화면 채우기
-function fill(){
-  // hero
-  document.querySelector('#heroImg').src = tour.heroImg;
-  document.querySelector('#title').textContent = localizeTitle(tour);
-  document.querySelector('#subtitle').textContent = localizeDesc(tour);
-  document.querySelector('#badge-area').textContent = localizeArea(tour.area);
+  function fill(){
+  const heroImg = document.querySelector('#heroImg');
+  heroImg.src = tour.heroImg;
+  heroImg.alt = getLocalizedTitle(tour, lang);
+
+  // ✅ 여기! 영어 대신 다국어 제목/설명
+  document.querySelector('#title').textContent = getLocalizedTitle(tour, lang);
+  document.querySelector('#subtitle').textContent = getLocalizedDesc(tour, lang);
+
+  // ✅ 지역/태그도 번역본으로
+  document.querySelector('#badge-area').textContent = localizeArea(tour.area, lang);
   document.querySelector('#badge-duration').textContent = tour.duration;
   document.querySelector('#badge-tags').textContent = tour.tags.join(' · ');
 
-  // breadcrumb
-  document.querySelector('#bc-city').textContent = localizeArea((tour.area.split('·')[0]||'Seoul').trim());
-  document.querySelector('#bc-title').textContent = localizeTitle(tour);
+  // breadcrumb도 번역
+  document.querySelector('#bc-city').textContent = localizeArea((tour.area.split('·')[0] || 'Seoul').trim(), lang);
+  document.querySelector('#bc-title').textContent = getLocalizedTitle(tour, lang);
 
-  // quick facts
+  // 개요
   const KRW = v => new Intl.NumberFormat('ko-KR',{style:'currency',currency:'KRW',maximumFractionDigits:0}).format(v);
   document.querySelector('#price').textContent = KRW(tour.priceKRW);
   document.querySelector('#priceBig').textContent = KRW(tour.priceKRW);
   document.querySelector('#duration').textContent = tour.duration;
-  document.querySelector('#meetPoint').textContent = localizeMeeting(tour);
+  document.querySelector('#meetPoint').textContent = getLocalizedMeet(tour, lang);
   document.querySelector('#meetMap').href = tour.meetMapUrl;
 
-  // itinerary
-  const steps = localizeSchedule(tour).split('→').map(s=>s.trim());
-  document.querySelector('#itinerary').innerHTML = steps.map(s=>`
+  // 일정 (I18N_SCHEDULES에서 가져오기)
+  const n = getNumFromId(tour.id);
+  const schPack = (I18N_SCHEDULES[lang] || I18N_SCHEDULES.en || {});
+  const scheduleStr = schPack[n] ? schPack[n] : tour.schedule;
+  const steps = scheduleStr.split('→').map(s => s.trim());
+  document.querySelector('#itinerary').innerHTML = steps.map(s => `
     <li class="ms-4 relative">
       <div class="absolute -start-1.5 mt-1.5 h-2 w-2 rounded-full bg-gray-900"></div>
       <div class="text-sm">${s}</div>
     </li>
   `).join('');
 
-  // gallery
+  // 갤러리 (네가 tour.gallery로 지정한 게 있으면 그거, 없으면 hero 변형)
   const g = document.querySelector('#gallery');
   const pics = Array.isArray(tour.gallery) && tour.gallery.length
     ? tour.gallery
     : [tour.heroImg, tour.heroImg + '&t=1', tour.heroImg + '&t=2'];
   g.innerHTML = pics.map(src => `
-    <img src="${src}" class="w-full h-28 md:h-36 object-cover rounded-xl" loading="lazy"/>
+    <img src="${src}" class="w-full h-28 md:h-36 object-cover rounded-xl" loading="lazy" />
   `).join('');
 
-  // similar
+  // 비슷한 투어도 lang 붙여서 링크
   const simWrap = document.querySelector('#similar');
-  const similar = Data.filter(t =>
+  const similars = Data.filter(t =>
     t.id !== tour.id &&
-    (t.area.split('·')[0] === tour.area.split('·')[0] ||
-     t.tags.some(tag => tour.tags.includes(tag)))
-  ).slice(0,3);
-  simWrap.innerHTML = similar.map(t => `
-    <a href="tour.html?slug=${t.slug}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
-      <div class="aspect-[16/9] overflow-hidden">
-        <img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-      </div>
-      <div class="p-3">
-        <div class="flex items-center justify-between">
-          <h3 class="text-sm font-semibold">${(I18N_TOURS[lang] && I18N_TOURS[lang][Number(t.id.replace(/\D/g,''))])
-              ? I18N_TOURS[lang][Number(t.id.replace(/\D/g,''))].title
-              : t.name}</h3>
-          <span class="text-xs text-gray-500">${t.duration}</span>
+    (
+      t.area.split('·')[0] === tour.area.split('·')[0] ||
+      t.tags.some(tag => tour.tags.includes(tag))
+    )
+  ).slice(0, 3);
+
+  simWrap.innerHTML = similars.map(t => {
+    const tn = getNumFromId(t.id);
+    const pack = (I18N_TOURS[lang] || I18N_TOURS.en || {});
+    const title = (pack[tn] && pack[tn].title) ? pack[tn].title : t.name;
+    return `
+      <a href="tour.html?slug=${t.slug}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
+        <div class="aspect-[16/9] overflow-hidden">
+          <img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
         </div>
-        <div class="text-xs text-gray-500">${localizeArea(t.area)}</div>
-        <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
-      </div>
-    </a>
-  `).join('');
+        <div class="p-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-semibold">${title}</h3>
+            <span class="text-xs text-gray-500">${t.duration}</span>
+          </div>
+          <div class="text-xs text-gray-500">${localizeArea(t.area, lang)}</div>
+          <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
 }
 
 // 9) 초기화
 document.addEventListener('DOMContentLoaded', () => {
-  // 언어 셀렉트 박스 초기값
   const sel = document.querySelector('#lang');
   if (sel) {
-    sel.value = lang;
-    sel.addEventListener('change', e => setLang(e.target.value));
+    sel.value = lang; // localStorage 값으로 맞춰두기
+    sel.addEventListener('change', e => {
+      lang = e.target.value;
+      localStorage.setItem('sez_lang', lang);
+      applyLang();   // 위에 data-i 있는 텍스트들
+      fill();        // hero, 미팅장소, 일정, 비슷한투어 전부 다시
+    });
   }
 
   applyLang();
   fill();
+});
 
   // QR
   document.querySelector('#qr').addEventListener('click', () => {

@@ -1,104 +1,251 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sezmiee Tour Detail</title>
-<meta name="description" content="Sezmiee International – Tour details, schedules, meeting points, pricing, and booking."/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
-<style>
-.fade-up{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
-.fade-up.show{opacity:1;transform:translateY(0)}
-button:focus{outline:2px solid #000;outline-offset:2px}
-.safe-edge{padding-left:max(env(safe-area-inset-left),1rem);padding-right:max(env(safe-area-inset-right),1rem)}
-.shadow-soft{box-shadow:0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.06)}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sezmiee Tour Detail</title>
+  <meta name="description" content="Sezmiee International – Tour details, schedules, meeting points, pricing, and booking."/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    .fade-up{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+    .fade-up.show{opacity:1;transform:translateY(0)}
+    button:focus{outline:2px solid #000;outline-offset:2px}
+    .safe-edge{padding-left:max(env(safe-area-inset-left),1rem);padding-right:max(env(safe-area-inset-right),1rem)}
+    .shadow-soft{box-shadow:0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.06)}
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
-<header class="bg-white/80 sticky top-0 z-40 backdrop-blur border-b">
-<div class="max-w-6xl mx-auto flex items-center justify-between safe-edge py-3">
-<a href="index.html" class="text-sm md:text-base font-extrabold tracking-tight">SEZMIEE <span class="text-gray-500">International</span></a>
-<div class="flex items-center gap-2 text-xs md:text-sm">
-<select id="lang" class="rounded-xl border px-2 py-1">
-<option value="kr">한국어</option>
-<option value="en">English</option>
-<option value="es">Español</option>
-<option value="zh">中文(简)</option>
-<option value="zhHant">繁中文()</option>
-<option value="ja">日本語</option>
-</select>
-<a id="backLink" href="index.html" class="rounded-xl border px-2 py-1 hover:bg-gray-50">← <span data-i="back">뒤로</span></a>
-</div>
-</div>
-</header>
+  <header class="bg-white/80 sticky top-0 z-40 backdrop-blur border-b">
+    <div class="max-w-6xl mx-auto flex items-center justify-between safe-edge py-3">
+      <a href="index.html" class="text-sm md:text-base font-extrabold tracking-tight">SEZMIEE <span class="text-gray-500">International</span></a>
+      <div class="flex items-center gap-2 text-xs md:text-sm">
+        <select id="lang" class="rounded-xl border px-2 py-1">
+          <option value="kr">한국어</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="zh">中文(简)</option>
+          <option value="zhHant">繁中文()</option>
+          <option value="ja">日本語</option>
+        </select>
+        <a id="backLink" href="index.html" class="rounded-xl border px-2 py-1 hover:bg-gray-50">← <span data-i="back">뒤로</span></a>
+      </div>
+    </div>
+  </header>
 
+  <main class="max-w-6xl mx-auto safe-edge p-4 md:p-6 space-y-6">
+    <nav class="text-xs text-gray-500"><a href="index.html" class="hover:underline" data-i="home">홈</a> / <span id="bc-city">Seoul</span> / <span id="bc-title">Tour</span></nav>
 
-<main class="max-w-6xl mx-auto safe-edge p-4 md:p-6 space-y-6">
-<nav class="text-xs text-gray-500"><a href="index.html" class="hover:underline" data-i="home">홈</a> / <span id="bc-city">Seoul</span> / <span id="bc-title">Tour</span></nav>
+    <!-- Hero -->
+    <section id="hero" class="relative rounded-3xl overflow-hidden bg-gray-200">
+      <img id="heroImg" class="w-full h-64 md:h-[420px] object-cover" alt="tour"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
+        <div class="flex items-center gap-2 text-xs"> 
+          <span id="badge-area" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Area</span>
+          <span id="badge-tags" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Tag</span>
+          <span id="badge-duration" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">3h</span>
+        </div>
+        <h1 id="title" class="mt-2 md:mt-3 text-2xl md:text-4xl font-extrabold drop-shadow">Tour</h1>
+        <p id="subtitle" class="text-sm md:text-base text-white/90"></p>
+      </div>
+    </section>
 
+    <section class="grid lg:grid-cols-3 gap-6">
+      <!-- Left: content -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Quick facts -->
+        <div class="rounded-2xl border bg-white p-4 md:p-5">
+          <h2 class="text-lg font-semibold mb-3" data-i="overview">개요</h2>
+          <ul class="grid sm:grid-cols-2 gap-3 text-sm">
+            <li>💰 <span data-i="price">가격</span>: <strong id="price">—</strong></li>
+            <li>⏱️ <span data-i="duration">소요시간</span>: <span id="duration">—</span></li>
+            <li>📍 <span data-i="meeting">미팅장소</span>: <span id="meetPoint">—</span></li>
+            <li>🗺️ <span data-i="map">지도</span>: <a id="meetMap" class="text-blue-600 hover:underline" target="_blank" rel="noreferrer">Open</a></li>
+          </ul>
+        </div>
 
-<!-- Hero -->
-<section id="hero" class="relative rounded-3xl overflow-hidden bg-gray-200">
-<img id="heroImg" class="w-full h-64 md:h-[420px] object-cover" alt="tour"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-<div class="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
-<div class="flex items-center gap-2 text-xs">
-<span id="badge-area" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Area</span>
-<span id="badge-tags" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Tag</span>
-<span id="badge-duration" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">3h</span>
-</div>
-<h1 id="title" class="mt-2 md:mt-3 text-2xl md:text-4xl font-extrabold drop-shadow">Tour</h1>
-<p id="subtitle" class="text-sm md:text-base text-white/90"></p>
-</div>
-</section>
+        <!-- Itinerary -->
+        <div class="rounded-2xl border bg-white p-4 md:p-5">
+          <h2 class="text-lg font-semibold mb-3" data-i="itinerary">일정</h2>
+          <ol id="itinerary" class="relative border-s pl-5 space-y-3">
+            <!-- items injected -->
+          </ol>
+        </div>
 
+        <!-- Gallery -->
+        <div class="rounded-2xl border bg-white p-4 md:p-5">
+          <h2 class="text-lg font-semibold mb-3" data-i="gallery">갤러리</h2>
+          <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+        </div>
 
-<section class="grid lg:grid-cols-3 gap-6">
-<!-- Left: content -->
-<div class="lg:col-span-2 space-y-6">
-<!-- Quick facts -->
-<div class="rounded-2xl border bg-white p-4 md:p-5">
-<h2 class="text-lg font-semibold mb-3" data-i="overview">개요</h2>
-<ul class="grid sm:grid-cols-2 gap-3 text-sm">
-<li>💰 <span data-i="price">가격</span>: <strong id="price">—</strong></li>
-<li>⏱️ <span data-i="duration">소요시간</span>: <span id="duration">—</span></li>
-<li>📍 <span data-i="meeting">미팅장소</span>: <span id="meetPoint">—</span></li>
-<li>🗺️ <span data-i="map">지도</span>: <a id="meetMap" class="text-blue-600 hover:underline" target="_blank" rel="noreferrer">Open</a></li>
-</ul>
-</div>
+        <!-- FAQ -->
+        <div class="rounded-2xl border bg-white p-4 md:p-5">
+          <h2 class="text-lg font-semibold mb-3">FAQ</h2>
+          <details class="rounded-xl border p-4"><summary class="font-medium" data-i="faq1q">예약/결제는 어떻게 하나요?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq1a">문의 → 가이드 확인 → 입금 → 확정.</p></details>
+          <details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq2q">픽업 가능 지역?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq2a">서울 전역 + 김포/인천(일부 추가요금)</p></details>
+          <details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq3q">취소 규정?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq3a">7일 전 전액 / 3일 전 50% / 24시간 내 불가</p></details>
+        </div>
+      </div>
 
+      <!-- Right: booking -->
+      <aside class="lg:col-span-1 space-y-4">
+        <div class="rounded-2xl border bg-white p-4 md:p-5 sticky top-20 shadow-soft">
+          <div class="flex items-baseline justify-between mb-2">
+            <div class="text-sm text-gray-500" data-i="from">1인 기준</div>
+            <div class="text-2xl font-extrabold" id="priceBig">—</div>
+          </div>
+          <div class="grid gap-2 text-sm">
+            <label class="flex items-center gap-2"> <span data-i="date">날짜</span> <input id="date" type="date" class="rounded-xl border px-2 py-1 flex-1"/> </label>
+            <label class="flex items-center gap-2"> <span data-i="guests">인원</span>
+              <select id="pax" class="rounded-xl border px-2 py-1 flex-1">
+                <option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>
+              </select>
+            </label>
+          </div>
+          <div class="mt-3 flex gap-2">
+            <a id="book" target="_blank" rel="noreferrer" class="flex-1 rounded-2xl bg-black text-white px-4 py-2 text-sm text-center hover:opacity-90">Book</a>
+            <button id="qr" class="rounded-2xl border px-4 py-2 text-sm">QR</button>
+          </div>
+          <div id="qrWrap" class="mt-3 hidden grid place-items-center">
+            <canvas id="qrCanvas" class="rounded-xl border"></canvas>
+          </div>
+          <div class="mt-3 text-xs text-gray-500" data-i="note">결제/재고 확인은 외부 채널(Klook 등)에서 진행됩니다.</div>
+        </div>
 
-<!-- Itinerary -->
-<div class="rounded-2xl border bg-white p-4 md:p-5">
-<h2 class="text-lg font-semibold mb-3" data-i="itinerary">일정</h2>
-<ol id="itinerary" class="relative border-s pl-5 space-y-3">
-<!-- items injected -->
-</ol>
-</div>
+        <div class="rounded-2xl border bg-white p-4">
+          <div class="text-sm font-semibold mb-1" data-i="contact">문의</div>
+          <div class="text-sm space-y-1">
+            <a href="mailto:sezmiee.project@gmail.com" class="block hover:underline">📧 sezmiee.project@gmail.com</a>
+            <a href="tel:+821049648503" class="block hover:underline">📞 +82 10-4964-8503</a>
+            <a id="wh" class="block hover:underline" target="_blank" rel="noreferrer">💬 WhatsApp/KakaoTalk</a>
+          </div>
+        </div>
+      </aside>
+    </section>
 
+    <!-- Similar tours -->
+    <section class="rounded-2xl border bg-white p-4 md:p-5">
+      <h2 class="text-lg font-semibold mb-3" data-i="similar">비슷한 투어</h2>
+      <div id="similar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+  </main>
 
-<!-- Gallery -->
-<div class="rounded-2xl border bg-white p-4 md:p-5">
-<h2 class="text-lg font-semibold mb-3" data-i="gallery">갤러리</h2>
-<div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
-</div>
+  <footer class="py-10 text-center text-xs text-gray-500">© 2025 Sezmiee International</footer>
 
+<script>
+  // ===== Shared dataset (subset copied from index) =====
+  const Data = [
+    {id:"t1",slug:"seoul-instagrammable-cafe-hop",name:"Seoul Instagrammable Café-Hop Tour",priceKRW:45000,duration:"3h",area:"Seoul · Seongsu & Ikseon",tags:["Café","Photo","City"],heroImg:"https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",short:"3 popular IG-worthy cafés + photo walk.",schedule:"Meet 10:00 → Café A → Café B → Photo walk → Café C",meetPoint:"Seongsu Station Exit 3",meetMapUrl:"https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link",gallery:["https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg","https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1200&q=80"]},
+    {id:"t2",slug:"seoul-hidden-gem-city-walk",name:"Seoul Hidden-Gem City Walk Experience",priceKRW:52000,duration:"3h",area:"Seoul · Ikseon & Bukchon",tags:["Local","City","Culture"],heroImg:"https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",short:"Lesser-known alleys with a local guide.",schedule:"14:00 start → Ikseon alleys → Bukchon photo → Local café",meetPoint:"Jongno 3-ga Station Exit 4",meetMapUrl:"https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C3%EA%B0%80%EC%97%AD%204%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t3",slug:"seoul-trendspotting-photo-tour",name:"Seoul Trendspotting Photo-Tour",priceKRW:65000,duration:"3h",area:"Seoul · DDP & Euljiro",tags:["Photo","Design","City"],heroImg:"https://images.locationscout.net/2020/02/dongdaemun-design-plaza-seoul-korea.jpg?h=500&q=60",short:"Pro photographer + on-trend spaces.",schedule:"09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",meetPoint:"Dongdaemun History & Culture Park Exit 1",meetMapUrl:"https://map.naver.com/v5/search/%EB%8F%99%EB%8C%80%EB%AC%B8%EC%97%AD%20%EC%97%AD%EC%82%AC%EB%AC%B8%ED%99%94%EA%B3%B5%EC%9B%90%EC%97%AD%201%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t4",slug:"seoul-popup-culture-hopping",name:"Seoul Popup-Culture Hopping Tour",priceKRW:58000,duration:"3h",area:"Seoul · Various",tags:["Pop-up","Culture","City"],heroImg:"https://mediahub.seoul.go.kr/uploads/mediahub/2023/12/YTrpdZJoubNBZzmNkOXiAASqkGtyReSQ.png",short:"Pop-ups, street art, flea markets + creators.",schedule:"13:00 start → Hot pop-up → Street-art photo → Flea/check",meetPoint:"To be confirmed (varies by pop-up)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t5",slug:"seoul-lifestyle-travel-outing",name:"Seoul Lifestyle Travel Outing",priceKRW:39000,duration:"3h",area:"Seoul · Hangang",tags:["Relax","Nature","Photo"],heroImg:"https://travel-stained.com/wp-content/uploads/2017/07/DSC03218-e1556866530460.jpg",short:"Café chill + Hangang walk + photo spots.",schedule:"16:00 start → Café break → Hangang walk & photo → Sunset",meetPoint:"Yeouinaru Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%EC%97%AC%EC%9D%98%EB%82%98%EB%A3%8C%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t6",slug:"seoul-demon-tour-kpop-night",name:"Seoul Demon Tour: K-Pop & Night Walk",priceKRW:72000,duration:"3h",area:"Seoul · Myeongdong & Gangnam",tags:["K-pop","Night","Theme"],heroImg:"https://mediahub.seoul.go.kr/uploads/mediahub/2023/08/QNJXmONxJDrBGLXDeJGlguYoqWGWCYGq.jpg",short:"Myeongdong K-Pop goods + SMTOWN spot + Hangang night view.",schedule:"18:30 start → Myeongdong goods → SMTOWN/Gangnam spot → Hangang night",meetPoint:"Myeongdong Station Exit 6",meetMapUrl:"https://map.naver.com/v5/search/%EB%AA%85%EB%8F%99%EC%97%AD%206%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t7",slug:"gyeonggi-art-village-brunch-cafe",name:"Gyeonggi Art Village Brunch & Café Tour",priceKRW:78000,duration:"5h",area:"Gyeonggi · Paju (Heyri)",tags:["Gyeonggi","Art","Brunch"],heroImg:"https://tour.paju.go.kr/upload/tour/2023/9/14/94325211-7276-4817-8f81-7de085e9ecb3.png",short:"Heyri art village + brunch café + gallery stroll.",schedule:"10:00 depart → Heyri stroll → Brunch café → Gallery photo",meetPoint:"Heyri Art Village Gate",meetMapUrl:"https://map.naver.com/v5/search/%ED%97%A4%EC%9D%B4%EB%A6%AC%20%EC%95%84%ED%8A%B8%20%EB%B9%8C%EB%A6%AC%EC%A7%80",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t8",slug:"hongdae-animation-game-theme-cafe",name:"Hongdae Animation & Game Theme Café Walking Tour",priceKRW:58000,duration:"3h",area:"Seoul · Hongdae",tags:["Anime","Game","Theme"],heroImg:"https://res.klook.com/image/upload/fl_lossy.progressive/q_auto/c_fill%2Cw_750%2Fblogen%2F2019%2F07%2FHONGDAE-SEOUL-3.jpg",short:"Anime/game/webtoon theme cafés + local game shops.",schedule:"15:00 start → Theme café → Street game shop → Photo spot",meetPoint:"Hongik Univ. Station Exit 9",meetMapUrl:"https://map.naver.com/v5/search/%ED%99%8D%EB%8C%80%EC%95%84%ED%95%99%EA%B5%90%EC%97%AD%209%EB%B2%88%EC%B6%9C%EA%B5%AD",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t9",slug:"seoul-nighttime-hidden-gems-walk",name:"Seoul Nighttime Hidden-Gems Walking Tour",priceKRW:52000,duration:"2h",area:"Seoul · Naksan & Fortress",tags:["Night","Local","Citywalk"],heroImg:"https://www.newsroad.co.kr/news/photo/202310/25520_36654_2112.jpg",short:"Night walk with a history guide.",schedule:"17:00 start → Naksan light walk → Fortress night path",meetPoint:"Hyehwa Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%ED%98%9C%ED%99%94%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t10",slug:"seoul-heritage-sunset-photo",name:"Seoul Heritage & Sunset Photo Tour",priceKRW:61000,duration:"2.5h",area:"Seoul · Jongno",tags:["Photo","Culture","Sunset"],heroImg:"https://rebeladiaries.wordpress.com/wp-content/uploads/2019/01/p1290221.jpg?w=1400",short:"Hanok alleys + sunset with a pro photographer.",schedule:"16:30 start → Jongno hanok alleys → Sunset shooting",meetPoint:"Anguk Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%EC%95%99%EA%B5%AD%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+    {id:"t11",slug:"seoul-mountain-hiking-adventure",name:"Seoul Mountain Hiking Adventure",priceKRW:55000,duration:"4–5h",area:"Seoul · Bukhansan & Inwangsan",tags:["Nature","Activity","Hiking"],heroImg:"https://images.unsplash.com/photo-1709594625919-d95e44a48098?auto=format&fit=crop&q=80&w=870",short:"Seoul Mountain Hiking Adventure – Bukhansan & Inwangsan vistas",schedule:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh",meetPoint:"To be confirmed(route/season)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
+  ];
 
-<!-- FAQ -->
-<div class="rounded-2xl border bg-white p-4 md:p-5">
-<h2 class="text-lg font-semibold mb-3">FAQ</h2>
-<details class="rounded-xl border p-4"><summary class="font-medium" data-i="faq1q">예약/결제는 어떻게 하나요?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq1a">문의 → 가이드 확인 → 입금 → 확정.</p></details>
-<details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq2q">픽업 가능 지역?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq2a">서울 전역 + 김포/인천(일부 추가요금)</p></details>
-<details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq3q">취소 규정?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq3a">7일 전 전액 / 3일 전 50% / 24시간 내 불가</p></details>
-</div>
-</div>
+  const I18N = {
+    kr:{home:'홈',back:'뒤로',overview:'개요',price:'가격',duration:'소요시간',meeting:'미팅장소',map:'지도',itinerary:'일정',gallery:'갤러리',from:'1인 기준',date:'날짜',guests:'인원',note:'결제/재고 확인은 외부 채널(Klook 등)에서 진행됩니다.',contact:'문의',similar:'비슷한 투어'},
+    en:{home:'Home',back:'Back',overview:'Overview',price:'Price',duration:'Duration',meeting:'Meeting point',map:'Map',itinerary:'Itinerary',gallery:'Gallery',from:'Per person',date:'Date',guests:'Guests',note:'Payments/availability are handled on external channels (e.g., Klook).',contact:'Contact',similar:'Similar tours'},
+    es:{home:'Inicio',back:'Atrás',overview:'Resumen',price:'Precio',duration:'Duración',meeting:'Punto de encuentro',map:'Mapa',itinerary:'Itinerario',gallery:'Galería',from:'Por persona',date:'Fecha',guests:'Personas',note:'Pagos/disponibilidad en canales externos (Klook).',contact:'Contacto',similar:'Tours similares'},
+    zh:{home:'首页',back:'返回',overview:'概要',price:'价格',duration:'时长',meeting:'集合地点',map:'地图',itinerary:'行程',gallery:'相册',from:'每人',date:'日期',guests:'人数',note:'支付/库存由外部渠道（如Klook）处理。',contact:'联系',similar:'相似行程'},
+    zhHant:{home:'首頁',back:'返回',overview:'概要',price:'價格',duration:'時長',meeting:'集合地點',map:'地圖',itinerary:'行程',gallery:'相簿',from:'每人',date:'日期',guests:'人數',note:'付款/庫存由外部平台（Klook）處理。',contact:'聯絡',similar:'相似行程'},
+    ja:{home:'ホーム',back:'戻る',overview:'概要',price:'料金',duration:'所要時間',meeting:'集合場所',map:'地図',itinerary:'行程',gallery:'ギャラリー',from:'1名あたり',date:'日付',guests:'人数',note:'支払い/空き状況は外部サイト(Klook)で管理されます。',contact:'お問い合わせ',similar:'類似ツアー'}
+  };
 
+  const qs = (s,el=document)=> el.querySelector(s);
+  const qsa = (s,el=document)=> [...el.querySelectorAll(s)];
+  const KRW = v=> new Intl.NumberFormat('ko-KR',{style:'currency',currency:'KRW',maximumFractionDigits:0}).format(v);
 
-<!-- Right: booking -->
-<aside class="lg:col-span-1 space-y-4">
-<div class="rounded-2xl border bg-white p-4 md:p-5 sticky top-20 shadow-soft">
-<div class="flex items-baseline justify-between mb-2">
-<div class="text-sm text-gray-500" data-i="from">1인 기준</div>
-<div class="text-2xl font-extrabold" id="priceBig">—</div>
+  const params = new URLSearchParams(location.search);
+  const bySlug = params.get('slug');
+  const byId = params.get('id');
+  let tour = Data.find(t=> t.slug===bySlug) || Data.find(t=> t.id===byId) || Data[0];
+
+  // language: from query ?lang=, else from browser, default kr
+  let lang = (params.get('lang')||localStorage.getItem('sez_lang')||'kr');
+  function setLang(l){ lang=l; localStorage.setItem('sez_lang',l); qs('#lang').value=l; applyLang(); }
+
+  function applyLang(){
+    const pack = I18N[lang]||I18N.kr; 
+    qsa('[data-i]').forEach(el=>{ const key=el.dataset.i; if(pack[key]) el.textContent=pack[key]; });
+  }
+
+  function fill(){
+    // hero
+    qs('#heroImg').src = tour.heroImg; qs('#heroImg').alt = tour.name;
+    qs('#title').textContent = tour.name; qs('#subtitle').textContent = tour.short;
+    qs('#badge-area').textContent = tour.area; qs('#badge-duration').textContent = tour.duration; qs('#badge-tags').textContent = tour.tags.join(' · ');
+
+    // crumbs
+    qs('#bc-city').textContent = (tour.area.split('·')[0]||'Seoul').trim();
+    qs('#bc-title').textContent = tour.name;
+
+    // quick facts
+    qs('#price').textContent = KRW(tour.priceKRW);
+    qs('#priceBig').textContent = KRW(tour.priceKRW);
+    qs('#duration').textContent = tour.duration;
+    qs('#meetPoint').textContent = tour.meetPoint;
+    qs('#meetMap').href = tour.meetMapUrl;
+
+    // booking links
+    qs('#book').href = tour.bookingUrl + (tour.bookingUrl.includes('?')?'&':'?') + `ref=sezmiee&tour=${tour.slug}`;
+    qs('#wh').href = `https://wa.me/821049648503?text=${encodeURIComponent('Tour inquiry: '+tour.name)}`;
+
+    // itinerary breakdown from schedule string
+    const steps = tour.schedule.split('→').map(s=>s.trim());
+    qs('#itinerary').innerHTML = steps.map(s=>`<li class="ms-4"><div class="absolute -start-1.5 mt-1.5 h-2 w-2 rounded-full bg-gray-900"></div><div class="text-sm">${s}</div></li>`).join('');
+
+    // gallery (simple – hero variants + city placeholder)
+    const g = qs('#gallery');
+    const pics = Array.isArray(tour.gallery) && tour.gallery.length ? tour.gallery : [tour.heroImg, tour.heroImg + '&t=1', tour.heroImg + '&t=2'];
+    g.innerHTML = pics.map(src=>`<img src="${src}" class="w-full h-28 md:h-36 object-cover rounded-xl" loading="lazy"/>`).join('');
+
+    // similar
+    const similar = Data.filter(t=> t.id!==tour.id && (t.area.split('·')[0]===tour.area.split('·')[0] || t.tags.some(tag=> tour.tags.includes(tag)))).slice(0,3);
+    qs('#similar').innerHTML = similar.map(t=>`
+      <a href="tour.html?slug=${t.slug}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
+        <div class="aspect-[16/9] overflow-hidden"><img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/></div>
+        <div class="p-3">
+          <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">${t.name}</h3><span class="text-xs text-gray-500">${t.duration}</span></div>
+          <div class="text-xs text-gray-500">${t.area}</div>
+          <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
+        </div>
+      </a>`).join('');
+  }
+
+  function init(){
+    // initial language value
+    qs('#lang').value = lang;
+    applyLang();
+    fill();
+
+    // QR
+    qs('#qr').addEventListener('click',()=>{
+      const wrap = qs('#qrWrap'); wrap.classList.toggle('hidden');
+      if(!wrap.dataset.loaded){
+        QRCode.toCanvas(qs('#qrCanvas'), qs('#book').href, {margin:1,scale:6}, (err)=>{
+          if(!err){ wrap.dataset.loaded='1'; }
+        });
+      }
+    });
+
+    // reveal animations
+    const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }),{threshold:.1});
+    qsa('.fade-up').forEach(el=> io.observe(el));
+
+    // language switch
+    qs('#lang').addEventListener('change', (e)=>{ setLang(e.target.value); });
+  }
+
+  init();
+</script>
+</body>
+</html>
+

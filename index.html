@@ -109,7 +109,7 @@
  /* ────────────────────────────────
      3️⃣ 상태(state) 관리
   ──────────────────────────────── */
-  let state={locale:'kr',query:'',adv:{city:'',date:'',guests:'',budget:''},inbox:[]};
+  let state={locale:(localStorage.getItem('sezmiee_locale')||'kr'),query:'',adv:{city:'',date:'',guests:'',budget:''},inbox:[]};
   const qs=(s,el=document)=>el.querySelector(s);
   const qsa=(s,el=document)=>[...el.querySelectorAll(s)];
  /* ────────────────────────────────

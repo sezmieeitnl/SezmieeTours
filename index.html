@@ -137,15 +137,10 @@
       </div>
     </div>
   `;
-  // ✅ 여기만 추가
-  qsa('button[data-lang]').forEach(btn=>{
-    btn.onclick = () => {
-      state.locale = btn.dataset.lang;
-      // 👉 선택한 언어 기억
-      localStorage.setItem('sezmiee_locale', state.locale);
-      renderAllButHeader();
-    };
-  });
+
+  // ✅ 언어 설정 유지 (한 줄로)
+  qsa('button[data-lang]').forEach(btn=>btn.onclick=()=>{state.locale=btn.dataset.lang;localStorage.setItem('sezmiee_locale',state.locale);renderAllButHeader();});
+  }
   //(3) 카드 필터링 (검색/조건 적용)
   function filterList(){const adv=state.adv;let list=tours.slice();if(adv.city){if(/Seoul|서울/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('seoul'));else if(/Gyeonggi|경기/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('gyeonggi'));}if(adv.budget){const b=adv.budget;if(b.includes('50'))list=list.filter(t=>t.priceKRW<=50000);else if(b.includes('70'))list=list.filter(t=>t.priceKRW<=70000);else if(b.includes('100')&&b.includes('+'))list=list.filter(t=>t.priceKRW>100000);else if(b.includes('100'))list=list.filter(t=>t.priceKRW<=100000);}const q=(state.query||'').toLowerCase();if(!q)return list;return list.filter(t=>{const loc=getLocalized(t,state.locale);return [loc.name,t.area,loc.short,getSchedule(t,state.locale),t.tags.join(' ')].join(' ').toLowerCase().includes(q);});}
   //(4) 투어 카드 생성 (클릭 시 tour.html로 이동)

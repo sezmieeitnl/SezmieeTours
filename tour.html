@@ -142,68 +142,244 @@ const savedLang = localStorage.getItem('sez_lang');
 let lang = qLang || savedLang || 'kr';
 
 // 2) index.html에서 쓰던 다국어 세트 그대로 가져옴
-const UI = {
-  kr:{placeholder:"태그/지역/이름 검색…",search:"검색"},
-  en:{placeholder:"Search tags, area, name…",search:"Search"},
-  es:{placeholder:"Buscar etiquetas, zona, nombre…",search:"Buscar"},
-  zh:{placeholder:"搜索 标签/区域/名称…",search:"搜索"},
-  zhHant:{placeholder:"搜尋 標籤/區域/名稱…",search:"搜尋"},
-  ja:{placeholder:"タグ/エリア/名称を検索…",search:"検索"}
-};
-
-// 너가 방금 준 그 엄청 긴 COPY / I18N_TOURS / I18N_SCHEDULES / I18N_MEETS / AREA_MAP 전부 ↓ 여기 붙여넣으면 돼
-// (길어서 여기서는 구조만 보여줄게. 실제로는 네 코드 그대로 복붙해.)
-const COPY = { /* ... 너가 위에 준 그대로 ... */ };
-const I18N_TOURS = { /* ... 너가 위에 준 그대로 ... */ };
-const I18N_SCHEDULES = { /* ... 너가 위에 준 그대로 ... */ };
-const I18N_MEETS = { /* ... 너가 위에 준 그대로 ... */ };
-const AREA_KEYS = ['Seoul','Gyeonggi','Various','Hangang','Hongdae','Jongno','Naksan','Fortress','Myeongdong','Gangnam','DDP','Euljiro','Seongsu','Ikseon','Bukchon','Paju (Heyri)','Bukhansan','Inwangsan'];
-const AREA_MAP = { /* ... 너가 위에 준 그대로 ... */ };
+ const UI={kr:{placeholder:"태그/지역/이름 검색…",search:"검색"},en:{placeholder:"Search tags, area, name…",search:"Search"},es:{placeholder:"Buscar etiquetas, zona, nombre…",search:"Buscar"},zh:{placeholder:"搜索 标签/区域/名称…",search:"搜索"},zhHant:{placeholder:"搜尋 標籤/區域/名稱…",search:"搜尋"},ja:{placeholder:"タグ/エリア/名称を検索…",search:"検索"}};
+  /* 다국어 텍스트 (검색/FAQ/문의/푸터 등) */
+  const COPY={kr:{adv:{title:"상세 검색",city:"도시",date:"출발일",guests:"인원",budget:"예산",search:"검색",cityOpts:["서울","경기"],paxOpts:["1명","2명","3명","4명","5명+"],budgetOpts:["~50,000원","~70,000원","~100,000원","100,000원+"]},why:{title:"왜 Sezmiee International?",pill:"간단 · 안전 · 유연",a:"현지 검증 코스",b:"투명한 가격",c:"유연한 커스터마이즈"},faq:{title:"FAQ",q1:"예약/결제는 어떻게 하나요?",a1:"문의 → 가이드 확인 → 입금 → 확정.",q2:"픽업 가능 지역?",a2:"서울 전역 + 김포/인천(일부 추가요금)",q3:"취소 규정?",a3:"7일 전 전액 / 3일 전 50% / 24시간 내 불가"},contact:{title:"문의하기",hours:"평일 10:00–18:00 / 익영업일 회신",name:"이름",email:"이메일",subject:"관심 상품/도시",message:"메시지",placeholderSubj:"예: Seoul Demon Tour",placeholderMsg:"일정/인원/예산 등 자유롭게 적어주세요",submit:"문의 전송(데모)",note:"실제 메일은 발송되지 않고 하단에 미리보기로 저장됩니다."},footer:{copy:"© 2025 Sezmiee International. 데모 — 백엔드 없음.",quick:"빠른 링크",links:["Tours","Why Us","FAQ","Contact"],policy:"정책 (데모)",policies:"TOS · Privacy · Cancellation"}},en:{adv:{title:"Search",city:"City",date:"Date",guests:"Guests",budget:"Budget",search:"Search",cityOpts:["Seoul","Gyeonggi"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"Why Sezmiee International?",pill:"Simple · Safe · Flexible",a:"Locally-verified routes",b:"Transparent pricing",c:"Flexible customization"},faq:{title:"FAQ",q1:"How do I book/pay?",a1:"Inquiry → confirm guide → bank transfer → confirmed.",q2:"Where is pickup available?",a2:"Seoul + Gimpo/Incheon (surcharge in some areas).",q3:"Cancellation policy?",a3:"Full refund up to 7 days; 50% until 3 days; none within 24h."},contact:{title:"Contact Us",hours:"Weekdays 10:00–18:00 / reply next business day",name:"Name",email:"Email",subject:"Tour/City of Interest",message:"Message",placeholderSubj:"e.g., Seoul Demon Tour",placeholderMsg:"Share date/guests/budget, etc.",submit:"Send Inquiry (Demo)",note:"Submissions are saved as a preview; no real email is sent."},footer:{copy:"© 2025 Sezmiee International. Demo only — no backend.",quick:"Quick Links",links:["Tours","Why Us","FAQ","Contact"],policy:"Policies (Demo)",policies:"TOS · Privacy · Cancellation"}},es:{adv:{title:"Búsqueda",city:"Ciudad",date:"Fecha",guests:"Personas",budget:"Presupuesto",search:"Buscar",cityOpts:["Seúl","Gyeonggi"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"¿Por qué Sezmiee International?",pill:"Simple · Seguro · Flexible",a:"Rutas verificadas",b:"Precio transparente",c:"Personalización flexible"},faq:{title:"FAQ",q1:"¿Cómo reservo/pago?",a1:"Consulta → confirmar guía → transferencia → confirmado.",q2:"¿Dónde hay recogida?",a2:"Seúl + Gimpo/Incheon (algunas zonas con recargo).",q3:"¿Cancelación?",a3:"Reembolso total hasta 7 días; 50% hasta 3; no dentro de 24h."},contact:{title:"Contacto",hours:"Lun–Vie 10:00–18:00 / respuesta siguiente día hábil",name:"Nombre",email:"Correo",subject:"Tour/Ciudad de interés",message:"Mensaje",placeholderSubj:"p.ej., Seoul Demon Tour",placeholderMsg:"Indica fecha/personas/presupuesto…",submit:"Enviar consulta (Demo)",note:"Solo vista previa; no se envía correo."},footer:{copy:"© 2025 Sezmiee International. Solo demo.",quick:"Enlaces rápidos",links:["Tours","Why Us","FAQ","Contact"],policy:"Políticas (Demo)",policies:"TOS · Privacidad · Cancelación"}},zh:{adv:{title:"搜索",city:"城市",date:"日期",guests:"人数",budget:"预算",search:"搜索",cityOpts:["首尔","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"为什么选择 Sezmiee International?",pill:"简单 · 安全 · 灵活",a:"本地验证路线",b:"透明定价",c:"灵活定制"},faq:{title:"常见问题",q1:"如何预订/付款？",a1:"咨询 → 确认向导 → 转账 → 确认。",q2:"接送范围？",a2:"首尔 + 金浦/仁川（部分加价）",q3:"取消政策？",a3:"7天前全退；3天前50%；24小时内不退。"},contact:{title:"联系我们",hours:"工作日10:00–18:00 / 次营业日回复",name:"姓名",email:"邮箱",subject:"意向行程/城市",message:"留言",placeholderSubj:"例如：Seoul Demon Tour",placeholderMsg:"请注明日期/人数/预算等",submit:"发送咨询（演示）",note:"仅保存预览，不会发送邮件。"},footer:{copy:"© 2025 Sezmiee International. 演示页面。",quick:"快速链接",links:["Tours","Why Us","FAQ","Contact"],policy:"政策（演示）",policies:"条款 · 隐私 · 取消"}},zhHant:{adv:{title:"搜尋",city:"城市",date:"日期",guests:"人數",budget:"預算",search:"搜尋",cityOpts:["首爾","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"為什麼選擇 Sezmiee International？",pill:"簡單 · 安全 · 彈性",a:"在地驗證路線",b:"透明定價",c:"彈性客製化"},faq:{title:"常見問題",q1:"如何預訂/付款？",a1:"諮詢 → 確認嚮導 → 匯款 → 成立。",q2:"接送範圍？",a2:"首爾 + 金浦/仁川（部分區域需加價）",q3:"取消政策？",a3:"7天前全額；3日前50%；24小時內不可。"},contact:{title:"聯絡我們",hours:"平日10:00–18:00／次營業日回覆",name:"姓名",email:"電子郵件",subject:"有興趣的行程/城市",message:"訊息",placeholderSubj:"例如：Seoul Demon Tour",placeholderMsg:"請告知日期/人數/預算等",submit:"送出詢問（示範）",note:"提交內容僅供預覽，不會寄出電子郵件。"},footer:{copy:"© 2025 Sezmiee International. 示範頁面 — 無後端。",quick:"快速連結",links:["Tours","Why Us","FAQ","Contact"],policy:"政策（示範）",policies:"條款 · 隱私 · 取消"}},ja:{adv:{title:"検索",city:"都市",date:"日付",guests:"人数",budget:"予算",search:"検索",cityOpts:["ソウル","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"Why Sezmiee International?",pill:"シンプル・安全・柔軟",a:"現地検証ルート",b:"透明価格",c:"柔軟なカスタマイズ"},faq:{title:"FAQ",q1:"予約/支払い方法は？",a1:"問い合わせ → ガイド確認 → 振込 → 確定。",q2:"送迎エリアは？",a2:"ソウル全域＋金浦/仁川（一部追加料金）",q3:"キャンセルポリシーは？",a3:"7日前まで全額、3日前まで50%、24時間以内不可。"},contact:{title:"お問い合わせ",hours:"平日10:00–18:00 / 次営業日返信",name:"お名前",email:"メール",subject:"興味のあるツアー/都市",message:"メッセージ",placeholderSubj:"例: Seoul Demon Tour",placeholderMsg:"日付/人数/予算など",submit:"送信（デモ）",note:"送信されず、プレビュー保存のみ。"},footer:{copy:"© 2025 Sezmiee International. デモ。",quick:"クイックリンク",links:["Tours","Why Us","FAQ","Contact"],policy:"ポリシー（デモ）",policies:"利用規約 · プライバシー · キャンセル"}}};
+  /* 투어 제목/설명 다국어 */
+  const I18N_TOURS={en:{1:{title:"Seoul Instagrammable Café-Hop Tour",desc:"3 popular IG-worthy cafés + photo walk"},2:{title:"Seoul Hidden-Gem City Walk Experience",desc:"Lesser-known alleys with a local guide"},3:{title:"Seoul Trendspotting Photo-Tour",desc:"Pro photographer + on-trend spaces"},4:{title:"Seoul Popup-Culture Hopping Tour",desc:"Pop-ups, street art, flea markets + creators"},5:{title:"Seoul Lifestyle Travel Outing",desc:"Café break + Hangang walk + photo spots"},6:{title:"Seoul Demon Tour: K-Pop & Night Walk",desc:"Myeongdong K-Pop goods + SMTOWN + Hangang River"},7:{title:"Gyeonggi Art Village Brunch & Café Tour",desc:"Heyri art village + brunch café + gallery"},8:{title:"Hongdae Animation & Game Theme Café Walk",desc:"Anime/game/webtoon cafés + street game shops"},9:{title:"Seoul Nighttime Hidden-Gems Walking Tour",desc:"Night walk with a history guide"},10:{title:"Seoul Heritage & Sunset Photo Tour",desc:"Hanok alleys + sunset with a pro photographer"},11:{title:"Seoul Mountain Hiking Adventure – Bukhansan/Inwang views",desc:"Hike Bukhansan or Inwangsan with panoramic Seoul views + guide"}},kr:{1:{title:"서울 인스타그램 카페투어",desc:"핫한 카페 3곳 + 포토 워크"},2:{title:"서울 숨은 명소 도보투어",desc:"현지 가이드와 골목 산책"},3:{title:"서울 트렌드스포팅 포토투어",desc:"프로 사진가 + 트렌디 공간"},4:{title:"서울 팝업컬처 하핑 투어",desc:"팝업/스트리트아트/플리마켓"},5:{title:"서울 라이프스타일 나들이",desc:"카페 휴식 + 한강 산책 + 포토"},6:{title:"서울 데몬 투어: 케이팝 & 나이트",desc:"명동 굿즈 + SMTOWN + 한강 야경"},7:{title:"경기 헤이리 아트빌리지 브런치 & 카페",desc:"헤이리 + 브런치 + 갤러리"},8:{title:"홍대 애니·게임 테마카페 워킹투어",desc:"테마카페 + 게임숍"},9:{title:"서울 명소 나이트 워킹투어",desc:"역사가이드와 야간 산책"},10:{title:"서울 헤리티지 & 선셋 포토투어",desc:"한옥 골목 + 프로 촬영"},11:{title:"서울 등산 어드벤처 – 북한산/인왕산",desc:"등산 + 서울 전경 + 가이드"}},es:{1:{title:"Tour de cafés instagrammables en Seúl",desc:"3 cafés + paseo fotográfico"},2:{title:"Paseo urbano de joyas ocultas",desc:"Callejones poco conocidos"},3:{title:"Tour fotográfico de tendencias",desc:"Fotógrafo + espacios de moda"},4:{title:"Ruta de cultura pop-up",desc:"Pop-ups y mercadillos"},5:{title:"Salida lifestyle por Seúl",desc:"Café + río Han"},6:{title:"Seoul Demon Tour: K-Pop y noche",desc:"Compras K-Pop + Han"},7:{title:"Brunch en aldea de arte",desc:"Heyri + brunch + galería"},8:{title:"Cafés temáticos en Hongdae",desc:"Anime/game cafés"},9:{title:"Seúl nocturno a pie",desc:"Paseo con guía"},10:{title:"Patrimonio y atardecer",desc:"Hanok + atardecer"},11:{title:"Aventura de senderismo en Seúl",desc:"Bukhansan/Inwang vistas"}},zh:{1:{title:"首尔网红咖啡巡礼",desc:"3家网红咖啡+街拍"},2:{title:"首尔城市秘境徒步",desc:"当地导游带路"},3:{title:"首尔潮流摄影之旅",desc:"专业摄影+潮流空间"},4:{title:"首尔快闪文化巡游",desc:"快闪/市集/街拍"},5:{title:"首尔生活方式小旅行",desc:"咖啡+汉江散步"},6:{title:"恶魔之旅：K-Pop夜行",desc:"明洞+SMTOWN+汉江"},7:{title:"京畿艺术村早午餐",desc:"Heyri+早午餐"},8:{title:"弘大动漫游戏咖啡",desc:"主题咖啡+游戏店"},9:{title:"首尔夜间秘境徒步",desc:"历史夜游"},10:{title:"首尔遗产与日落",desc:"韩屋+日落拍摄"},11:{title:"首尔登山探险",desc:"北汉山/仁王山"}},zhHant:{1:{title:"首爾網紅咖啡巡禮",desc:"3間咖啡+街拍"},2:{title:"首爾城市秘境徒步",desc:"在地嚮導帶路"},3:{title:"首爾潮流攝影之旅",desc:"專業攝影+潮流空間"},4:{title:"首爾快閃文化巡遊",desc:"快閃/市集/街拍"},5:{title:"首爾生活風格小旅行",desc:"咖啡+漢江散步"},6:{title:"惡魔之旅：K-Pop 夜行",desc:"明洞+SMTOWN+漢江"},7:{title:"京畿藝術村早午餐",desc:"Heyri+早午餐"},8:{title:"弘大動漫遊戲咖啡",desc:"主題咖啡+遊戲店"},9:{title:"首爾夜間秘境徒步",desc:"歷史夜遊"},10:{title:"首爾文化遺產與夕照",desc:"韓屋+夕照"},11:{title:"首爾登山冒險",desc:"北漢山/仁王山"}},ja:{1:{title:"ソウル インスタ映えカフェ巡り",desc:"人気カフェ3軒+フォト"},2:{title:"ソウル隠れスポット街歩き",desc:"ローカルガイド"},3:{title:"ソウル トレンド撮影ツアー",desc:"プロカメラマン"},4:{title:"ソウル ポップアップ文化ホッピング",desc:"ポップアップ/フリマ"},5:{title:"ソウル ライフスタイル小旅行",desc:"カフェ+漢江散歩"},6:{title:"デーモンツアー：K-Pop&ナイト",desc:"明洞+SMTOWN+漢江"},7:{title:"京畿アート村ブランチ",desc:"ヘイリ+ブランチ"},8:{title:"弘大アニメ&ゲームカフェ",desc:"テーマカフェ"},9:{title:"ソウル夜の秘境ウォーク",desc:"歴史ガイド"},10:{title:"ソウル遺産&サンセット",desc:"韓屋+夕景"},11:{title:"ソウル登山アドベンチャー",desc:"北漢山/仁王山"}}};
+  /* 일정 다국어 */
+  const I18N_SCHEDULES={en:{1:"Meet 10:00 → Café A → Café B → Photo walk → Café C",2:"14:00 start → Ikseon alleys → Bukchon photo → Local café",3:"09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",4:"13:00 start → Hot pop-up → Street-art photo → Flea/check",5:"16:00 start → Café break → Hangang walk & photo → Sunset",6:"18:30 start → Myeongdong goods → SMTOWN/Gangnam spot → Hangang night",7:"10:00 depart → Heyri stroll → Brunch café → Gallery photo",8:"15:00 start → Theme café → Street game shop → Photo spot",9:"17:00 start → Naksan light walk → Fortress night path",10:"16:30 start → Jongno hanok alleys → Sunset shooting",11:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh"},kr:{1:"10:00 미팅 → 카페 A → 카페 B → 포토 워크 → 카페 C",2:"14:00 시작 → 익선 골목 산책 → 북촌 사진 → 로컬 카페",3:"09:30 출발 → 청계천 스냅 → 세운스팟 → DDP 외관",4:"13:00 시작 → 핫한 팝업 → 스트리트아트 촬영 → 플리마켓 체크",5:"16:00 시작 → 카페 브레이크 → 한강 산책 & 사진 → 석양",6:"18:30 시작 → 명동 굿즈 숍 → SMTOWN/강남 스팟 → 한강 야경",7:"10:00 출발 → 헤이리 산책 → 브런치 카페 → 갤러리 촬영",8:"15:00 시작 → 테마 카페 → 거리 게임숍 → 포토 스팟",9:"17:00 시작 → 낙산 야경 산책 → 한양도성 야간길",10:"16:30 시작 → 종로 한옥 골목 → 선셋 촬영",11:"08:00 미팅 → 트레일헤드 이동 → 하이킹/서울 전망 → 하산 & 리프레시"},es:{1:"Encuentro 10:00 → Café A → Café B → Paseo fotográfico → Café C",2:"Inicio 14:00 → Callejones de Ikseon → Foto en Bukchon → Café local",3:"Salida 09:30 → Fotos en Cheonggyecheon → Punto Sewoon → Exterior del DDP",4:"Inicio 13:00 → Pop-up de moda → Foto de arte urbano → Revisión de mercadillo",5:"Inicio 16:00 → Pausa de café → Paseo por el Han & fotos → Atardecer",6:"Inicio 18:30 → Tiendas K-Pop en Myeongdong → Punto SMTOWN/Gangnam → Noche en el Han",7:"Salida 10:00 → Paseo por Heyri → Café-brunch → Foto en galería",8:"Inicio 15:00 → Café temático → Tienda de juegos de calle → Punto de foto",9:"Inicio 17:00 → Paseo nocturno por Naksan → Senda nocturna de la muralla",10:"Inicio 16:30 → Callejones hanok en Jongno → Sesión de atardecer",11:"Encuentro 08:00 → Traslado al inicio del sendero → Caminata/vistas de Seúl → Descenso y descanso"},zh:{1:"10:00 集合 → 咖啡馆A → 咖啡馆B → 街拍散步 → 咖啡馆C",2:"14:00 开始 → 益善洞小巷 → 北村拍照 → 本地咖啡馆",3:"09:30 出发 → 清溪川抓拍 → 世运点位 → DDP 外立面",4:"13:00 开始 → 热门快闪 → 街头艺术拍摄 → 跳蚤市场看看",5:"16:00 开始 → 咖啡休息 → 汉江步行&拍照 → 日落",6:"18:30 开始 → 明洞K-Pop周边 → SMTOWN/江南点位 → 汉江夜景",7:"10:00 出发 → Heyri 漫步 → 早午餐咖啡 → 画廊拍照",8:"15:00 开始 → 主题咖啡 → 街头游戏店 → 打卡点",9:"17:00 开始 → 骆山灯光散步 → 城郭夜间步道",10:"16:30 开始 → 钟路韩屋小巷 → 日落拍摄",11:"08:00 集合 → 前往登山口 → 徒步/首尔观景 → 下山&休整"},zhHant:{1:"10:00 集合 → 咖啡A → 咖啡B → 街拍散步 → 咖啡C",2:"14:00 開始 → 益善洞巷弄 → 北村拍照 → 在地咖啡",3:"09:30 出發 → 清溪川快拍 → 世運場景 → DDP 外觀",4:"13:00 開始 → 熱門快閃 → 街頭藝術拍攝 → 逛逛市集",5:"16:00 開始 → 咖啡休息 → 漢江散步與拍照 → 夕陽",6:"18:30 開始 → 明洞K-Pop商店 → SMTOWN/江南景點 → 漢江夜景",7:"10:00 出發 → Heyri 漫步 → 早午餐咖啡 → 畫廊拍照",8:"15:00 開始 → 主題咖啡 → 街頭遊戲店 → 打卡點",9:"17:00 開始 → 駱山燈光散步 → 城郭夜間步道",10:"16:30 開始 → 鐘路的韓屋巷弄 → 夕照攝影",11:"08:00 開始 → 前往登山口 → 健行/首爾展望 → 下山休息"},ja:{1:"10:00 集合 → カフェA → カフェB → フォトウォーク → カフェC",2:"14:00 開始 → 益善洞の路地歩き → 北村で撮影 → ローカルカフェ",3:"09:30 出発 → 清渓川スナップ → セウンスポット → DDP外観",4:"13:00 開始 → 人気ポップアップ → ストリートアート撮影 → フリマチェック",5:"16:00 開始 → カフェ休憩 → 漢江さんぽ＆撮影 → サンセット",6:"18:30 開始 → 明洞K-Popグッズ → SMTOWN/江南スポット → 漢江ナイトビュー",7:"10:00 出発 → ヘイリ散策 → ブランチカフェ → ギャラリー撮影",8:"15:00 開始 → テーマカフェ → ストリートゲームショップ → フォトスポット",9:"17:00 開始 → 駱山ライトウォーク → 城郭の夜道",10:"16:30 開始 → 鐘路の韓屋路地 → 夕景撮影",11:"08:00 開始 → トレイルヘッドへ移動 → ハイキング/ソウル展望 → 下山＆リフレッシュ"}};
+  /* 미팅포인트 다국어 */
+  const I18N_MEETS={kr:{1:'서울 · 성수 · 성수역 3번 출구',2:'서울 · 익선 & 북촌 · 종로3가역 4번 출구',3:'서울 · DDP & 을지로 · 동대문역사문화공원역 1번 출구',4:'서울 · 팝업존 · 일정별 변동',5:'서울 · 한강 · 여의나루역 2번 출구',6:'서울 · 명동 & 강남 · 명동역 6번 출구',7:'경기 · 파주(헤이리) · 아트빌리지 정문',8:'서울 · 홍대 · 홍대입구역 9번 출구',9:'서울 · 낙산/성곽 · 혜화역 2번 출구',10:'서울 · 종로 · 안국역 2번 출구',11:'서울 · 등산(계절/루트별 변동)'},en:{1:'Seoul · Seongsu · Seongsu Stn. Exit 3',2:'Seoul · Ikseon & Bukchon · Jongno 3-ga Stn. Exit 4',3:'Seoul · DDP & Euljiro · Dongdaemun History & Culture Park Exit 1',4:'Seoul · Pop-up zone · Varies by event',5:'Seoul · Hangang · Yeouinaru Stn. Exit 2',6:'Seoul · Myeongdong & Gangnam · Myeongdong Stn. Exit 6',7:'Gyeonggi · Paju (Heyri) · Art Village Main Gate',8:'Seoul · Hongdae · Hongik Univ. Stn. Exit 9',9:'Seoul · Naksan/Fortress · Hyehwa Stn. Exit 2',10:'Seoul · Jongno · Anguk Stn. Exit 2',11:'Seoul · Hiking (route/season varies)'},es:{1:'Seúl · Seongsu · Est. Seongsu Salida 3',2:'Seúl · Ikseon & Bukchon · Est. Jongno 3-ga Salida 4',3:'Seúl · DDP & Euljiro · Dongdaemun History & Culture Park Salida 1',4:'Seúl · Zona pop-up · Varía según evento',5:'Seúl · Río Han · Est. Yeouinaru Salida 2',6:'Seúl · Myeongdong & Gangnam · Est. Myeongdong Salida 6',7:'Gyeonggi · Paju (Heyri) · Puerta principal',8:'Seúl · Hongdae · Est. Hongik Univ. Salida 9',9:'Seúl · Naksan/Muralla · Est. Hyehwa Salida 2',10:'Seúl · Jongno · Est. Anguk Salida 2',11:'Seúl · Senderismo (ruta/temporada variable)'},zh:{1:'首尔 · 圣水 · 圣水站 3号出口',2:'首尔 · 益善洞&北村 · 钟路3街站 4号出口',3:'首尔 · DDP&乙支路 · 东大门历史文化公园站 1号出口',4:'首尔 · 快闪区 · 依活动而定',5:'首尔 · 汉江 · 汝矣纳鲁站 2号出口',6:'首尔 · 明洞&江南 · 明洞站 6号出口',7:'京畿 · 坡州(Heyri) · 艺术村正门',8:'首尔 · 弘大 · 弘大入口站 9号出口',9:'首尔 · 骆山/城郭 · 惠化站 2号出口',10:'首尔 · 钟路 · 安国站 2号出口',11:'首尔 · 徒步（路线/季节不定）'},zhHant:{1:'首爾 · 聖水 · 聖水站 3號出口',2:'首爾 · 益善洞&北村 · 鐘路3街站 4號出口',3:'首爾 · DDP&乙支路 · 東大門歷史文化公園站 1號出口',4:'首爾 · 快閃區 · 因活動而異',5:'首爾 · 漢江 · 汝矣納魯站 2號出口',6:'首爾 · 明洞&江南 · 明洞站 6號出口',7:'京畿 · 坡州(Heyri) · 藝術村正門',8:'首爾 · 弘大 · 弘大入口站 9號出口',9:'首爾 · 駱山/城郭 · 惠化站 2號出口',10:'首爾 · 鐘路 · 安國站 2號出口',11:'首爾 · 健行（路線/季節不定）'},ja:{1:'ソウル · 聖水 · 聖水駅 3番出口',2:'ソウル · 益善&北村 · 鐘路3街駅 4番出口',3:'ソウル · DDP&乙支路 · 東大門歴史文化公園駅 1番出口',4:'ソウル · ポップアップゾーン · 日程により変動',5:'ソウル · 漢江 · 汝矣ナル駅 2番出口',6:'ソウル · 明洞&江南 · 明洞駅 6番出口',7:'京畿 · 坡州(ヘイリ) · アートビレッジ正門',8:'ソウル · 弘大 · 弘大入口駅 9番出口',9:'ソウル · 駱山/城郭 · 恵化駅 2番出口',10:'ソウル · 鐘路 · 安国駅 2番出口',11:'ソウル · ハイキング（ルート/季節により変動）'}};
+  /* 지역 키워드 */
+  const AREA_KEYS=['Seoul','Gyeonggi','Various','Hangang','Hongdae','Jongno','Naksan','Fortress','Myeongdong','Gangnam','DDP','Euljiro','Seongsu','Ikseon','Bukchon','Paju (Heyri)','Bukhansan','Inwangsan'];
+  /* 지역 다국어 맵핑 */
+  const AREA_MAP={kr:{Seoul:'서울',Gyeonggi:'경기',Various:'다양한 지역',Hangang:'한강',Hongdae:'홍대',Jongno:'종로',Naksan:'낙산',Fortress:'성곽',Myeongdong:'명동',Gangnam:'강남',DDP:'DDP',Euljiro:'을지로',Seongsu:'성수',Ikseon:'익선',Bukchon:'북촌','Paju (Heyri)':'파주(헤이리)',Bukhansan:'북한산',Inwangsan:'인왕산'},en:{},es:{Seoul:'Seúl',Gyeonggi:'Gyeonggi',Various:'Varios',Hangang:'Han',Hongdae:'Hongdae',Jongno:'Jongno',Naksan:'Naksan',Fortress:'Muralla',Myeongdong:'Myeongdong',Gangnam:'Gangnam',DDP:'DDP',Euljiro:'Euljiro',Seongsu:'Seongsu',Ikseon:'Ikseon',Bukchon:'Bukchon','Paju (Heyri)':'Paju (Heyri)',Bukhansan:'Bukhansan',Inwangsan:'Inwangsan'},zh:{Seoul:'首尔',Gyeonggi:'京畿',Various:'多地区',Hangang:'汉江',Hongdae:'弘大',Jongno:'钟路',Naksan:'骆山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'圣水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(Heyri)',Bukhansan:'北汉山',Inwangsan:'仁王山'},zhHant:{Seoul:'首爾',Gyeonggi:'京畿',Various:'多地',Hangang:'漢江',Hongdae:'弘大',Jongno:'鐘路',Naksan:'駱山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'聖水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(Heyri)',Bukhansan:'北漢山',Inwangsan:'仁王山'},ja:{Seoul:'ソウル',Gyeonggi:'京畿',Various:'各所',Hangang:'漢江',Hongdae:'弘大',Jongno:'鐘路',Naksan:'駱山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'聖水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(ヘイリ)',Bukhansan:'北漢山',Inwangsan:'仁王山'}};
 
 // 3) 투어 데이터 (index.html과 동일 + gallery만 tour별로 넣을 수 있게)
 const Data = [
   {
-    id:"t1",
-    slug:"seoul-instagrammable-cafe-hop",
-    name:"Seoul Instagrammable Café-Hop Tour",
-    priceKRW:45000,
-    duration:"3h",
-    area:"Seoul · Seongsu & Ikseon",
-    tags:["Café","Photo","City"],
-    heroImg:"https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",
-    short:"3 popular IG-worthy cafés + photo walk.",
-    schedule:"Meet 10:00 → Café A → Café B → Photo walk → Café C",
-    meetPoint:"Seongsu Station Exit 3",
-    meetMapUrl:"https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",
-    bookingUrl:"https://www.klook.com/experiment/your-product-link",
-    // ✅ 네가 직접 넣는 갤러리
-    gallery:[
-      "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=1200&q=80"
+    id: "t1",
+    name: "Seoul Instagrammable Café-Hop Tour",
+    slug: "seoul-instagrammable-cafe-hop",
+    priceKRW: 45000,
+    duration: "3h",
+    area: "Seoul · Seongsu & Ikseon",
+    tags: ["Café","Photo","City"],
+    heroImg: "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",
+    short: "3 popular IG-worthy cafés + photo walk.",
+    schedule: "Meet 10:00 → Café A → Café B → Photo walk → Café C",
+    meetPoint: "Seongsu Station Exit 3",
+    meetMapUrl: "https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1504753793650-d4a2b783c15f?auto=format&fit=crop&w=1400&q=80"
     ]
   },
   {
-    id:"t2",
-    slug:"seoul-hidden-gem-city-walk",
-    name:"Seoul Hidden-Gem City Walk Experience",
-    priceKRW:52000,
-    duration:"3h",
-    area:"Seoul · Ikseon & Bukchon",
-    tags:["Local","City","Culture"],
-    heroImg:"https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",
-    short:"Lesser-known alleys with a local guide.",
-    schedule:"14:00 start → Ikseon alleys → Bukchon photo → Local café",
-    meetPoint:"Jongno 3-ga Station Exit 4",
-    meetMapUrl:"https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C3%EA%B0%80%EC%97%AD%204%EB%B2%88%EC%B6%9C%EA%B5%AC",
-    bookingUrl:"https://www.klook.com/experiment/your-product-link",
-    gallery:[
-      "https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1505245208761-ba872912fac0?auto=format&fit=crop&w=1200&q=80"
+    id: "t2",
+    name: "Seoul Hidden-Gem City Walk Experience",
+    slug: "seoul-hidden-gem-city-walk",
+    priceKRW: 52000,
+    duration: "3h",
+    area: "Seoul · Ikseon & Bukchon",
+    tags: ["Local","City","Culture"],
+    heroImg: "https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",
+    short: "Lesser-known alleys with a local guide.",
+    schedule: "14:00 start → Ikseon alleys → Bukchon photo → Local café",
+    meetPoint: "Jongno 3-ga Station Exit 4",
+    meetMapUrl: "https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C3%EA%B0%80%EC%97%AD%204%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",
+      "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?auto=format&fit=crop&w=1400&q=80"
     ]
   },
-  // ... 나머지도 같은 패턴으로 ...
+  {
+    id: "t3",
+    name: "Seoul Trendspotting Photo-Tour",
+    slug: "seoul-trendspotting-photo-tour",
+    priceKRW: 65000,
+    duration: "3h",
+    area: "Seoul · DDP & Euljiro",
+    tags: ["Photo","Design","City"],
+    heroImg: "https://images.locationscout.net/2020/02/dongdaemun-design-plaza-seoul-korea.jpg?h=500&q=60",
+    short: "Pro photographer + on-trend spaces.",
+    schedule: "09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",
+    meetPoint: "Dongdaemun History & Culture Park Exit 1",
+    meetMapUrl: "https://map.naver.com/v5/search/%EB%8F%99%EB%8C%80%EB%AC%B8%EC%97%AD%20%EC%97%AD%EC%82%AC%EB%AC%B8%ED%99%94%EA%B3%B5%EC%9B%90%EC%97%AD%201%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://images.locationscout.net/2020/02/dongdaemun-design-plaza-seoul-korea.jpg?h=500&q=60",
+      "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1549640376-42730a9e2a99?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t4",
+    name: "Seoul Popup-Culture Hopping Tour",
+    slug: "seoul-popup-culture-hopping",
+    priceKRW: 58000,
+    duration: "3h",
+    area: "Seoul · Various",
+    tags: ["Pop-up","Culture","City"],
+    heroImg: "https://mediahub.seoul.go.kr/uploads/mediahub/2023/12/YTrpdZJoubNBZzmNkOXiAASqkGtyReSQ.png",
+    short: "Pop-ups, street art, flea markets + creators.",
+    schedule: "13:00 start → Hot pop-up → Street-art photo → Flea/check",
+    meetPoint: "To be confirmed (varies by pop-up)",
+    meetMapUrl: "#",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://mediahub.seoul.go.kr/uploads/mediahub/2023/12/YTrpdZJoubNBZzmNkOXiAASqkGtyReSQ.png",
+      "https://images.unsplash.com/photo-1526495124232-a04fefe19a89?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t5",
+    name: "Seoul Lifestyle Travel Outing",
+    slug: "seoul-lifestyle-travel-outing",
+    priceKRW: 39000,
+    duration: "3h",
+    area: "Seoul · Hangang",
+    tags: ["Relax","Nature","Photo"],
+    heroImg: "https://travel-stained.com/wp-content/uploads/2017/07/DSC03218-e1556866530460.jpg",
+    short: "Café chill + Hangang walk + photo spots.",
+    schedule: "16:00 start → Café break → Hangang walk & photo → Sunset",
+    meetPoint: "Yeouinaru Station Exit 2",
+    meetMapUrl: "https://map.naver.com/v5/search/%EC%97%AC%EC%9D%98%EB%82%98%EB%A3%8C%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://travel-stained.com/wp-content/uploads/2017/07/DSC03218-e1556866530460.jpg",
+      "https://images.unsplash.com/photo-1543349689-9a4d426bee8e?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1544943910-0656d0d2882e?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t6",
+    name: "Seoul Demon Tour: K-Pop & Night Walk",
+    slug: "seoul-demon-tour-kpop-night",
+    priceKRW: 72000,
+    duration: "3h",
+    area: "Seoul · Myeongdong & Gangnam",
+    tags: ["K-pop","Night","Theme"],
+    heroImg: "https://mediahub.seoul.go.kr/uploads/mediahub/2023/08/QNJXmONxJDrBGLXDeJGlguYoqWGWCYGq.jpg",
+    short: "Myeongdong K-Pop goods + SMTOWN spot + Hangang night view.",
+    schedule: "18:30 start → Myeongdong goods → SMTOWN/Gangnam spot → Hangang night",
+    meetPoint: "Myeongdong Station Exit 6",
+    meetMapUrl: "https://map.naver.com/v5/search/%EB%AA%85%EB%8F%99%EC%97%AD%206%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://mediahub.seoul.go.kr/uploads/mediahub/2023/08/QNJXmONxJDrBGLXDeJGlguYoqWGWCYGq.jpg",
+      "https://images.unsplash.com/photo-1526481280695-3c687fd543c5?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t7",
+    name: "Gyeonggi Art Village Brunch & Café Tour",
+    slug: "gyeonggi-art-village-brunch-cafe",
+    priceKRW: 78000,
+    duration: "5h",
+    area: "Gyeonggi · Paju (Heyri)",
+    tags: ["Gyeonggi","Art","Brunch"],
+    heroImg: "https://tour.paju.go.kr/upload/tour/2023/9/14/94325211-7276-4817-8f81-7de085e9ecb3.png",
+    short: "Heyri art village + brunch café + gallery stroll.",
+    schedule: "10:00 depart → Heyri stroll → Brunch café → Gallery photo",
+    meetPoint: "Heyri Art Village Gate",
+    meetMapUrl: "https://map.naver.com/v5/search/%ED%97%A4%EC%9D%B4%EB%A6%AC%20%EC%95%84%ED%8A%B8%20%EB%B9%8C%EB%A6%AC%EC%A7%80",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://tour.paju.go.kr/upload/tour/2023/9/14/94325211-7276-4817-8f81-7de085e9ecb3.png",
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t8",
+    name: "Hongdae Animation & Game Theme Café Walking Tour",
+    slug: "hongdae-animation-game-theme-cafe",
+    priceKRW: 58000,
+    duration: "3h",
+    area: "Seoul · Hongdae",
+    tags: ["Anime","Game","Theme"],
+    heroImg: "https://res.klook.com/image/upload/fl_lossy.progressive/q_auto/c_fill%2Cw_750/blogen/2019/07/HONGDAE-SEOUL-3.jpg",
+    short: "Anime/game/webtoon theme cafés + local game shops.",
+    schedule: "15:00 start → Theme café → Street game shop → Photo spot",
+    meetPoint: "Hongik Univ. Station Exit 9",
+    meetMapUrl: "https://map.naver.com/v5/search/%ED%99%8D%EB%8C%80%EC%95%84%ED%95%99%EA%B5%90%EC%97%AD%209%EB%B2%88%EC%B6%9C%EA%B5%AD",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://res.klook.com/image/upload/fl_lossy.progressive/q_auto/c_fill%2Cw_750/blogen/2019/07/HONGDAE-SEOUL-3.jpg",
+      "https://images.unsplash.com/photo-1598554889265-6f9baf5d70b5?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t9",
+    name: "Seoul Nighttime Hidden-Gems Walking Tour",
+    slug: "seoul-nighttime-hidden-gems-walk",
+    priceKRW: 52000,
+    duration: "2h",
+    area: "Seoul · Naksan & Fortress",
+    tags: ["Night","Local","Citywalk"],
+    heroImg: "https://www.newsroad.co.kr/news/photo/202310/25520_36654_2112.jpg",
+    short: "Night walk with a history guide.",
+    schedule: "17:00 start → Naksan light walk → Fortress night path",
+    meetPoint: "Hyehwa Station Exit 2",
+    meetMapUrl: "https://map.naver.com/v5/search/%ED%98%9C%ED%99%94%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://www.newsroad.co.kr/news/photo/202310/25520_36654_2112.jpg",
+      "https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1532751203793-1c66ba5d52ed?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t10",
+    name: "Seoul Heritage & Sunset Photo Tour",
+    slug: "seoul-heritage-sunset-photo",
+    priceKRW: 61000,
+    duration: "2.5h",
+    area: "Seoul · Jongno",
+    tags: ["Photo","Culture","Sunset"],
+    heroImg: "https://rebeladiaries.wordpress.com/wp-content/uploads/2019/01/p1290221.jpg?w=1400",
+    short: "Hanok alleys + sunset with a pro photographer.",
+    schedule: "16:30 start → Jongno hanok alleys → Sunset shooting",
+    meetPoint: "Anguk Station Exit 2",
+    meetMapUrl: "https://map.naver.com/v5/search/%EC%95%99%EA%B5%AD%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://rebeladiaries.wordpress.com/wp-content/uploads/2019/01/p1290221.jpg?w=1400",
+      "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600298881979-03b9ccd0f4e9?auto=format&fit=crop&w=1400&q=80"
+    ]
+  },
+  {
+    id: "t11",
+    name: "Seoul Mountain Hiking Adventure",
+    slug: "seoul-mountain-hiking-adventure",
+    priceKRW: 55000,
+    duration: "4–5h",
+    area: "Seoul · Bukhansan & Inwangsan",
+    tags: ["Nature","Activity","Hiking"],
+    heroImg: "https://images.unsplash.com/photo-1709594625919-d95e44a48098?auto=format&fit=crop&q=80&w=870",
+    short: "Seoul Mountain Hiking Adventure – Bukhansan & Inwangsan vistas",
+    schedule: "08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh",
+    meetPoint: "To be confirmed (route/season)",
+    meetMapUrl: "#",
+    bookingUrl: "https://www.klook.com/experiment/your-product-link",
+    gallery: [
+      "https://images.unsplash.com/photo-1709594625919-d95e44a48098?auto=format&fit=crop&q=80&w=870",
+      "https://images.unsplash.com/photo-1517821099606-5627b5e3f15a?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80"
+    ]
+  }
 ];
+
 
 // 4) 현재 들어온 투어 찾기
 const bySlug = params.get('slug');

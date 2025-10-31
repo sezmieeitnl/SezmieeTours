@@ -118,7 +118,34 @@
   //(1) 상세검색 영역
   function renderAdvancedSearch(){const L=COPY[state.locale].adv;qs('#advSection').innerHTML=`<div class="mb-3 text-sm font-semibold">${L.title}</div><div class="grid grid-cols-1 md:grid-cols-5 gap-3"><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.city}</label><select id="city" class="rounded-xl border px-3 py-2">${L.cityOpts.map(c=>`<option>${c}</option>`).join('')}</select></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.date}</label><input id="date" type="date" class="rounded-xl border px-3 py-2" /></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.guests}</label><select id="guests" class="rounded-xl border px-3 py-2">${L.paxOpts.map(p=>`<option>${p}</option>`).join('')}</select></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.budget}</label><select id="budget" class="rounded-xl border px-3 py-2">${L.budgetOpts.map(b=>`<option>${b}</option>`).join('')}</select></div><div class="flex items-end"><button id="advApply" class="w-full rounded-2xl border px-4 py-2 hover:bg-gray-50 font-medium">${L.search}</button></div></div>`;qs('#city').value=L.cityOpts[0]||'';qs('#guests').value=L.paxOpts[0]||'';qs('#budget').value=L.budgetOpts[0]||'';qs('#advApply').onclick=()=>{state.adv={city:qs('#city').value,date:qs('#date').value,guests:qs('#guests').value,budget:qs('#budget').value};renderCards();};}
   //(2) 툴바 (언어 선택, 검색창)
-  function renderToolbar(){const langBtns=['kr','en','es','zh','zhHant','ja'].map(l=>{const label=l==='kr'?'한국어':l==='en'?'English':l==='es'?'Español':l==='zh'?'简体':l==='zhHant'?'繁體':'日本語';const active=l===state.locale?'bg-black text-white':'bg-white';return `<button data-lang="${l}" class="rounded-2xl px-3 py-1.5 text-sm border ${active}">${label}</button>`;}).join('');const ui=UI[state.locale];qs('#toolbar').innerHTML=`<div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><div class="grid grid-cols-3 gap-2 w-full md:w-auto md:grid-cols-6 md:flex md:flex-wrap">${langBtns}</div><div class="flex w-full md:w-auto items-center gap-2"><input id="searchInput" class="w-full md:w-80 rounded-2xl border px-4 py-2" placeholder="${ui.placeholder}" /><button id="clearBtn" aria-label="Clear" class="hidden rounded-2xl border px-3 py-2 hover:bg-gray-50">✕</button><button id="searchBtn" class="rounded-2xl border px-4 py-2 hover:bg-gray-50">${ui.search}</button></div></div>`;qsa('button[data-lang]').forEach(btn=>{btn.onclick=()=>{state.locale=btn.dataset.lang;renderAllButHeader();};});const input=qs('#searchInput');const clearBtn=qs('#clearBtn');const apply=()=>{state.query=input.value.trim();renderCards();};input.addEventListener('input',()=>{clearBtn.classList.toggle('hidden',!input.value);apply();});input.addEventListener('keydown',e=>{if(e.key==='Enter')apply();});qs('#searchBtn').onclick=apply;clearBtn.onclick=()=>{input.value='';clearBtn.classList.add('hidden');apply();};}
+  function renderToolbar(){
+  const langBtns = ['kr','en','es','zh','zhHant','ja'].map(l=>{
+    const label = l==='kr'?'한국어':l==='en'?'English':l==='es'?'Español':l==='zh'?'简体':l==='zhHant'?'繁體':'日本語';
+    const active = l===state.locale ? 'bg-black text-white' : 'bg-white';
+    return `<button data-lang="${l}" class="rounded-2xl px-3 py-1.5 text-sm border ${active}">${label}</button>`;
+  }).join('');
+  const ui = UI[state.locale];
+  qs('#toolbar').innerHTML = `
+    <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-wrap justify-center gap-2 md:justify-start">
+        ${langBtns}
+      </div>
+      <div class="flex w-full md:w-auto items-center gap-2">
+        <input id="searchInput" class="w-full md:w-80 rounded-2xl border px-4 py-2" placeholder="${ui.placeholder}" />
+        <button id="clearBtn" aria-label="Clear" class="hidden rounded-2xl border px-3 py-2 hover:bg-gray-50">✕</button>
+        <button id="searchBtn" class="rounded-2xl border px-4 py-2 hover:bg-gray-50">${ui.search}</button>
+      </div>
+    </div>
+  `;
+  // ✅ 여기만 추가
+  qsa('button[data-lang]').forEach(btn=>{
+    btn.onclick = () => {
+      state.locale = btn.dataset.lang;
+      // 👉 선택한 언어 기억
+      localStorage.setItem('sezmiee_locale', state.locale);
+      renderAllButHeader();
+    };
+  });
   //(3) 카드 필터링 (검색/조건 적용)
   function filterList(){const adv=state.adv;let list=tours.slice();if(adv.city){if(/Seoul|서울/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('seoul'));else if(/Gyeonggi|경기/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('gyeonggi'));}if(adv.budget){const b=adv.budget;if(b.includes('50'))list=list.filter(t=>t.priceKRW<=50000);else if(b.includes('70'))list=list.filter(t=>t.priceKRW<=70000);else if(b.includes('100')&&b.includes('+'))list=list.filter(t=>t.priceKRW>100000);else if(b.includes('100'))list=list.filter(t=>t.priceKRW<=100000);}const q=(state.query||'').toLowerCase();if(!q)return list;return list.filter(t=>{const loc=getLocalized(t,state.locale);return [loc.name,t.area,loc.short,getSchedule(t,state.locale),t.tags.join(' ')].join(' ').toLowerCase().includes(q);});}
   //(4) 투어 카드 생성 (클릭 시 tour.html로 이동)

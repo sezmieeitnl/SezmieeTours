@@ -119,15 +119,23 @@
   function renderAdvancedSearch(){const L=COPY[state.locale].adv;qs('#advSection').innerHTML=`<div class="mb-3 text-sm font-semibold">${L.title}</div><div class="grid grid-cols-1 md:grid-cols-5 gap-3"><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.city}</label><select id="city" class="rounded-xl border px-3 py-2">${L.cityOpts.map(c=>`<option>${c}</option>`).join('')}</select></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.date}</label><input id="date" type="date" class="rounded-xl border px-3 py-2" /></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.guests}</label><select id="guests" class="rounded-xl border px-3 py-2">${L.paxOpts.map(p=>`<option>${p}</option>`).join('')}</select></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.budget}</label><select id="budget" class="rounded-xl border px-3 py-2">${L.budgetOpts.map(b=>`<option>${b}</option>`).join('')}</select></div><div class="flex items-end"><button id="advApply" class="w-full rounded-2xl border px-4 py-2 hover:bg-gray-50 font-medium">${L.search}</button></div></div>`;qs('#city').value=L.cityOpts[0]||'';qs('#guests').value=L.paxOpts[0]||'';qs('#budget').value=L.budgetOpts[0]||'';qs('#advApply').onclick=()=>{state.adv={city:qs('#city').value,date:qs('#date').value,guests:qs('#guests').value,budget:qs('#budget').value};renderCards();};}
   //(2) 툴바 (언어 선택, 검색창)
   function renderToolbar(){
-  const langBtns = ['kr','en','es','zh','zhHant','ja'].map(l=>{
-    const label = l==='kr'?'한국어':l==='en'?'English':l==='es'?'Español':l==='zh'?'简体':l==='zhHant'?'繁體':'日本語';
+  const langs = ['kr','en','es','zh','zhHant','ja'];
+  const langBtns = langs.map(l=>{
+    const label =
+      l==='kr'?'한국어':
+      l==='en'?'English':
+      l==='es'?'Español':
+      l==='zh'?'简体':
+      l==='zhHant'?'繁體':'日本語';
     const active = l===state.locale ? 'bg-black text-white' : 'bg-white';
-    return `<button data-lang="${l}" class="rounded-2xl px-3 py-1.5 text-sm border ${active}">${label}</button>`;
+    // ✅ 모바일에서 한 칸씩 꽉 차게
+    return `<button data-lang="${l}" class="rounded-2xl px-3 py-1.5 text-sm border ${active} w-full">${label}</button>`;
   }).join('');
   const ui = UI[state.locale];
   qs('#toolbar').innerHTML = `
     <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-      <div class="flex flex-wrap justify-center gap-2 md:justify-start">
+      <!-- ✅ 모바일: 3열 그리드 / ✅ md부터: 가로 정렬 -->
+      <div class="grid grid-cols-3 gap-2 w-full md:w-auto md:grid-cols-6 md:flex md:flex-wrap">
         ${langBtns}
       </div>
       <div class="flex w-full md:w-auto items-center gap-2">
@@ -137,8 +145,7 @@
       </div>
     </div>
   `;
-
-  // ✅ 언어 설정 유지 (한 줄로)
+  // ✅ 언어 선택하면 저장 + 다시 렌더
   qsa('button[data-lang]').forEach(btn=>btn.onclick=()=>{state.locale=btn.dataset.lang;localStorage.setItem('sezmiee_locale',state.locale);renderAllButHeader();});
   }
   //(3) 카드 필터링 (검색/조건 적용)

@@ -1,173 +1,104 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sezmiee Tour Detail</title>
-  <meta name="description" content="Sezmiee International – Tour details, schedules, meeting points, pricing, and booking."/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <style>
-    .fade-up{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
-    .fade-up.show{opacity:1;transform:translateY(0)}
-    button:focus{outline:2px solid #000;outline-offset:2px}
-    .safe-edge{padding-left:max(env(safe-area-inset-left),1rem);padding-right:max(env(safe-area-inset-right),1rem)}
-    .shadow-soft{box-shadow:0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.06)}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sezmiee Tour Detail</title>
+<meta name="description" content="Sezmiee International – Tour details, schedules, meeting points, pricing, and booking."/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+.fade-up.show{opacity:1;transform:translateY(0)}
+button:focus{outline:2px solid #000;outline-offset:2px}
+.safe-edge{padding-left:max(env(safe-area-inset-left),1rem);padding-right:max(env(safe-area-inset-right),1rem)}
+.shadow-soft{box-shadow:0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.06)}
+</style>
 </head>
 <body class="bg-gray-50 text-gray-900">
-  <header class="bg-white/80 sticky top-0 z-40 backdrop-blur border-b">
-    <div class="max-w-6xl mx-auto flex items-center justify-between safe-edge py-3">
-      <a href="index.html" class="text-sm md:text-base font-extrabold tracking-tight">SEZMIEE <span class="text-gray-500">International</span></a>
-      <div class="flex items-center gap-2 text-xs md:text-sm">
-        <select id="lang" class="rounded-xl border px-2 py-1">
-          <option value="kr">한국어</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="zh">中文(简)</option>
-          <option value="zhHant">繁中文()</option>
-          <option value="ja">日本語</option>
-        </select>
-        <a id="backLink" href="index.html" class="rounded-xl border px-2 py-1 hover:bg-gray-50">← <span data-i="back">뒤로</span></a>
-      </div>
-    </div>
-  </header>
+<header class="bg-white/80 sticky top-0 z-40 backdrop-blur border-b">
+<div class="max-w-6xl mx-auto flex items-center justify-between safe-edge py-3">
+<a href="index.html" class="text-sm md:text-base font-extrabold tracking-tight">SEZMIEE <span class="text-gray-500">International</span></a>
+<div class="flex items-center gap-2 text-xs md:text-sm">
+<select id="lang" class="rounded-xl border px-2 py-1">
+<option value="kr">한국어</option>
+<option value="en">English</option>
+<option value="es">Español</option>
+<option value="zh">中文(简)</option>
+<option value="zhHant">繁中文()</option>
+<option value="ja">日本語</option>
+</select>
+<a id="backLink" href="index.html" class="rounded-xl border px-2 py-1 hover:bg-gray-50">← <span data-i="back">뒤로</span></a>
+</div>
+</div>
+</header>
 
-  <main class="max-w-6xl mx-auto safe-edge p-4 md:p-6 space-y-6">
-    <nav class="text-xs text-gray-500"><a href="index.html" class="hover:underline" data-i="home">홈</a> / <span id="bc-city">Seoul</span> / <span id="bc-title">Tour</span></nav>
 
-    <!-- Hero -->
-    <section id="hero" class="relative rounded-3xl overflow-hidden bg-gray-200">
-      <img id="heroImg" class="w-full h-64 md:h-[420px] object-cover" alt="tour"/>
-      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-      <div class="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
-        <div class="flex items-center gap-2 text-xs"> 
-          <span id="badge-area" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Area</span>
-          <span id="badge-tags" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Tag</span>
-          <span id="badge-duration" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">3h</span>
-        </div>
-        <h1 id="title" class="mt-2 md:mt-3 text-2xl md:text-4xl font-extrabold drop-shadow">Tour</h1>
-        <p id="subtitle" class="text-sm md:text-base text-white/90"></p>
-      </div>
-    </section>
+<main class="max-w-6xl mx-auto safe-edge p-4 md:p-6 space-y-6">
+<nav class="text-xs text-gray-500"><a href="index.html" class="hover:underline" data-i="home">홈</a> / <span id="bc-city">Seoul</span> / <span id="bc-title">Tour</span></nav>
 
-    <section class="grid lg:grid-cols-3 gap-6">
-      <!-- Left: content -->
-      <div class="lg:col-span-2 space-y-6">
-        <!-- Quick facts -->
-        <div class="rounded-2xl border bg-white p-4 md:p-5">
-          <h2 class="text-lg font-semibold mb-3" data-i="overview">개요</h2>
-          <ul class="grid sm:grid-cols-2 gap-3 text-sm">
-            <li>💰 <span data-i="price">가격</span>: <strong id="price">—</strong></li>
-            <li>⏱️ <span data-i="duration">소요시간</span>: <span id="duration">—</span></li>
-            <li>📍 <span data-i="meeting">미팅장소</span>: <span id="meetPoint">—</span></li>
-            <li>🗺️ <span data-i="map">지도</span>: <a id="meetMap" class="text-blue-600 hover:underline" target="_blank" rel="noreferrer">Open</a></li>
-          </ul>
-        </div>
 
-        <!-- Itinerary -->
-        <div class="rounded-2xl border bg-white p-4 md:p-5">
-          <h2 class="text-lg font-semibold mb-3" data-i="itinerary">일정</h2>
-          <ol id="itinerary" class="relative border-s pl-5 space-y-3"></ol>
-        </div>
+<!-- Hero -->
+<section id="hero" class="relative rounded-3xl overflow-hidden bg-gray-200">
+<img id="heroImg" class="w-full h-64 md:h-[420px] object-cover" alt="tour"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white">
+<div class="flex items-center gap-2 text-xs">
+<span id="badge-area" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Area</span>
+<span id="badge-tags" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">Tag</span>
+<span id="badge-duration" class="px-2 py-1 rounded-full bg-white/10 border border-white/30 backdrop-blur">3h</span>
+</div>
+<h1 id="title" class="mt-2 md:mt-3 text-2xl md:text-4xl font-extrabold drop-shadow">Tour</h1>
+<p id="subtitle" class="text-sm md:text-base text-white/90"></p>
+</div>
+</section>
 
-        <!-- Gallery -->
-        <div class="rounded-2xl border bg-white p-4 md:p-5">
-          <h2 class="text-lg font-semibold mb-3" data-i="gallery">갤러리</h2>
-          <div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
-        </div>
 
-        <!-- FAQ -->
-        <div class="rounded-2xl border bg-white p-4 md:p-5">
-          <h2 class="text-lg font-semibold mb-3">FAQ</h2>
-          <details class="rounded-xl border p-4"><summary class="font-medium" data-i="faq1q">예약/결제는 어떻게 하나요?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq1a">문의 → 가이드 확인 → 입금 → 확정.</p></details>
-          <details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq2q">픽업 가능 지역?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq2a">서울 전역 + 김포/인천(일부 추가요금)</p></details>
-          <details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq3q">취소 규정?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq3a">7일 전 전액 / 3일 전 50% / 24시간 내 불가</p></details>
-        </div>
-      </div>
+<section class="grid lg:grid-cols-3 gap-6">
+<!-- Left: content -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Quick facts -->
+<div class="rounded-2xl border bg-white p-4 md:p-5">
+<h2 class="text-lg font-semibold mb-3" data-i="overview">개요</h2>
+<ul class="grid sm:grid-cols-2 gap-3 text-sm">
+<li>💰 <span data-i="price">가격</span>: <strong id="price">—</strong></li>
+<li>⏱️ <span data-i="duration">소요시간</span>: <span id="duration">—</span></li>
+<li>📍 <span data-i="meeting">미팅장소</span>: <span id="meetPoint">—</span></li>
+<li>🗺️ <span data-i="map">지도</span>: <a id="meetMap" class="text-blue-600 hover:underline" target="_blank" rel="noreferrer">Open</a></li>
+</ul>
+</div>
 
-      <!-- Right: booking -->
-      <aside class="lg:col-span-1 space-y-4">
-        <div class="rounded-2xl border bg-white p-4 md:p-5 sticky top-20 shadow-soft">
-          <div class="flex items-baseline justify-between mb-2">
-            <div class="text-sm text-gray-500" data-i="from">1인 기준</div>
-            <div class="text-2xl font-extrabold" id="priceBig">—</div>
-          </div>
-          <div class="grid gap-2 text-sm">
-            <label class="flex items-center gap-2"> <span data-i="date">날짜</span> <input id="date" type="date" class="rounded-xl border px-2 py-1 flex-1"/> </label>
-            <label class="flex items-center gap-2"> <span data-i="guests">인원</span>
-              <select id="pax" class="rounded-xl border px-2 py-1 flex-1">
-                <option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>
-              </select>
-            </label>
-          </div>
-          <div class="mt-3 flex gap-2">
-            <a id="book" target="_blank" rel="noreferrer" class="flex-1 rounded-2xl bg-black text-white px-4 py-2 text-sm text-center hover:opacity-90">Book</a>
-            <button id="qr" class="rounded-2xl border px-4 py-2 text-sm">QR</button>
-          </div>
-          <div id="qrWrap" class="mt-3 hidden grid place-items-center">
-            <canvas id="qrCanvas" class="rounded-xl border"></canvas>
-          </div>
-          <div class="mt-3 text-xs text-gray-500" data-i="note">결제/재고 확인은 외부 채널(Klook 등)에서 진행됩니다.</div>
-        </div>
 
-        <div class="rounded-2xl border bg-white p-4">
-          <div class="text-sm font-semibold mb-1" data-i="contact">문의</div>
-          <div class="text-sm space-y-1">
-            <a href="mailto:sezmiee.project@gmail.com" class="block hover:underline">📧 sezmiee.project@gmail.com</a>
-            <a href="tel:+821049648503" class="block hover:underline">📞 +82 10-4964-8503</a>
-            <a id="wh" class="block hover:underline" target="_blank" rel="noreferrer">💬 WhatsApp/KakaoTalk</a>
-          </div>
-        </div>
-      </aside>
-    </section>
+<!-- Itinerary -->
+<div class="rounded-2xl border bg-white p-4 md:p-5">
+<h2 class="text-lg font-semibold mb-3" data-i="itinerary">일정</h2>
+<ol id="itinerary" class="relative border-s pl-5 space-y-3">
+<!-- items injected -->
+</ol>
+</div>
 
-    <!-- Similar tours -->
-    <section class="rounded-2xl border bg-white p-4 md:p-5">
-      <h2 class="text-lg font-semibold mb-3" data-i="similar">비슷한 투어</h2>
-      <div id="similar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-    </section>
-  </main>
 
-  <footer class="py-10 text-center text-xs text-gray-500">© 2025 Sezmiee International</footer>
+<!-- Gallery -->
+<div class="rounded-2xl border bg-white p-4 md:p-5">
+<h2 class="text-lg font-semibold mb-3" data-i="gallery">갤러리</h2>
+<div id="gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+</div>
 
-<script>
-  const Data = [
-    {id:"t11",slug:"seoul-mountain-hiking-adventure",name:"Seoul Mountain Hiking Adventure",heroImg:"https://images.unsplash.com/photo-1709594625919-d95e44a48098?auto=format&fit=crop&q=80&w=870",gallery:["https://images.unsplash.com/photo-1590080875839-471cb06a1f1b","https://images.unsplash.com/photo-1590622853436-ea1e7b46b805","https://images.unsplash.com/photo-1582550945154-66ea8fff22e7"],priceKRW:55000,duration:"4–5h",area:"Seoul · Bukhansan & Inwangsan",tags:["Nature","Activity","Hiking"],short:"Seoul Mountain Hiking Adventure – Bukhansan & Inwangsan vistas",schedule:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh",meetPoint:"To be confirmed(route/season)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"}
-  ];
 
-  const qs=(s,e=document)=>e.querySelector(s);
-  const qsa=(s,e=document)=>[...e.querySelectorAll(s)];
-  const KRW=v=>new Intl.NumberFormat('ko-KR',{style:'currency',currency:'KRW',maximumFractionDigits:0}).format(v);
+<!-- FAQ -->
+<div class="rounded-2xl border bg-white p-4 md:p-5">
+<h2 class="text-lg font-semibold mb-3">FAQ</h2>
+<details class="rounded-xl border p-4"><summary class="font-medium" data-i="faq1q">예약/결제는 어떻게 하나요?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq1a">문의 → 가이드 확인 → 입금 → 확정.</p></details>
+<details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq2q">픽업 가능 지역?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq2a">서울 전역 + 김포/인천(일부 추가요금)</p></details>
+<details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq3q">취소 규정?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq3a">7일 전 전액 / 3일 전 50% / 24시간 내 불가</p></details>
+</div>
+</div>
 
-  const params=new URLSearchParams(location.search);
-  const slug=params.get('slug');
-  let tour=Data.find(t=>t.slug===slug)||Data[0];
 
-  function fill(){
-    qs('#heroImg').src=tour.heroImg;
-    qs('#title').textContent=tour.name;
-    qs('#subtitle').textContent=tour.short;
-    qs('#badge-area').textContent=tour.area;
-    qs('#badge-tags').textContent=tour.tags.join(' · ');
-    qs('#badge-duration').textContent=tour.duration;
-
-    qs('#price').textContent=KRW(tour.priceKRW);
-    qs('#priceBig').textContent=KRW(tour.priceKRW);
-    qs('#duration').textContent=tour.duration;
-    qs('#meetPoint').textContent=tour.meetPoint;
-    qs('#meetMap').href=tour.meetMapUrl;
-
-    const steps=tour.schedule.split('→').map(s=>s.trim());
-    qs('#itinerary').innerHTML=steps.map(s=>`<li class='ms-4'><div class='absolute -start-1.5 mt-1.5 h-2 w-2 rounded-full bg-gray-900'></div><div class='text-sm'>${s}</div></li>`).join('');
-
-    const g=qs('#gallery');
-    const pics=(tour.gallery&&tour.gallery.length)?tour.gallery:[tour.heroImg,tour.heroImg+'&t=1',tour.heroImg+'&t=2'];
-    g.innerHTML=pics.map(src=>`<img src='${src}' class='w-full h-28 md:h-36 object-cover rounded-xl' loading='lazy'/>`).join('');
-  }
-
-  fill();
-</script>
-</body>
-</html>
+<!-- Right: booking -->
+<aside class="lg:col-span-1 space-y-4">
+<div class="rounded-2xl border bg-white p-4 md:p-5 sticky top-20 shadow-soft">
+<div class="flex items-baseline justify-between mb-2">
+<div class="text-sm text-gray-500" data-i="from">1인 기준</div>
+<div class="text-2xl font-extrabold" id="priceBig">—</div>

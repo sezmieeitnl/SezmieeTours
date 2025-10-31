@@ -122,73 +122,15 @@
   //(3) 카드 필터링 (검색/조건 적용)
   function filterList(){const adv=state.adv;let list=tours.slice();if(adv.city){if(/Seoul|서울/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('seoul'));else if(/Gyeonggi|경기/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('gyeonggi'));}if(adv.budget){const b=adv.budget;if(b.includes('50'))list=list.filter(t=>t.priceKRW<=50000);else if(b.includes('70'))list=list.filter(t=>t.priceKRW<=70000);else if(b.includes('100')&&b.includes('+'))list=list.filter(t=>t.priceKRW>100000);else if(b.includes('100'))list=list.filter(t=>t.priceKRW<=100000);}const q=(state.query||'').toLowerCase();if(!q)return list;return list.filter(t=>{const loc=getLocalized(t,state.locale);return [loc.name,t.area,loc.short,getSchedule(t,state.locale),t.tags.join(' ')].join(' ').toLowerCase().includes(q);});}
   //(4) 투어 카드 생성 (클릭 시 tour.html로 이동)
-  function cardTemplate(t){const loc=getLocalized(t,state.locale),price=formatKRW(t.priceKRW),meet=getMeet(t,state.locale),schedule=getSchedule(t,state.locale),detailUrl=`${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/,'')}/tour.html?id=${t.id}`,shareUrl=`${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/,'')}/?tour=${t.id}`;return`<div class="relative fade-up group rounded-2xl border bg-white shadow-sm hover:shadow-lg flex flex-col h-full overflow-hidden"><a href="${detailUrl}" class="absolute inset-0 z-50" aria-label="${loc.name}"></a><div class="ratio-16x9 overflow-hidden rounded-t-2xl relative z-10"><img src="${t.heroImg}" alt="${loc.name}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/></div><div class="p-5
+  function cardTemplate(t){const loc=getLocalized(t,state.locale),price=formatKRW(t.priceKRW),meet=getMeet(t,state.locale),schedule=getSchedule(t,state.locale),detailUrl=`${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/,'')}/tour.html?id=${t.id}`,shareUrl=`${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/,'')}/?tour=${t.id}`;return`<div class="relative fade-up group rounded-2xl border bg-white shadow-sm hover:shadow-lg flex flex-col h-full overflow-hidden"><a href="${detailUrl}" class="absolute inset-0 z-50" aria-label="${loc.name}"></a><div class="ratio-16x9 overflow-hidden rounded-t-2xl relative z-10"><img src="${t.heroImg}" alt="${loc.name}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/></div><div class="p-5 flex-1 flex flex-col gap-3 relative z-10"><div class="flex items-start justify-between gap-3"><h3 class="text-lg font-semibold leading-snug flex-1">${loc.name}</h3><span class="text-sm text-gray-500 whitespace-nowrap">${t.duration}</span></div><p class="text-sm text-gray-600 line-clamp-2">${loc.short}</p><p class="text-xs text-gray-500">🗺 ${schedule}</p><p class="text-xs text-gray-500">📍 ${meet}</p><div class="flex flex-wrap gap-2">${t.tags.map(tag=>`<span class="text-xs rounded-full border px-2 py-0.5 bg-white/40">${tag}</span>`).join('')}</div><div class="mt-auto pt-2 flex items-center justify-between gap-2 border-t"><div class="text-base font-bold">${price}</div><div class="flex items-center gap-2"><a href="${t.meetMapUrl}" target="_blank" rel="noreferrer" class="relative z-20 rounded-2xl px-3 py-1.5 text-sm border hover:bg-gray-50">Map</a><a href="${t.bookingUrl}" target="_blank" rel="noreferrer" class="relative z-20 rounded-2xl px-4 py-1.5 text-sm bg-black text-white hover:opacity-90">Book</a><button type="button" class="shareBtn relative z-20 rounded-2xl px-3 py-1.5 text-sm border hover:bg-gray-50" data-share="${shareUrl}">🔗</button></div></div></div></div>`;}
   // (5) 카드 리스트 렌더링 (IntersectionObserver + 공유버튼)
   function renderCards(){const container=qs('#cards');const list=filterList();container.innerHTML=list.map(cardTemplate).join('');const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show');});},{threshold:0.1});qsa('.fade-up',container).forEach(el=>io.observe(el));qsa('.shareBtn',container).forEach(btn=>{btn.onclick=async()=>{const link=btn.dataset.share;try{if(navigator.share){await navigator.share({title:'Sezmiee Tour',text:'Check this tour',url:link});}else if(navigator.clipboard){await navigator.clipboard.writeText(link);alert('📋 Copy');}else{prompt('Copy this link',link);} }catch(e){prompt('Copy this link',link);} };});}
+  // (6) Why Sezmiee 섹션
   function renderWhy(){const c=COPY[state.locale].why;qs('#why').innerHTML=`<div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="rounded-full border px-3 py-1 text-xs">${c.pill}</span></div><div class="grid md:grid-cols-3 gap-3 mt-4"><div class="rounded-xl border p-4 text-sm">${c.a}</div><div class="rounded-xl border p-4 text-sm">${c.b}</div><div class="rounded-xl border p-4 text-sm">${c.c}</div></div>`;}
+  // (7) FAQ 섹션
   function renderFAQ(){const f=COPY[state.locale].faq;qs('#faq').innerHTML=`<h2 class="text-xl font-semibold mb-2">${f.title}</h2><details class="rounded-xl border p-4"><summary class="font-medium">${f.q1}</summary><p class="text-sm text-gray-600 mt-2">${f.a1}</p></details><details class="rounded-xl border p-4 mt-2"><summary class="font-medium">${f.q2}</summary><p class="text-sm text-gray-600 mt-2">${f.a2}</p></details><details class="rounded-xl border p-4 mt-2"><summary class="font-medium">${f.q3}</summary><p class="text-sm text-gray-600 mt-2">${f.a3}</p></details>`;}
   // (8) 문의 폼 (EmailJS 실제 전송)
- function renderContact(){
-  const c = COPY[state.locale].contact;
-  qs('#contact').innerHTML = `
-    <div class="flex items-center justify-between">
-      <h2 class="text-xl font-semibold">${c.title}</h2>
-      <span class="text-xs text-gray-500">${c.hours}</span>
-    </div>
-    <div class="grid md:grid-cols-2 gap-3 mt-3">
-      <div class="flex flex-col gap-1">
-        <label class="text-xs text-gray-600">${c.name}</label>
-        <input id="iName" class="rounded-xl border px-3 py-2" placeholder="${c.name==='이름'?'홍길동':'Name'}" required/>
-      </div>
-      <div class="flex flex-col gap-1">
-        <label class="text-xs text-gray-600">${c.email}</label>
-        <input id="iEmail" class="rounded-xl border px-3 py-2" type="email" placeholder="you@example.com" required/>
-      </div>
-      <div class="flex flex-col gap-1 md:col-span-2">
-        <label class="text-xs text-gray-600">${c.subject}</label>
-        <input id="iSubject" class="rounded-xl border px-3 py-2" placeholder="${c.placeholderSubj}" required/>
-      </div>
-      <div class="flex flex-col gap-1 md:col-span-2">
-        <label class="text-xs text-gray-600">${c.message}</label>
-        <textarea id="iMessage" class="rounded-xl border px-3 py-2" rows="4" placeholder="${c.placeholderMsg}" required></textarea>
-      </div>
-      <div class="md:col-span-2 flex items-center justify-between">
-        <span class="text-xs text-gray-500">${c.note}</span>
-        <button id="sendBtn" class="rounded-2xl bg-black text-white px-4 py-2 text-sm hover:opacity-90">${c.submit}</button>
-      </div>
-    </div>
-  `;
-
-  const sendMail = () => {
-    const name = qs('#iName').value.trim(),
-          email = qs('#iEmail').value.trim(),
-          subject = qs('#iSubject').value.trim(),
-          message = qs('#iMessage').value.trim();
-
-    if(!name || !email || !message){
-      alert("Please enter all.");
-      return;
-    }
-
-    emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{
-      from_name: name,
-      from_email: email,
-      subject: subject,
-      message: message,
-      to_email: "sezmiee.project@gmail.com"
-    })
-    .then(()=>{
-      alert("✅ Sent mail");
-      ['#iName','#iEmail','#iSubject','#iMessage'].forEach(id => qs(id).value='');
-    })
-    .catch(err=>{
-      console.error(err);
-      alert("❌ Failed");
-    });
-  };
-
-  qs('#sendBtn').onclick = sendMail;
-}
+  function renderContact(){const c=COPY[state.locale].contact;qs('#contact').innerHTML=`<div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="text-xs text-gray-500">${c.hours}</span></div><div class="grid md:grid-cols-2 gap-3 mt-3"><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.name}</label><input id="iName" class="rounded-xl border px-3 py-2" placeholder="${c.name==='이름'?'홍길동':'Name'}" required/></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.email}</label><input id="iEmail" class="rounded-xl border px-3 py-2" type="email" placeholder="you@example.com" required/></div><div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.subject}</label><input id="iSubject" class="rounded-xl border px-3 py-2" placeholder="${c.placeholderSubj}" required/></div><div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.message}</label><textarea id="iMessage" class="rounded-xl border px-3 py-2" rows="4" placeholder="${c.placeholderMsg}" required></textarea></div><div class="md:col-span-2 flex items-center justify-between"><span class="text-xs text-gray-500">${c.note}</span><button id="sendBtn" class="rounded-2xl bg-black text-white px-4 py-2 text-sm hover:opacity-90">${c.submit}</button></div></div>`;const sendMail=()=>{const name=qs('#iName').value.trim(),email=qs('#iEmail').value.trim(),subject=qs('#iSubject').value.trim(),message=qs('#iMessage').value.trim();if(!name||!email||!message){alert("Please enter all.");return;}emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{from_name:name,from_email:email,subject:subject,message:message,to_email:"sezmiee.project@gmail.com"}).then(()=>{alert("✅ Sent mail");['#iName','#iEmail','#iSubject','#iMessage'].forEach(id=>qs(id).value='');}).catch(err=>{console.error(err);alert("❌ Failed");});};qs('#sendBtn').onclick=sendMail;}
   // (9) 푸터
   function renderFooter(){const f=COPY[state.locale].footer;qs('#footer').innerHTML=`<div class="mb-2 font-semibold">Sezmiee International</div><div class="mb-2">${f.copy}</div><div class="flex items-center justify-center gap-3 flex-wrap mb-2">${f.links.map(l=>`<a href="#${l.toLowerCase().replace(/\s/g,'')}" class="hover:underline">${l}</a>`).join('')}</div><div class="text-gray-400">${f.policy} · ${f.policies}</div>`;}
   // (10) 초기 렌더 (헤더 제외 전체)

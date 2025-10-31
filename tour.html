@@ -135,6 +135,9 @@
   <footer class="py-10 text-center text-xs text-gray-500">© 2025 Sezmiee International</footer>
 
 <script>
+  // 언어설정
+const savedLocale = localStorage.getItem('sezmiee_locale');
+let locale = savedLocale || 'kr';
   // ===== Shared dataset (subset copied from index) =====
   const Data = [
     {id:"t1",slug:"seoul-instagrammable-cafe-hop",name:"Seoul Instagrammable Café-Hop Tour",priceKRW:45000,duration:"3h",area:"Seoul · Seongsu & Ikseon",tags:["Café","Photo","City"],heroImg:"https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",short:"3 popular IG-worthy cafés + photo walk.",schedule:"Meet 10:00 → Café A → Café B → Photo walk → Café C",meetPoint:"Seongsu Station Exit 3",meetMapUrl:"https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link",gallery:["https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg","https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1200&q=80"]},
@@ -169,7 +172,6 @@
   let tour = Data.find(t=> t.slug===bySlug) || Data.find(t=> t.id===byId) || Data[0];
 
   // language: from query ?lang=, else from browser, default kr
-  let lang = (params.get('lang')||localStorage.getItem('sez_lang')||'kr');
   function setLang(l){ lang=l; localStorage.setItem('sez_lang',l); qs('#lang').value=l; applyLang(); }
 
   function applyLang(){

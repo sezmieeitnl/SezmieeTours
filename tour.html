@@ -135,117 +135,235 @@
   <footer class="py-10 text-center text-xs text-gray-500">© 2025 Sezmiee International</footer>
 
 <script>
-  // ===== Shared dataset (subset copied from index) =====
-  const Data = [
-    {id:"t1",slug:"seoul-instagrammable-cafe-hop",name:"Seoul Instagrammable Café-Hop Tour",priceKRW:45000,duration:"3h",area:"Seoul · Seongsu & Ikseon",tags:["Café","Photo","City"],heroImg:"https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",short:"3 popular IG-worthy cafés + photo walk.",schedule:"Meet 10:00 → Café A → Café B → Photo walk → Café C",meetPoint:"Seongsu Station Exit 3",meetMapUrl:"https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link",gallery:["https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg","https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80","https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1200&q=80"]},
-    {id:"t2",slug:"seoul-hidden-gem-city-walk",name:"Seoul Hidden-Gem City Walk Experience",priceKRW:52000,duration:"3h",area:"Seoul · Ikseon & Bukchon",tags:["Local","City","Culture"],heroImg:"https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",short:"Lesser-known alleys with a local guide.",schedule:"14:00 start → Ikseon alleys → Bukchon photo → Local café",meetPoint:"Jongno 3-ga Station Exit 4",meetMapUrl:"https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C3%EA%B0%80%EC%97%AD%204%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t3",slug:"seoul-trendspotting-photo-tour",name:"Seoul Trendspotting Photo-Tour",priceKRW:65000,duration:"3h",area:"Seoul · DDP & Euljiro",tags:["Photo","Design","City"],heroImg:"https://images.locationscout.net/2020/02/dongdaemun-design-plaza-seoul-korea.jpg?h=500&q=60",short:"Pro photographer + on-trend spaces.",schedule:"09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",meetPoint:"Dongdaemun History & Culture Park Exit 1",meetMapUrl:"https://map.naver.com/v5/search/%EB%8F%99%EB%8C%80%EB%AC%B8%EC%97%AD%20%EC%97%AD%EC%82%AC%EB%AC%B8%ED%99%94%EA%B3%B5%EC%9B%90%EC%97%AD%201%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t4",slug:"seoul-popup-culture-hopping",name:"Seoul Popup-Culture Hopping Tour",priceKRW:58000,duration:"3h",area:"Seoul · Various",tags:["Pop-up","Culture","City"],heroImg:"https://mediahub.seoul.go.kr/uploads/mediahub/2023/12/YTrpdZJoubNBZzmNkOXiAASqkGtyReSQ.png",short:"Pop-ups, street art, flea markets + creators.",schedule:"13:00 start → Hot pop-up → Street-art photo → Flea/check",meetPoint:"To be confirmed (varies by pop-up)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t5",slug:"seoul-lifestyle-travel-outing",name:"Seoul Lifestyle Travel Outing",priceKRW:39000,duration:"3h",area:"Seoul · Hangang",tags:["Relax","Nature","Photo"],heroImg:"https://travel-stained.com/wp-content/uploads/2017/07/DSC03218-e1556866530460.jpg",short:"Café chill + Hangang walk + photo spots.",schedule:"16:00 start → Café break → Hangang walk & photo → Sunset",meetPoint:"Yeouinaru Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%EC%97%AC%EC%9D%98%EB%82%98%EB%A3%8C%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t6",slug:"seoul-demon-tour-kpop-night",name:"Seoul Demon Tour: K-Pop & Night Walk",priceKRW:72000,duration:"3h",area:"Seoul · Myeongdong & Gangnam",tags:["K-pop","Night","Theme"],heroImg:"https://mediahub.seoul.go.kr/uploads/mediahub/2023/08/QNJXmONxJDrBGLXDeJGlguYoqWGWCYGq.jpg",short:"Myeongdong K-Pop goods + SMTOWN spot + Hangang night view.",schedule:"18:30 start → Myeongdong goods → SMTOWN/Gangnam spot → Hangang night",meetPoint:"Myeongdong Station Exit 6",meetMapUrl:"https://map.naver.com/v5/search/%EB%AA%85%EB%8F%99%EC%97%AD%206%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t7",slug:"gyeonggi-art-village-brunch-cafe",name:"Gyeonggi Art Village Brunch & Café Tour",priceKRW:78000,duration:"5h",area:"Gyeonggi · Paju (Heyri)",tags:["Gyeonggi","Art","Brunch"],heroImg:"https://tour.paju.go.kr/upload/tour/2023/9/14/94325211-7276-4817-8f81-7de085e9ecb3.png",short:"Heyri art village + brunch café + gallery stroll.",schedule:"10:00 depart → Heyri stroll → Brunch café → Gallery photo",meetPoint:"Heyri Art Village Gate",meetMapUrl:"https://map.naver.com/v5/search/%ED%97%A4%EC%9D%B4%EB%A6%AC%20%EC%95%84%ED%8A%B8%20%EB%B9%8C%EB%A6%AC%EC%A7%80",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t8",slug:"hongdae-animation-game-theme-cafe",name:"Hongdae Animation & Game Theme Café Walking Tour",priceKRW:58000,duration:"3h",area:"Seoul · Hongdae",tags:["Anime","Game","Theme"],heroImg:"https://res.klook.com/image/upload/fl_lossy.progressive/q_auto/c_fill%2Cw_750%2Fblogen%2F2019%2F07%2FHONGDAE-SEOUL-3.jpg",short:"Anime/game/webtoon theme cafés + local game shops.",schedule:"15:00 start → Theme café → Street game shop → Photo spot",meetPoint:"Hongik Univ. Station Exit 9",meetMapUrl:"https://map.naver.com/v5/search/%ED%99%8D%EB%8C%80%EC%95%84%ED%95%99%EA%B5%90%EC%97%AD%209%EB%B2%88%EC%B6%9C%EA%B5%AD",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t9",slug:"seoul-nighttime-hidden-gems-walk",name:"Seoul Nighttime Hidden-Gems Walking Tour",priceKRW:52000,duration:"2h",area:"Seoul · Naksan & Fortress",tags:["Night","Local","Citywalk"],heroImg:"https://www.newsroad.co.kr/news/photo/202310/25520_36654_2112.jpg",short:"Night walk with a history guide.",schedule:"17:00 start → Naksan light walk → Fortress night path",meetPoint:"Hyehwa Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%ED%98%9C%ED%99%94%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t10",slug:"seoul-heritage-sunset-photo",name:"Seoul Heritage & Sunset Photo Tour",priceKRW:61000,duration:"2.5h",area:"Seoul · Jongno",tags:["Photo","Culture","Sunset"],heroImg:"https://rebeladiaries.wordpress.com/wp-content/uploads/2019/01/p1290221.jpg?w=1400",short:"Hanok alleys + sunset with a pro photographer.",schedule:"16:30 start → Jongno hanok alleys → Sunset shooting",meetPoint:"Anguk Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%EC%95%99%EA%B5%AD%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t11",slug:"seoul-mountain-hiking-adventure",name:"Seoul Mountain Hiking Adventure",priceKRW:55000,duration:"4–5h",area:"Seoul · Bukhansan & Inwangsan",tags:["Nature","Activity","Hiking"],heroImg:"https://images.unsplash.com/photo-1709594625919-d95e44a48098?auto=format&fit=crop&q=80&w=870",short:"Seoul Mountain Hiking Adventure – Bukhansan & Inwangsan vistas",schedule:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh",meetPoint:"To be confirmed(route/season)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-  ];
+// 1) index.html이 저장해둔 언어 먼저 가져오기
+const params = new URLSearchParams(location.search);
+const qLang = params.get('lang');
+const savedLang = localStorage.getItem('sez_lang');
+let lang = qLang || savedLang || 'kr';
 
-  const I18N = {
+// 2) index.html에서 쓰던 다국어 세트 그대로 가져옴
+const UI = {
+  kr:{placeholder:"태그/지역/이름 검색…",search:"검색"},
+  en:{placeholder:"Search tags, area, name…",search:"Search"},
+  es:{placeholder:"Buscar etiquetas, zona, nombre…",search:"Buscar"},
+  zh:{placeholder:"搜索 标签/区域/名称…",search:"搜索"},
+  zhHant:{placeholder:"搜尋 標籤/區域/名稱…",search:"搜尋"},
+  ja:{placeholder:"タグ/エリア/名称を検索…",search:"検索"}
+};
+
+// 너가 방금 준 그 엄청 긴 COPY / I18N_TOURS / I18N_SCHEDULES / I18N_MEETS / AREA_MAP 전부 ↓ 여기 붙여넣으면 돼
+// (길어서 여기서는 구조만 보여줄게. 실제로는 네 코드 그대로 복붙해.)
+const COPY = { /* ... 너가 위에 준 그대로 ... */ };
+const I18N_TOURS = { /* ... 너가 위에 준 그대로 ... */ };
+const I18N_SCHEDULES = { /* ... 너가 위에 준 그대로 ... */ };
+const I18N_MEETS = { /* ... 너가 위에 준 그대로 ... */ };
+const AREA_KEYS = ['Seoul','Gyeonggi','Various','Hangang','Hongdae','Jongno','Naksan','Fortress','Myeongdong','Gangnam','DDP','Euljiro','Seongsu','Ikseon','Bukchon','Paju (Heyri)','Bukhansan','Inwangsan'];
+const AREA_MAP = { /* ... 너가 위에 준 그대로 ... */ };
+
+// 3) 투어 데이터 (index.html과 동일 + gallery만 tour별로 넣을 수 있게)
+const Data = [
+  {
+    id:"t1",
+    slug:"seoul-instagrammable-cafe-hop",
+    name:"Seoul Instagrammable Café-Hop Tour",
+    priceKRW:45000,
+    duration:"3h",
+    area:"Seoul · Seongsu & Ikseon",
+    tags:["Café","Photo","City"],
+    heroImg:"https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",
+    short:"3 popular IG-worthy cafés + photo walk.",
+    schedule:"Meet 10:00 → Café A → Café B → Photo walk → Café C",
+    meetPoint:"Seongsu Station Exit 3",
+    meetMapUrl:"https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl:"https://www.klook.com/experiment/your-product-link",
+    // ✅ 네가 직접 넣는 갤러리
+    gallery:[
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=1200&q=80"
+    ]
+  },
+  {
+    id:"t2",
+    slug:"seoul-hidden-gem-city-walk",
+    name:"Seoul Hidden-Gem City Walk Experience",
+    priceKRW:52000,
+    duration:"3h",
+    area:"Seoul · Ikseon & Bukchon",
+    tags:["Local","City","Culture"],
+    heroImg:"https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",
+    short:"Lesser-known alleys with a local guide.",
+    schedule:"14:00 start → Ikseon alleys → Bukchon photo → Local café",
+    meetPoint:"Jongno 3-ga Station Exit 4",
+    meetMapUrl:"https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C3%EA%B0%80%EC%97%AD%204%EB%B2%88%EC%B6%9C%EA%B5%AC",
+    bookingUrl:"https://www.klook.com/experiment/your-product-link",
+    gallery:[
+      "https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505245208761-ba872912fac0?auto=format&fit=crop&w=1200&q=80"
+    ]
+  },
+  // ... 나머지도 같은 패턴으로 ...
+];
+
+// 4) 현재 들어온 투어 찾기
+const bySlug = params.get('slug');
+const byId = params.get('id');
+let tour = Data.find(t => t.slug === bySlug) || Data.find(t => t.id === byId) || Data[0];
+
+// 5) 언어 바꾸기 도우미
+function setLang(newLang){
+  lang = newLang;
+  localStorage.setItem('sez_lang', newLang);
+  // 셀렉트박스에도 반영
+  const sel = document.querySelector('#lang');
+  if (sel) sel.value = newLang;
+  applyLang();
+  fill(); // 언어바뀌면 화면 다시 그리기
+}
+
+// 6) 공통 텍스트 적용
+function applyLang(){
+  const pack = {
     kr:{home:'홈',back:'뒤로',overview:'개요',price:'가격',duration:'소요시간',meeting:'미팅장소',map:'지도',itinerary:'일정',gallery:'갤러리',from:'1인 기준',date:'날짜',guests:'인원',note:'결제/재고 확인은 외부 채널(Klook 등)에서 진행됩니다.',contact:'문의',similar:'비슷한 투어'},
     en:{home:'Home',back:'Back',overview:'Overview',price:'Price',duration:'Duration',meeting:'Meeting point',map:'Map',itinerary:'Itinerary',gallery:'Gallery',from:'Per person',date:'Date',guests:'Guests',note:'Payments/availability are handled on external channels (e.g., Klook).',contact:'Contact',similar:'Similar tours'},
     es:{home:'Inicio',back:'Atrás',overview:'Resumen',price:'Precio',duration:'Duración',meeting:'Punto de encuentro',map:'Mapa',itinerary:'Itinerario',gallery:'Galería',from:'Por persona',date:'Fecha',guests:'Personas',note:'Pagos/disponibilidad en canales externos (Klook).',contact:'Contacto',similar:'Tours similares'},
     zh:{home:'首页',back:'返回',overview:'概要',price:'价格',duration:'时长',meeting:'集合地点',map:'地图',itinerary:'行程',gallery:'相册',from:'每人',date:'日期',guests:'人数',note:'支付/库存由外部渠道（如Klook）处理。',contact:'联系',similar:'相似行程'},
     zhHant:{home:'首頁',back:'返回',overview:'概要',price:'價格',duration:'時長',meeting:'集合地點',map:'地圖',itinerary:'行程',gallery:'相簿',from:'每人',date:'日期',guests:'人數',note:'付款/庫存由外部平台（Klook）處理。',contact:'聯絡',similar:'相似行程'},
     ja:{home:'ホーム',back:'戻る',overview:'概要',price:'料金',duration:'所要時間',meeting:'集合場所',map:'地図',itinerary:'行程',gallery:'ギャラリー',from:'1名あたり',date:'日付',guests:'人数',note:'支払い/空き状況は外部サイト(Klook)で管理されます。',contact:'お問い合わせ',similar:'類似ツアー'}
-  };
+  }[lang];
 
-  const qs = (s,el=document)=> el.querySelector(s);
-  const qsa = (s,el=document)=> [...el.querySelectorAll(s)];
-  const KRW = v=> new Intl.NumberFormat('ko-KR',{style:'currency',currency:'KRW',maximumFractionDigits:0}).format(v);
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const k = el.dataset.i;
+    if (pack[k]) el.textContent = pack[k];
+  });
+}
 
-  const params = new URLSearchParams(location.search);
-  const bySlug = params.get('slug');
-  const byId = params.get('id');
-  let tour = Data.find(t=> t.slug===bySlug) || Data.find(t=> t.id===byId) || Data[0];
+// 7) 지역/미팅/일정도 네가 index에서 쓰던거로 변환
+function localizeMeeting(tour){
+  const num = Number((tour.id||'').replace(/\D/g,''));
+  const table = I18N_MEETS[lang] || I18N_MEETS['en'];
+  return table && table[num] ? table[num] : tour.meetPoint;
+}
 
-  // language: from query ?lang=, else from browser, default kr
-  let lang = (params.get('lang')||localStorage.getItem('sez_lang')||'kr');
-  function setLang(l){ lang=l; localStorage.setItem('sez_lang',l); qs('#lang').value=l; applyLang(); }
+function localizeSchedule(tour){
+  const num = Number((tour.id||'').replace(/\D/g,''));
+  const table = I18N_SCHEDULES[lang] || I18N_SCHEDULES['en'];
+  return table && table[num] ? table[num] : tour.schedule;
+}
 
-  function applyLang(){
-    const pack = I18N[lang]||I18N.kr; 
-    qsa('[data-i]').forEach(el=>{ const key=el.dataset.i; if(pack[key]) el.textContent=pack[key]; });
-  }
+function localizeTitle(tour){
+  const num = Number((tour.id||'').replace(/\D/g,''));
+  const table = I18N_TOURS[lang] || I18N_TOURS['en'];
+  return table && table[num] ? table[num].title : tour.name;
+}
 
-  function fill(){
-    // hero
-    qs('#heroImg').src = tour.heroImg; qs('#heroImg').alt = tour.name;
-    qs('#title').textContent = tour.name; qs('#subtitle').textContent = tour.short;
-    qs('#badge-area').textContent = tour.area; qs('#badge-duration').textContent = tour.duration; qs('#badge-tags').textContent = tour.tags.join(' · ');
+function localizeDesc(tour){
+  const num = Number((tour.id||'').replace(/\D/g,''));
+  const table = I18N_TOURS[lang] || I18N_TOURS['en'];
+  return table && table[num] ? table[num].desc : tour.short;
+}
 
-    // crumbs
-    qs('#bc-city').textContent = (tour.area.split('·')[0]||'Seoul').trim();
-    qs('#bc-title').textContent = tour.name;
+function localizeArea(area){
+  const map = AREA_MAP[lang] || {};
+  let out = area;
+  AREA_KEYS.forEach(k=>{
+    if (map[k]) {
+      out = out.replace(k, map[k]);
+    }
+  });
+  return out;
+}
 
-    // quick facts
-    qs('#price').textContent = KRW(tour.priceKRW);
-    qs('#priceBig').textContent = KRW(tour.priceKRW);
-    qs('#duration').textContent = tour.duration;
-    qs('#meetPoint').textContent = tour.meetPoint;
-    qs('#meetMap').href = tour.meetMapUrl;
+// 8) 실제로 화면 채우기
+function fill(){
+  // hero
+  document.querySelector('#heroImg').src = tour.heroImg;
+  document.querySelector('#title').textContent = localizeTitle(tour);
+  document.querySelector('#subtitle').textContent = localizeDesc(tour);
+  document.querySelector('#badge-area').textContent = localizeArea(tour.area);
+  document.querySelector('#badge-duration').textContent = tour.duration;
+  document.querySelector('#badge-tags').textContent = tour.tags.join(' · ');
 
-    // booking links
-    qs('#book').href = tour.bookingUrl + (tour.bookingUrl.includes('?')?'&':'?') + `ref=sezmiee&tour=${tour.slug}`;
-    qs('#wh').href = `https://wa.me/821049648503?text=${encodeURIComponent('Tour inquiry: '+tour.name)}`;
+  // breadcrumb
+  document.querySelector('#bc-city').textContent = localizeArea((tour.area.split('·')[0]||'Seoul').trim());
+  document.querySelector('#bc-title').textContent = localizeTitle(tour);
 
-    // itinerary breakdown from schedule string
-    const steps = tour.schedule.split('→').map(s=>s.trim());
-    qs('#itinerary').innerHTML = steps.map(s=>`<li class="ms-4"><div class="absolute -start-1.5 mt-1.5 h-2 w-2 rounded-full bg-gray-900"></div><div class="text-sm">${s}</div></li>`).join('');
+  // quick facts
+  const KRW = v => new Intl.NumberFormat('ko-KR',{style:'currency',currency:'KRW',maximumFractionDigits:0}).format(v);
+  document.querySelector('#price').textContent = KRW(tour.priceKRW);
+  document.querySelector('#priceBig').textContent = KRW(tour.priceKRW);
+  document.querySelector('#duration').textContent = tour.duration;
+  document.querySelector('#meetPoint').textContent = localizeMeeting(tour);
+  document.querySelector('#meetMap').href = tour.meetMapUrl;
 
-    // gallery (simple – hero variants + city placeholder)
-    const g = qs('#gallery');
-    const pics = Array.isArray(tour.gallery) && tour.gallery.length ? tour.gallery : [tour.heroImg, tour.heroImg + '&t=1', tour.heroImg + '&t=2'];
-    g.innerHTML = pics.map(src=>`<img src="${src}" class="w-full h-28 md:h-36 object-cover rounded-xl" loading="lazy"/>`).join('');
+  // itinerary
+  const steps = localizeSchedule(tour).split('→').map(s=>s.trim());
+  document.querySelector('#itinerary').innerHTML = steps.map(s=>`
+    <li class="ms-4 relative">
+      <div class="absolute -start-1.5 mt-1.5 h-2 w-2 rounded-full bg-gray-900"></div>
+      <div class="text-sm">${s}</div>
+    </li>
+  `).join('');
 
-    // similar
-    const similar = Data.filter(t=> t.id!==tour.id && (t.area.split('·')[0]===tour.area.split('·')[0] || t.tags.some(tag=> tour.tags.includes(tag)))).slice(0,3);
-    qs('#similar').innerHTML = similar.map(t=>`
-      <a href="tour.html?slug=${t.slug}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
-        <div class="aspect-[16/9] overflow-hidden"><img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/></div>
-        <div class="p-3">
-          <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">${t.name}</h3><span class="text-xs text-gray-500">${t.duration}</span></div>
-          <div class="text-xs text-gray-500">${t.area}</div>
-          <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
+  // gallery
+  const g = document.querySelector('#gallery');
+  const pics = Array.isArray(tour.gallery) && tour.gallery.length
+    ? tour.gallery
+    : [tour.heroImg, tour.heroImg + '&t=1', tour.heroImg + '&t=2'];
+  g.innerHTML = pics.map(src => `
+    <img src="${src}" class="w-full h-28 md:h-36 object-cover rounded-xl" loading="lazy"/>
+  `).join('');
+
+  // similar
+  const simWrap = document.querySelector('#similar');
+  const similar = Data.filter(t =>
+    t.id !== tour.id &&
+    (t.area.split('·')[0] === tour.area.split('·')[0] ||
+     t.tags.some(tag => tour.tags.includes(tag)))
+  ).slice(0,3);
+  simWrap.innerHTML = similar.map(t => `
+    <a href="tour.html?slug=${t.slug}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
+      <div class="aspect-[16/9] overflow-hidden">
+        <img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/>
+      </div>
+      <div class="p-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-semibold">${(I18N_TOURS[lang] && I18N_TOURS[lang][Number(t.id.replace(/\D/g,''))])
+              ? I18N_TOURS[lang][Number(t.id.replace(/\D/g,''))].title
+              : t.name}</h3>
+          <span class="text-xs text-gray-500">${t.duration}</span>
         </div>
-      </a>`).join('');
+        <div class="text-xs text-gray-500">${localizeArea(t.area)}</div>
+        <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+// 9) 초기화
+document.addEventListener('DOMContentLoaded', () => {
+  // 언어 셀렉트 박스 초기값
+  const sel = document.querySelector('#lang');
+  if (sel) {
+    sel.value = lang;
+    sel.addEventListener('change', e => setLang(e.target.value));
   }
 
-  function init(){
-    // initial language value
-    qs('#lang').value = lang;
-    applyLang();
-    fill();
+  applyLang();
+  fill();
 
-    // QR
-    qs('#qr').addEventListener('click',()=>{
-      const wrap = qs('#qrWrap'); wrap.classList.toggle('hidden');
-      if(!wrap.dataset.loaded){
-        QRCode.toCanvas(qs('#qrCanvas'), qs('#book').href, {margin:1,scale:6}, (err)=>{
-          if(!err){ wrap.dataset.loaded='1'; }
-        });
-      }
-    });
-
-    // reveal animations
-    const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }),{threshold:.1});
-    qsa('.fade-up').forEach(el=> io.observe(el));
-
-    // language switch
-    qs('#lang').addEventListener('change', (e)=>{ setLang(e.target.value); });
-  }
-
-  init();
+  // QR
+  document.querySelector('#qr').addEventListener('click', () => {
+    const wrap = document.querySelector('#qrWrap');
+    wrap.classList.toggle('hidden');
+    if (!wrap.dataset.loaded) {
+      QRCode.toCanvas(document.querySelector('#qrCanvas'),
+        document.querySelector('#book').href,
+        {margin:1,scale:6},
+        (err)=>{ if(!err) wrap.dataset.loaded = '1'; }
+      );
+    }
+  });
+});
 </script>
-</body>
-</html>
 

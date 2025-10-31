@@ -170,10 +170,19 @@ let locale = savedLocale || 'kr';
   const bySlug = params.get('slug');
   const byId = params.get('id');
   let tour = Data.find(t=> t.slug===bySlug) || Data.find(t=> t.id===byId) || Data[0];
-
-  // language: from query ?lang=, else from browser, default kr
-  function setLang(l){ lang=l; localStorage.setItem('sez_lang',l); qs('#lang').value=l; applyLang(); }
-
+  let lang = (
+  params.get('lang') ||
+  localStorage.getItem('sezmiee_locale') ||  // ✅ index.html에서 저장된 언어
+  localStorage.getItem('sez_lang') ||        // ✅ tour 페이지에서 저장된 언어
+  'kr'
+  );
+  function setLang(l){
+  lang = l;
+  localStorage.setItem('sez_lang', l);
+  localStorage.setItem('sezmiee_locale', l);
+  qs('#lang').value = l;
+  applyLang();
+  }
   function applyLang(){
     const pack = I18N[lang]||I18N.kr; 
     qsa('[data-i]').forEach(el=>{ const key=el.dataset.i; if(pack[key]) el.textContent=pack[key]; });

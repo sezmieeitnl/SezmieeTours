@@ -1,42 +1,39 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko">  
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sezmiee International Tours (Vanilla)</title>
-  <!-- Tailwind CDN (for existing utility classes) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- QRCode (UMD) -->
-  <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <style>
-    /* Simple fade-up animation to mimic framer-motion */
+  <script src="https://cdn.tailwindcss.com"></script>   <!-- ✅ Tailwind CSS -->
+  <!-- ✅ EmailJS (메일 전송용) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script> (function(){emailjs.init("YOUR_PUBLIC_KEY");})();</script>
+  <style> 
+    /* 카드 등장 애니메이션 */
     .fade-up{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
     .fade-up.show{opacity:1;transform:translateY(0)}
-    /* Button focus */
+    /* 포커스 표시 */
     button:focus{outline:2px solid #000; outline-offset:2px}
+    /* 배경색 고정 */
+    body{background-color:#ffffff !important;}
+    /* 하단 곡선 SVG (Wave) 관련 */
+    section.relative svg{display:block;border:none;margin:0;padding:0}
+    section.relative::after{content:none !important}
+    /* 이미지 비율 유지 (16:9 카드용) */
+    .ratio-16x9{position:relative;width:100%;padding-top:56.25%;overflow:hidden;border-radius:1.25rem 1.25rem 0 0;}
+    .ratio-16x9 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
   </style>
-<style>body{background-color:#ffffff !important;}</style>
-<style>
-  /* Fix subtle line showing under header wave */
-  section.relative svg {
-    display:block;
-    border:none;
-    margin:0;
-    padding:0;
-  }
-  section.relative::after {
-    content:none !important;
-  }
-</style>
 </head>
+  
 <body class="bg-gray-50 text-gray-900">
-  <main class="mx-auto max-w-6xl p-6 space-y-8" id="app">
-    <!-- Header -->
+  <main class="mx-auto max-w-6xl p-6 space-y-8" id="app">    
+    <!-- 🟦 Hero Section: 헤더 이미지 + 로고 -->
     <section class="relative -mx-6 md:-mx-12">
       <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1601721826401-c5e789be0be6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740" alt="Korean Traditional Street" class="w-full h-full object-cover" referrerpolicy="no-referrer">
+        <img src="https://images.unsplash.com/photo-1601721826401-c5e789be0be6?auto=format&fit=crop&q=80&w=1740" alt="Korean Traditional Street" class="w-full h-full object-cover" referrerpolicy="no-referrer">
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/30 to-transparent"></div>
-      </div>
+      </div>      
+      <!-- 제목/이메일/연락처 -->
       <div class="relative z-10 px-6 md:px-12 py-8 md:py-10 min-h-[220px] md:min-h-[260px] text-white pb-16">
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
           <div>
@@ -45,44 +42,29 @@
           </div>
           <div class="text-left md:text-right text-xs md:text-sm text-white/90 space-y-1 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
             <a href="mailto:sezmiee.project@gmail.com" class="hover:underline">📧 sezmiee.project@gmail.com</a>
-            <div><a href="tel:+821049648503" class="hover:underline">📞 (whatsapp/kakaotalk)+82 10-4964-8503</a></div>
+            <div><a href="tel:+821049648503" class="hover:underline">📱 (whatsapp/kakaotalk)+82 10-4964-8503</a></div>
           </div>
         </div>
-      </div>
+      </div>      
+      <!-- 하단 곡선 장식 -->
       <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="absolute bottom-0 left-0 w-full h-[70px] text-white pointer-events-none select-none"><path fill="currentColor" d="M0,36 C180,60 360,10 540,22 C720,34 840,70 1020,58 C1200,46 1320,14 1440,32 L1440,80 L0,80 Z"/></svg>
+    </section> <!-- 🟩 주요 콘텐츠 섹션들 -->
+    <section class="rounded-3xl border bg-white/80 backdrop-blur p-4 md:p-6 shadow-sm" id="advSection"></section> <!-- 상세 검색 -->
+    <section id="toolbar"></section> <!-- 언어 선택 + 검색창 -->
+    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section> <!-- 투어 카드 리스트 -->
+    <section id="why" class="rounded-3xl border p-6 bg-white"></section> <!-- Why Sezmiee -->
+    <section id="faq" class="rounded-3xl border p-6 bg-white"></section> <!-- FAQ -->
+    <section id="contact" class="rounded-3xl border p-6 bg-white"></section> <!-- 문의하기 -->
+
     </section>
-
-    <!-- Advanced Search -->
-    <section class="rounded-3xl border bg-white/80 backdrop-blur p-4 md:p-6 shadow-sm" id="advSection"></section>
-
-    <!-- Toolbar -->
-    <section id="toolbar"></section>
-
-    <!-- Cards -->
-    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
-
-    <!-- Why Us -->
-    <section id="why" class="rounded-3xl border p-6 bg-white"></section>
-
-    <!-- FAQ -->
-    <section id="faq" class="rounded-3xl border p-6 bg-white"></section>
-
-    <!-- Contact -->
-    <section id="contact" class="rounded-3xl border p-6 bg-white"></section>
-
-    <!-- Inbox Preview -->
-    <section id="inboxWrap" class="hidden rounded-3xl border p-6 bg-white/60">
-      <h3 class="font-semibold mb-3">Inbox Preview</h3>
-      <div id="inboxList" class="space-y-3"></div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-10 text-center text-xs text-gray-500" id="footer"></footer>
-  </main>
-
-  <script>
-  // ======= Data & i18n =======
-  const tours = [
+    <footer class="py-10 text-center text-xs text-gray-500" id="footer"></footer> <!-- 푸터 -->    
+  </main> <!-- 🟨 메인 스크립트 -->
+  <script>        
+  /* ─────────────────────────────────────────
+     1️⃣ 데이터 정의: 투어 목록, 번역, 지역맵
+  ───────────────────────────────────────── */
+  /* 투어 데이터 */    
+  const tours=[
     {id:"t1",name:"Seoul Instagrammable Café-Hop Tour",slug:"seoul-instagrammable-cafe-hop",priceKRW:45000,duration:"3h",area:"Seoul · Seongsu & Ikseon",tags:["Café","Photo","City"],heroImg:"https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202304/28/e64f80cd-4ecf-4d9d-ae93-563e12f0bca5.jpg",short:"3 popular IG-worthy cafés + photo walk.",schedule:"Meet 10:00 → Café A → Café B → Photo walk → Café C",meetPoint:"Seongsu Station Exit 3",meetMapUrl:"https://map.naver.com/v5/search/%EC%84%B1%EC%88%98%EC%97%AD%203%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
     {id:"t2",name:"Seoul Hidden-Gem City Walk Experience",slug:"seoul-hidden-gem-city-walk",priceKRW:52000,duration:"3h",area:"Seoul · Ikseon & Bukchon",tags:["Local","City","Culture"],heroImg:"https://alovelettertoasia.com/wp-content/uploads/2023/08/ikeson-dong-seoul-itinerary.jpg",short:"Lesser-known alleys with a local guide.",schedule:"14:00 start → Ikseon alleys → Bukchon photo → Local café",meetPoint:"Jongno 3-ga Station Exit 4",meetMapUrl:"https://map.naver.com/v5/search/%EC%A2%85%EB%A1%9C3%EA%B0%80%EC%97%AD%204%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
     {id:"t3",name:"Seoul Trendspotting Photo-Tour",slug:"seoul-trendspotting-photo-tour",priceKRW:65000,duration:"3h",area:"Seoul · DDP & Euljiro",tags:["Photo","Design","City"],heroImg:"https://images.locationscout.net/2020/02/dongdaemun-design-plaza-seoul-korea.jpg?h=500&q=60",short:"Pro photographer + on-trend spaces.",schedule:"09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",meetPoint:"Dongdaemun History & Culture Park Exit 1",meetMapUrl:"https://map.naver.com/v5/search/%EB%8F%99%EB%8C%80%EB%AC%B8%EC%97%AD%20%EC%97%AD%EC%82%AC%EB%AC%B8%ED%99%94%EA%B3%B5%EC%9B%90%EC%97%AD%201%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
@@ -93,380 +75,72 @@
     {id:"t8",name:"Hongdae Animation & Game Theme Café Walking Tour",slug:"hongdae-animation-game-theme-cafe",priceKRW:58000,duration:"3h",area:"Seoul · Hongdae",tags:["Anime","Game","Theme"],heroImg:"https://res.klook.com/image/upload/fl_lossy.progressive/q_auto/c_fill%2Cw_750/blogen/2019/07/HONGDAE-SEOUL-3.jpg",short:"Anime/game/webtoon theme cafés + local game shops.",schedule:"15:00 start → Theme café → Street game shop → Photo spot",meetPoint:"Hongik Univ. Station Exit 9",meetMapUrl:"https://map.naver.com/v5/search/%ED%99%8D%EB%8C%80%EC%95%84%ED%95%99%EA%B5%90%EC%97%AD%209%EB%B2%88%EC%B6%9C%EA%B5%AD",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
     {id:"t9",name:"Seoul Nighttime Hidden-Gems Walking Tour",slug:"seoul-nighttime-hidden-gems-walk",priceKRW:52000,duration:"2h",area:"Seoul · Naksan & Fortress",tags:["Night","Local","Citywalk"],heroImg:"https://www.newsroad.co.kr/news/photo/202310/25520_36654_2112.jpg",short:"Night walk with a history guide.",schedule:"17:00 start → Naksan light walk → Fortress night path",meetPoint:"Hyehwa Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%ED%98%9C%ED%99%94%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
     {id:"t10",name:"Seoul Heritage & Sunset Photo Tour",slug:"seoul-heritage-sunset-photo",priceKRW:61000,duration:"2.5h",area:"Seoul · Jongno",tags:["Photo","Culture","Sunset"],heroImg:"https://rebeladiaries.wordpress.com/wp-content/uploads/2019/01/p1290221.jpg?w=1400",short:"Hanok alleys + sunset with a pro photographer.",schedule:"16:30 start → Jongno hanok alleys → Sunset shooting",meetPoint:"Anguk Station Exit 2",meetMapUrl:"https://map.naver.com/v5/search/%EC%95%99%EA%B5%AD%EC%97%AD%202%EB%B2%88%EC%B6%9C%EA%B5%AC",bookingUrl:"https://www.klook.com/experiment/your-product-link"},
-    {id:"t11",name:"Seoul Mountain Hiking Adventure",slug:"seoul-mountain-hiking-adventure",priceKRW:55000,duration:"4–5h",area:"Seoul · Bukhansan & Inwangsan",tags:["Nature","Activity","Hiking"],heroImg:"https://images.unsplash.com/photo-1709594625919-d95e44a48098?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",short:"Seoul Mountain Hiking Adventure – Bukhansan & Inwangsan vistas",schedule:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh",meetPoint:"To be confirmed(route/season)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"}
+    {id:"t11",name:"Seoul Mountain Hiking Adventure",slug:"seoul-mountain-hiking-adventure",priceKRW:55000,duration:"4–5h",area:"Seoul · Bukhansan & Inwangsan",tags:["Nature","Activity","Hiking"],heroImg:"https://images.unsplash.com/photo-1709594625919-d95e44a48098?auto=format&fit=crop&q=80&w=870",short:"Seoul Mountain Hiking Adventure – Bukhansan & Inwangsan vistas",schedule:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh",meetPoint:"To be confirmed (route/season)",meetMapUrl:"#",bookingUrl:"https://www.klook.com/experiment/your-product-link"}
   ];
-
-  const UI = {
-    kr: { placeholder: "태그/지역/이름 검색…", search: "검색" },
-    en: { placeholder: "Search tags, area, name…", search: "Search" },
-    es: { placeholder: "Buscar etiquetas, zona, nombre…", search: "Buscar" },
-    zh: { placeholder: "搜索 标签/区域/名称…", search: "搜索" },
-    zhHant: { placeholder: "搜尋 標籤/區域/名稱…", search: "搜尋" },
-    ja: { placeholder: "タグ/エリア/名称を検索…", search: "検索" },
-  };
-
-  const COPY = {
-    kr: { adv:{title:"상세 검색",city:"도시",date:"출발일",guests:"인원",budget:"예산",search:"검색",cityOpts:["서울","경기"],paxOpts:["1명","2명","3명","4명","5명+"],budgetOpts:["~50,000원","~70,000원","~100,000원","100,000원+"]}, why:{title:"왜 Sezmiee International?",pill:"간단 · 안전 · 유연",a:"현지 검증 코스",b:"투명한 가격",c:"유연한 커스터마이즈"}, faq:{title:"FAQ",q1:"예약/결제는 어떻게 하나요?",a1:"문의 → 가이드 확인 → 입금 → 확정.",q2:"픽업 가능 지역?",a2:"서울 전역 + 김포/인천(일부 추가요금)",q3:"취소 규정?",a3:"7일 전 전액 / 3일 전 50% / 24시간 내 불가"}, contact:{title:"문의하기",hours:"평일 10:00–18:00 / 익영업일 회신",name:"이름",email:"이메일",subject:"관심 상품/도시",message:"메시지",placeholderSubj:"예: Seoul Demon Tour",placeholderMsg:"일정/인원/예산 등 자유롭게 적어주세요",submit:"문의 전송(데모)",note:"실제 메일은 발송되지 않고 하단에 미리보기로 저장됩니다."}, footer:{copy:"© 2025 Sezmiee International. 데모 — 백엔드 없음.",quick:"빠른 링크",links:["Tours","Why Us","FAQ","Contact"],policy:"정책 (데모)",policies:"TOS · Privacy · Cancellation"} },
-    en: { adv:{title:"Search",city:"City",date:"Date",guests:"Guests",budget:"Budget",search:"Search",cityOpts:["Seoul","Gyeonggi"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]}, why:{title:"Why Sezmiee International?",pill:"Simple · Safe · Flexible",a:"Locally-verified routes",b:"Transparent pricing",c:"Flexible customization"}, faq:{title:"FAQ",q1:"How do I book/pay?",a1:"Inquiry → confirm guide → bank transfer → confirmed.",q2:"Where is pickup available?",a2:"Seoul + Gimpo/Incheon (surcharge in some areas).",q3:"Cancellation policy?",a3:"Full refund up to 7 days; 50% until 3 days; none within 24h."}, contact:{title:"Contact Us",hours:"Weekdays 10:00–18:00 / reply next business day",name:"Name",email:"Email",subject:"Tour/City of Interest",message:"Message",placeholderSubj:"e.g., Seoul Demon Tour",placeholderMsg:"Share date/guests/budget, etc.",submit:"Send Inquiry (Demo)",note:"Submissions are saved as a preview; no real email is sent."}, footer:{copy:"© 2025 Sezmiee International. Demo only — no backend.",quick:"Quick Links",links:["Tours","Why Us","FAQ","Contact"],policy:"Policies (Demo)",policies:"TOS · Privacy · Cancellation"} },
-    es: { adv:{title:"Búsqueda",city:"Ciudad",date:"Fecha",guests:"Personas",budget:"Presupuesto",search:"Buscar",cityOpts:["Seúl","Gyeonggi"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]}, why:{title:"¿Por qué Sezmiee International?",pill:"Simple · Seguro · Flexible",a:"Rutas verificadas",b:"Precio transparente",c:"Personalización flexible"}, faq:{title:"FAQ",q1:"¿Cómo reservo/pago?",a1:"Consulta → confirmar guía → transferencia → confirmado.",q2:"¿Dónde hay recogida?",a2:"Seúl + Gimpo/Incheon (algunas zonas con recargo).",q3:"¿Cancelación?",a3:"Reembolso total hasta 7 días; 50% hasta 3; no dentro de 24h."}, contact:{title:"Contacto",hours:"Lun–Vie 10:00–18:00 / respuesta siguiente día hábil",name:"Nombre",email:"Correo",subject:"Tour/Ciudad de interés",message:"Mensaje",placeholderSubj:"p.ej., Seoul Demon Tour",placeholderMsg:"Indica fecha/personas/presupuesto…",submit:"Enviar consulta (Demo)",note:"Solo vista previa; no se envía correo."}, footer:{copy:"© 2025 Sezmiee International. Solo demo.",quick:"Enlaces rápidos",links:["Tours","Why Us","FAQ","Contact"],policy:"Políticas (Demo)",policies:"TOS · Privacidad · Cancelación"} },
-    zh: { adv:{title:"搜索",city:"城市",date:"日期",guests:"人数",budget:"预算",search:"搜索",cityOpts:["首尔","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]}, why:{title:"为什么选择 Sezmiee International?",pill:"简单 · 安全 · 灵活",a:"本地验证路线",b:"透明定价",c:"灵活定制"}, faq:{title:"常见问题",q1:"如何预订/付款？",a1:"咨询 → 确认向导 → 转账 → 确认。",q2:"接送范围？",a2:"首尔 + 金浦/仁川（部分加价）",q3:"取消政策？",a3:"7天前全退；3天前50%；24小时内不退。"}, contact:{title:"联系我们",hours:"工作日10:00–18:00 / 次营业日回复",name:"姓名",email:"邮箱",subject:"意向行程/城市",message:"留言",placeholderSubj:"例如：Seoul Demon Tour",placeholderMsg:"请注明日期/人数/预算等",submit:"发送咨询（演示）",note:"仅保存预览，不会发送邮件。"}, footer:{copy:"© 2025 Sezmiee International. 演示页面。",quick:"快速链接",links:["Tours","Why Us","FAQ","Contact"],policy:"政策（演示）",policies:"条款 · 隐私 · 取消"} },
-    zhHant: { adv:{title:"搜尋",city:"城市",date:"日期",guests:"人數",budget:"預算",search:"搜尋",cityOpts:["首爾","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]}, why:{title:"為什麼選擇 Sezmiee International？",pill:"簡單 · 安全 · 彈性",a:"在地驗證路線",b:"透明定價",c:"彈性客製化"}, faq:{title:"常見問題",q1:"如何預訂/付款？",a1:"諮詢 → 確認嚮導 → 匯款 → 成立。",q2:"接送範圍？",a2:"首爾 + 金浦/仁川（部分區域需加價）",q3:"取消政策？",a3:"7天前全額；3天前50%；24小時內不可。"}, contact:{title:"聯絡我們",hours:"平日10:00–18:00／次營業日回覆",name:"姓名",email:"電子郵件",subject:"有興趣的行程/城市",message:"訊息",placeholderSubj:"例如：Seoul Demon Tour",placeholderMsg:"請告知日期/人數/預算等",submit:"送出詢問（示範）",note:"提交內容僅供預覽，不會寄出電子郵件。"}, footer:{copy:"© 2025 Sezmiee International. 示範頁面 — 無後端。",quick:"快速連結",links:["Tours","Why Us","FAQ","Contact"],policy:"政策（示範）",policies:"條款 · 隱私 · 取消"} },
-    ja: { adv:{title:"検索",city:"都市",date:"日付",guests:"人数",budget:"予算",search:"検索",cityOpts:["ソウル","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]}, why:{title:"Why Sezmiee International?",pill:"シンプル・安全・柔軟",a:"現地検証ルート",b:"透明価格",c:"柔軟なカスタマイズ"}, faq:{title:"FAQ",q1:"予約/支払い方法は？",a1:"問い合わせ → ガイド確認 → 振込 → 確定。",q2:"送迎エリアは？",a2:"ソウル全域＋金浦/仁川（一部追加料金）",q3:"キャンセルポリシーは？",a3:"7日前まで全額、3日前まで50%、24時間以内不可。"}, contact:{title:"お問い合わせ",hours:"平日10:00–18:00 / 次営業日返信",name:"お名前",email:"メール",subject:"興味のあるツアー/都市",message:"メッセージ",placeholderSubj:"例: Seoul Demon Tour",placeholderMsg:"日付/人数/予算など",submit:"送信（デモ）",note:"送信されず、プレビュー保存のみ。"}, footer:{copy:"© 2025 Sezmiee International. デモ。",quick:"クイックリンク",links:["Tours","Why Us","FAQ","Contact"],policy:"ポリシー（デモ）",policies:"利用規約 · プライバシー · キャンセル"} },
-  };
-
-  const I18N_TOURS = {
-    en:{1:{title:"Seoul Instagrammable Café-Hop Tour",desc:"3 popular IG-worthy cafés + photo walk"},2:{title:"Seoul Hidden-Gem City Walk Experience",desc:"Lesser-known alleys with a local guide"},3:{title:"Seoul Trendspotting Photo-Tour",desc:"Pro photographer + on-trend spaces"},4:{title:"Seoul Popup-Culture Hopping Tour",desc:"Pop-ups, street art, flea markets + creators"},5:{title:"Seoul Lifestyle Travel Outing",desc:"Café break + Hangang walk + photo spots"},6:{title:"Seoul Demon Tour: K-Pop & Night Walk",desc:"Myeongdong K-Pop goods + SMTOWN + Hangang River"},7:{title:"Gyeonggi Art Village Brunch & Café Tour",desc:"Heyri art village + brunch café + gallery"},8:{title:"Hongdae Animation & Game Theme Café Walk",desc:"Anime/game/webtoon cafés + street game shops"},9:{title:"Seoul Nighttime Hidden-Gems Walking Tour",desc:"Night walk with a history guide"},10:{title:"Seoul Heritage & Sunset Photo Tour",desc:"Hanok alleys + sunset with a pro photographer"},11:{title:"Seoul Mountain Hiking Adventure – Bukhansan/Inwang views",desc:"Hike Bukhansan or Inwangsan with panoramic Seoul views + guide"}},
-    es:{1:{title:"Tour de cafés “instagrammables” en Seúl",desc:"3 cafés populares + paseo fotográfico"},2:{title:"Paseo urbano: joyas ocultas de Seúl",desc:"Callejones poco conocidos con guía local"},3:{title:"Tour fotográfico de tendencias en Seúl",desc:"Fotógrafo profesional + espacios de moda"},4:{title:"Ruta de cultura pop-up en Seúl",desc:"Pop-ups, arte urbano y mercadillos"},5:{title:"Salida lifestyle por Seúl",desc:"Café + paseo por el Han + fotos"},6:{title:"Seoul Demon Tour: K-Pop y noche del río Han",desc:"Compras K-Pop + SMTOWN + río Han"},7:{title:"Brunch y cafés en aldea de arte (Gyeonggi)",desc:"Heyri + brunch + galería"},8:{title:"Hongdae: cafeterías temáticas anime & game",desc:"Cafés temáticos + tiendas de juego"},9:{title:"Seúl nocturno: joyas ocultas a pie",desc:"Paseo nocturno con guía de historia"},10:{title:"Patrimonio y atardecer en Seúl",desc:"Callejones hanok + fotógrafo profesional"},11:{title:"Aventura de senderismo en Seúl – vistas de Bukhansan/Inwang",desc:"Excursión por Bukhansan o Inwang con vistas de Seúl + guía"}},
-    zh:{1:{title:"首尔网红咖啡巡礼",desc:"3家网红咖啡 + 街拍散步"},2:{title:"首尔城市秘境徒步",desc:"不为人知的小巷 + 本地向导"},3:{title:"首尔潮流摄影之旅",desc:"专业摄影师 + 潮流空间"},4:{title:"首尔快闪文化巡游",desc:"快闪店、街头艺术、跳蚤市场"},5:{title:"首尔生活方式小旅行",desc:"咖啡休息 + 汉江散步 + 拍照点"},6:{title:"恶魔之旅：K-Pop & 夜行",desc:"明洞周边 + SMTOWN + 汉江"},7:{title:"京畿艺术村早午餐 & 咖啡",desc:"Heyri艺术村 + 早午餐 + 画廊"},8:{title:"弘大动画与游戏主题咖啡",desc:"主题咖啡 + 街头游戏店"},9:{title:"首尔夜间秘境徒步",desc:"历史向导陪同的夜游"},10:{title:"首尔遗产与日落摄影",desc:"韩屋小巷 + 专业摄影师"},11:{title:"首尔登山探险 – 眺望北汉山/仁王山",desc:"北汉山或仁王山徒步 + 首尔全景 + 向导陪同"}},
-    zhHant:{1:{title:"首爾網紅咖啡巡禮",desc:"3間網紅咖啡 + 街拍散步"},2:{title:"首爾城市秘境徒步",desc:"不為人知的小巷 + 在地嚮導"},3:{title:"首爾潮流攝影之旅",desc:"專業攝影師 + 潮流空間"},4:{title:"首爾快閃文化巡遊",desc:"快閃店、街頭藝術、跳蚤市場"},5:{title:"首爾生活風格小旅行",desc:"咖啡小憩 + 漢江散步 + 拍照點"},6:{title:"惡魔之旅：K‑Pop 與夜行",desc:"明洞周邊 + SMTOWN + 漢江"},7:{title:"京畿藝術村早午餐與咖啡",desc:"Heyri 藝術村 + 早午餐 + 畫廊"},8:{title:"弘大動畫與遊戲主題咖啡",desc:"主題咖啡 + 街頭遊戲店"},9:{title:"首爾夜間秘境徒步",desc:"歷史嚮導陪同的夜遊"},10:{title:"首爾文化遺產與夕照攝影",desc:"韓屋巷弄 + 專業攝影師"},11:{title:"首爾登山冒險 – 眺望北漢山/仁王山",desc:"北漢山或仁王山健行 + 首爾全景 + 嚮導"}},
-    ja:{1:{title:"ソウル インスタ映えカフェ巡り",desc:"人気カフェ3軒 + フォトウォーク"},2:{title:"ソウル隠れスポット街歩き",desc:"ローカルガイドと路地探索"},3:{title:"ソウルトレンド撮影ツアー",desc:"プロカメラマン同行"},4:{title:"ソウル・ポップアップ文化ホッピング",desc:"ポップアップ/ストリートアート/フリマ"},5:{title:"ソウル・ライフスタイル小旅行",desc:"カフェ休憩 + 漢江散歩 + 撮影"},6:{title:"デーモンツアー：K-Pop & ナイト",desc:"明洞グッズ + SMTOWN + 漢江"},7:{title:"京畿アート村ブランチ&カフェ",desc:"ヘイリ + ブランチ + ギャラリー"},8:{title:"弘大アニメ&ゲーム テーマカフェ",desc:"テーマカフェ + ゲームショップ"},9:{title:"ソウル夜の秘境ウォーク",desc:"歴史ガイドと夜さんぽ"},10:{title:"ソウル遺産＆サンセット撮影",desc:"韓屋路地 + プロ同行"},11:{title:"ソウル登山アドベンチャー – 北漢山/仁王山ビュー",desc:"北漢山・仁王山ハイキング + ソウルビュー + ガイド同行"}},
-    kr:{1:{title:"서울 인스타그램 카페투어",desc:"핫한 카페 3곳 + 포토 워크"},2:{title:"서울 숨은 명소 도보투어",desc:"현지 가이드와 골목 산책"},3:{title:"서울 트렌드스포팅 포토투어",desc:"프로 사진가 + 트렌디 공간"},4:{title:"서울 팝업컬처 하핑 투어",desc:"팝업/스트리트아트/플리마켓"},5:{title:"서울 라이프스타일 나들이",desc:"카페 휴식 + 한강 산책 + 포토"},6:{title:"서울 데몬 투어: 케이팝 & 나이트",desc:"명동 굿즈 + SMTOWN + 한강 야경"},7:{title:"경기 헤이리 아트빌리지 브런치 & 카페",desc:"헤이리 + 브런치 + 갤러리"},8:{title:"홍대 애니·게임 테마카페 워킹투어",desc:"테마카페 + 게임숍"},9:{title:"서울 명소 나이트 워킹투어",desc:"역사가이드와 야간 산책"},10:{title:"서울 헤리티지 & 선셋 포토투어",desc:"한옥 골목 + 프로 촬영"},11:{title:"서울 등산 어드벤처 – 북한산/인왕산",desc:"등산 + 서울 전경 + 가이드"}},
-  };
-
-  // ======= State =======
-  let state = {
-    locale: 'kr',
-    query: '',
-    adv: { city: '', date: '', guests: '', budget: '' },
-    inbox: [],
-  };
-
-  const formatKRW = (v)=> new Intl.NumberFormat("ko-KR",{style:"currency",currency:"KRW",maximumFractionDigits:0}).format(v);
-  const getLocalized = (t, locale)=>{
-    const num = Number(String(t.id).replace(/\D/g,''));
-    const pack = (I18N_TOURS[locale]||{})[num];
-    return { name: pack?.title || t.name, short: pack?.desc || t.short };
-  };
-
-  // ======= Rendering helpers =======
-  const qs = (s,el=document)=> el.querySelector(s);
-  const qsa = (s,el=document)=> [...el.querySelectorAll(s)];
-
-  function renderAdvancedSearch(){
-    const L = COPY[state.locale].adv;
-    qs('#advSection').innerHTML = `
-      <div class="mb-3 text-sm font-semibold">${L.title}</div>
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs text-gray-600">${L.city}</label>
-          <select id="city" class="rounded-xl border px-3 py-2">${L.cityOpts.map(c=>`<option>${c}</option>`).join('')}</select>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs text-gray-600">${L.date}</label>
-          <input id="date" type="date" class="rounded-xl border px-3 py-2" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs text-gray-600">${L.guests}</label>
-          <select id="guests" class="rounded-xl border px-3 py-2">${L.paxOpts.map(p=>`<option>${p}</option>`).join('')}</select>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs text-gray-600">${L.budget}</label>
-          <select id="budget" class="rounded-xl border px-3 py-2">${L.budgetOpts.map(b=>`<option>${b}</option>`).join('')}</select>
-        </div>
-        <div class="flex items-end">
-          <button id="advApply" class="w-full rounded-2xl border px-4 py-2 hover:bg-gray-50 font-medium">${L.search}</button>
-        </div>
-      </div>`;
-    // defaults when locale changes
-    qs('#city').value = L.cityOpts[0] || '';
-    qs('#guests').value = L.paxOpts[0] || '';
-    qs('#budget').value = L.budgetOpts[0] || '';
-    qs('#advApply').onclick = ()=>{
-      state.adv = {
-        city: qs('#city').value,
-        date: qs('#date').value,
-        guests: qs('#guests').value,
-        budget: qs('#budget').value,
-      };
-      renderCards();
-    };
-  }
-
-  function renderToolbar(){
-    const langBtns = ['kr','en','es','zh','zhHant','ja'].map(l=>{
-      const label = l==='kr'? '한국어': l==='en'? 'English': l==='es'? 'Español': l==='zh'? '中文(简)': l==='zhHant'? '中文(繁)': '日本語';
-      const active = l===state.locale ? 'bg-black text-white' : 'bg-white';
-      return `<button data-lang="${l}" class="rounded-2xl px-3 py-1.5 text-sm border ${active}">${label}</button>`;
-    }).join('');
-
-    const ui = UI[state.locale];
-    qs('#toolbar').innerHTML = `
-      <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <div class="flex items-center gap-2">${langBtns}</div>
-        <div class="flex w-full md:w-auto items-center gap-2">
-          <input id="searchInput" class="w-full md:w-80 rounded-2xl border px-4 py-2" placeholder="${ui.placeholder}" />
-          <button id="clearBtn" aria-label="Clear" class="hidden rounded-2xl border px-3 py-2 hover:bg-gray-50">✕</button>
-          <button id="searchBtn" class="rounded-2xl border px-4 py-2 hover:bg-gray-50">${ui.search}</button>
-        </div>
-      </div>`;
-
-    qsa('button[data-lang]').forEach(btn=>{
-      btn.onclick = ()=>{ state.locale = btn.dataset.lang; renderAllButHeader(); };
-    });
-
-    const input = qs('#searchInput');
-    const clearBtn = qs('#clearBtn');
-    const apply = ()=>{ state.query = input.value.trim(); renderCards(); };
-    input.addEventListener('input', ()=>{ clearBtn.classList.toggle('hidden', !input.value); apply(); });
-    input.addEventListener('keydown', e=>{ if(e.key==='Enter') apply(); });
-    qs('#searchBtn').onclick = apply;
-    clearBtn.onclick = ()=>{ input.value=''; clearBtn.classList.add('hidden'); apply(); };
-  }
-
-  function filterList(){
-    const adv = state.adv; let list = tours.slice();
-    if(adv.city){
-      if(/Seoul|서울/.test(adv.city)) list = list.filter(t=>t.area.toLowerCase().includes('seoul'));
-      else if(/Gyeonggi|경기/.test(adv.city)) list = list.filter(t=>t.area.toLowerCase().includes('gyeonggi'));
-    }
-    if(adv.budget){
-      const b = adv.budget;
-      if(b.includes('50')) list = list.filter(t=> t.priceKRW<=50000);
-      else if(b.includes('70')) list = list.filter(t=> t.priceKRW<=70000);
-      else if(b.includes('100') && b.includes('+')) list = list.filter(t=> t.priceKRW>100000);
-      else if(b.includes('100')) list = list.filter(t=> t.priceKRW<=100000);
-    }
-    const q = (state.query||'').toLowerCase();
-    if(!q) return list;
-    return list.filter(t=>{
-      const loc = getLocalized(t, state.locale);
-      return [loc.name, t.area, loc.short, t.schedule, t.tags.join(' ')].join(' ').toLowerCase().includes(q);
-    });
-  }
-
-  function cardTemplate(t){
-    const loc = getLocalized(t, state.locale);
-    const price = formatKRW(t.priceKRW);
-    const cardId = `card-${t.id}`;
-    return `
-    <div class="fade-up group rounded-2xl border bg-white shadow-sm hover:shadow-lg" id="${cardId}">
-      <div class="aspect-[16/9] w-full overflow-hidden">
-        <img src="${t.heroImg}" alt="${loc.name}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-      </div>
-      <div class="p-5 space-y-3">
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">${loc.name}</h3>
-          <span class="text-sm text-gray-500">${formatDurationLocal(t.duration, state.locale)}</span>
-        </div>
-        <p class="text-sm text-gray-600">${loc.short}</p>
-        <div class="flex flex-wrap gap-2">${t.tags.map(tag=>`<span class="text-xs rounded-full border px-2 py-0.5">${tag}</span>`).join('')}</div>
-        <div class="text-sm text-gray-700">📍 ${localizeArea(t.area, state.locale)} · ${localizeMeet(t.meetPoint, state.locale)}</div>
-        <div class="text-xs text-gray-500">🗺 ${getSchedule(t, state.locale)}</div>
-        <div class="flex items-center justify-between pt-2">
-          <div class="text-base font-bold">${price}</div>
-          <div class="flex items-center gap-2">
-            <a href="${t.meetMapUrl}" target="_blank" rel="noreferrer" class="rounded-2xl px-3 py-2 text-sm border hover:bg-gray-50">Map</a>
-            <a href="${t.bookingUrl}" target="_blank" rel="noreferrer" class="rounded-2xl px-4 py-2 text-sm bg-black text-white hover:opacity-90">Book</a>
-            <div class="relative">
-              <button class="qrBtn rounded-2xl px-4 py-2 text-sm shadow hover:shadow-md border bg-white">QR</button>
-              <div class="qrPopover hidden fixed z-[9999] rounded-2xl border bg-white p-3 shadow-xl"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  function renderCards(){
-    const container = qs('#cards');
-    container.innerHTML = filterList().map(cardTemplate).join('');
-
-    // fade-in observe
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
-    },{threshold:0.1});
-    qsa('.fade-up', container).forEach(el=> io.observe(el));
-
-    // QR events
-    qsa('.qrBtn', container).forEach((btn)=>{
-      btn.addEventListener('click', async ()=>{
-        const wrap = btn.parentElement.querySelector('.qrPopover');
-        if(wrap.classList.contains('hidden')){
-          wrap.classList.remove('hidden');
-          // position the fixed popover near the button, above all content
-          const rect = btn.getBoundingClientRect();
-          const popW = 176; // ~160 image + padding
-          const left = Math.min(window.innerWidth - popW - 8, Math.max(8, rect.left));
-          wrap.style.top = `${rect.bottom + 8}px`;
-          wrap.style.left = `${left}px`;
-
-          // click-away to close
-          const onDoc = (e)=>{ if(!wrap.contains(e.target) && e.target!==btn){ wrap.classList.add('hidden'); document.removeEventListener('click', onDoc, true); } };
-          setTimeout(()=>document.addEventListener('click', onDoc, true),0);
-
-          if(!wrap.dataset.loaded){
-            const card = btn.closest('[id^="card-"]');
-            const id = card.id.replace('card-','');
-            const tour = tours.find(t=> t.id===id);
-            try{
-              const url = await QRCode.toDataURL(tour.bookingUrl, { margin:1, scale:6 });
-              wrap.innerHTML = `<img src="${url}" alt="QR code" class="h-40 w-40" />`;
-              wrap.dataset.loaded = '1';
-            }catch(err){ wrap.innerHTML = `<div class="p-8 text-sm text-red-600">QR failed</div>`; }
-          }
-        } else {
-          wrap.classList.add('hidden');
-        }
-      });
-    });
-  }
-
-  function renderWhy(){
-    const c = COPY[state.locale].why;
-    qs('#why').innerHTML = `
-      <div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="rounded-full border px-3 py-1 text-xs">${c.pill}</span></div>
-      <div class="grid md:grid-cols-3 gap-3 mt-4">
-        <div class="rounded-xl border p-4 text-sm">${c.a}</div>
-        <div class="rounded-xl border p-4 text-sm">${c.b}</div>
-        <div class="rounded-xl border p-4 text-sm">${c.c}</div>
-      </div>`;
-  }
-
-  function renderFAQ(){
-    const f = COPY[state.locale].faq;
-    qs('#faq').innerHTML = `
-      <h2 class="text-xl font-semibold mb-2">${f.title}</h2>
-      <details class="rounded-xl border p-4"><summary class="font-medium">${f.q1}</summary><p class="text-sm text-gray-600 mt-2">${f.a1}</p></details>
-      <details class="rounded-xl border p-4 mt-2"><summary class="font-medium">${f.q2}</summary><p class="text-sm text-gray-600 mt-2">${f.a2}</p></details>
-      <details class="rounded-xl border p-4 mt-2"><summary class="font-medium">${f.q3}</summary><p class="text-sm text-gray-600 mt-2">${f.a3}</p></details>`;
-  }
-
-  function renderContact(){
-    const c = COPY[state.locale].contact;
-    qs('#contact').innerHTML = `
-      <div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="text-xs text-gray-500">${c.hours}</span></div>
-      <div class="grid md:grid-cols-2 gap-3 mt-3">
-        <div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.name}</label><input id="iName" class="rounded-xl border px-3 py-2" placeholder="${c.name==='이름'?'홍길동':'Name'}" /></div>
-        <div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.email}</label><input id="iEmail" class="rounded-xl border px-3 py-2" type="email" placeholder="you@example.com" /></div>
-        <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.subject}</label><input id="iSubject" class="rounded-xl border px-3 py-2" placeholder="${c.placeholderSubj}" /></div>
-        <div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.message}</label><textarea id="iMessage" class="rounded-xl border px-3 py-2" rows="4" placeholder="${c.placeholderMsg}"></textarea></div>
-        <div class="md:col-span-2 flex items-center justify-between"><span class="text-xs text-gray-500">${c.note}</span><button id="sendBtn" class="rounded-2xl bg-black text-white px-4 py-2 text-sm">${c.submit}</button></div>
-      </div>`;
-    qs('#sendBtn').onclick = ()=>{
-      const payload = { name: qs('#iName').value, email: qs('#iEmail').value, subject: qs('#iSubject').value, message: qs('#iMessage').value, ts: Date.now() };
-      state.inbox = [payload, ...state.inbox];
-      renderInbox();
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    };
-  }
-
-  function renderInbox(){
-    const wrap = qs('#inboxWrap');
-    const list = qs('#inboxList');
-    wrap.classList.toggle('hidden', state.inbox.length===0);
-    list.innerHTML = state.inbox.map(m=>`
-      <div class="rounded-xl border bg-white p-3">
-        <div class="text-xs text-gray-500">${new Date(m.ts).toLocaleString()}</div>
-        <div class="font-medium">From: ${m.name} &lt;${m.email}&gt;</div>
-        <div class="text-sm">Subject: ${m.subject || '(No subject)'}</div>
-        <div class="text-sm text-gray-700 mt-1 whitespace-pre-wrap">${m.message || '(No content)'}</div>
-      </div>`).join('');
-  }
-
-  function renderFooter(){
-    const f = COPY[state.locale].footer;
-    qs('#footer').innerHTML = `
-      <div class="mb-2 font-semibold">Sezmiee International</div>
-      <div class="mb-2">${f.copy}</div>
-      <div class="flex items-center justify-center gap-3 flex-wrap mb-2">
-        ${f.links.map(l=>`<a href="#${l.toLowerCase().replace(/\s/g,'')}" class="hover:underline">${l}</a>`).join('')}
-      </div>
-      <div class="text-gray-400">${f.policy} · ${f.policies}</div>`;
-  }
-
-  function renderAllButHeader(){
-    renderAdvancedSearch();
-    renderToolbar();
-    renderCards();
-    renderWhy();
-    renderFAQ();
-    renderContact();
-    renderInbox();
-    renderFooter();
-  }
-  /* ======= Schedules & Place i18n (added) ======= */
-  const I18N_SCHEDULES = {
-    en:{1:"Meet 10:00 → Café A → Café B → Photo walk → Café C",2:"14:00 start → Ikseon alleys → Bukchon photo → Local café",3:"09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",4:"13:00 start → Hot pop-up → Street-art photo → Flea/check",5:"16:00 start → Café break → Hangang walk & photo → Sunset",6:"18:30 start → Myeongdong goods → SMTOWN/Gangnam spot → Hangang night",7:"10:00 depart → Heyri stroll → Brunch café → Gallery photo",8:"15:00 start → Theme café → Street game shop → Photo spot",9:"17:00 start → Naksan light walk → Fortress night path",10:"16:30 start → Jongno hanok alleys → Sunset shooting",11:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh"},
-    kr:{1:"10:00 미팅 → 카페 A → 카페 B → 포토 워크 → 카페 C",2:"14:00 시작 → 익선 골목 산책 → 북촌 사진 → 로컬 카페",3:"09:30 출발 → 청계천 스냅 → 세운스팟 → DDP 외관",4:"13:00 시작 → 핫한 팝업 → 스트리트아트 촬영 → 플리마켓 체크",5:"16:00 시작 → 카페 브레이크 → 한강 산책 & 사진 → 석양",6:"18:30 시작 → 명동 굿즈 숍 → SMTOWN/강남 스팟 → 한강 야경",7:"10:00 출발 → 헤이리 산책 → 브런치 카페 → 갤러리 촬영",8:"15:00 시작 → 테마 카페 → 거리 게임숍 → 포토 스팟",9:"17:00 시작 → 낙산 야경 산책 → 도성 야간길",10:"16:30 시작 → 종로 한옥 골목 → 선셋 촬영",11:"08:00 미팅 → 트레일헤드 이동 → 하이킹/서울 전망 → 하산 & 리프레시"},
-    es:{1:"Encuentro 10:00 → Café A → Café B → Paseo fotográfico → Café C",2:"Inicio 14:00 → Callejones de Ikseon → Foto en Bukchon → Café local",3:"Salida 09:30 → Fotos en Cheonggyecheon → Punto Sewoon → Exterior del DDP",4:"Inicio 13:00 → Pop-up de moda → Foto de arte urbano → Revisión de mercadillo",5:"Inicio 16:00 → Pausa de café → Paseo por el Han & fotos → Atardecer",6:"Inicio 18:30 → Tiendas K-Pop en Myeongdong → Punto SMTOWN/Gangnam → Noche en el Han",7:"Salida 10:00 → Paseo por Heyri → Café-brunch → Foto en galería",8:"Inicio 15:00 → Café temático → Tienda de juegos de calle → Punto de foto",9:"Inicio 17:00 → Paseo nocturno por Naksan → Senda nocturna de la muralla",10:"Inicio 16:30 → Callejones hanok en Jongno → Sesión de atardecer",11:"Encuentro 08:00 → Traslado al inicio del sendero → Caminata/vistas de Seúl → Descenso y descanso"},
-    zh:{1:"10:00 集合 → 咖啡馆A → 咖啡馆B → 街拍散步 → 咖啡馆C",2:"14:00 开始 → 益善洞小巷 → 北村拍照 → 本地咖啡馆",3:"09:30 出发 → 清溪川抓拍 → 世运点位 → DDP 外立面",4:"13:00 开始 → 热门快闪 → 街头艺术拍摄 → 跳蚤市场看看",5:"16:00 开始 → 咖啡休息 → 汉江步行&拍照 → 日落",6:"18:30 开始 → 明洞K-Pop周边 → SMTOWN/江南点位 → 汉江夜景",7:"10:00 出发 → Heyri 漫步 → 早午餐咖啡 → 画廊拍照",8:"15:00 开始 → 主题咖啡 → 街头游戏店 → 打卡点",9:"17:00 开始 → 骆山灯光散步 → 城郭夜间步道",10:"16:30 开始 → 钟路韩屋小巷 → 日落拍摄",11:"08:00 集合 → 前往登山口 → 徒步/首尔观景 → 下山&休整"},
-    zhHant:{1:"10:00 集合 → 咖啡A → 咖啡B → 街拍散步 → 咖啡C",2:"14:00 開始 → 益善洞巷弄 → 北村拍照 → 在地咖啡",3:"09:30 出發 → 清溪川快拍 → 世運場景 → DDP 外觀",4:"13:00 開始 → 熱門快閃 → 街頭藝術拍攝 → 逛逛市集",5:"16:00 開始 → 咖啡休息 → 漢江散步與拍照 → 夕陽",6:"18:30 開始 → 明洞K-Pop商店 → SMTOWN/江南景點 → 漢江夜景",7:"10:00 出發 → Heyri 漫步 → 早午餐咖啡 → 畫廊拍照",8:"15:00 開始 → 主題咖啡 → 街頭遊戲店 → 打卡點",9:"17:00 開始 → 駱山燈光散步 → 城郭夜間步道",10:"16:30 開始 → 鐘路的韓屋巷弄 → 夕照攝影",11:"08:00 集合 → 前往登山口 → 健行/首爾展望 → 下山休息"},
-    ja:{1:"10:00 集合 → カフェA → カフェB → フォトウォーク → カフェC",2:"14:00 開始 → 益善洞の路地歩き → 北村で撮影 → ローカルカフェ",3:"09:30 出発 → 清渓川スナップ → セウンスポット → DDP外観",4:"13:00 開始 → 人気ポップアップ → ストリートアート撮影 → フリマチェック",5:"16:00 開始 → カフェ休憩 → 漢江さんぽ＆撮影 → サンセット",6:"18:30 開始 → 明洞K-Popグッズ → SMTOWN/江南スポット → 漢江ナイトビュー",7:"10:00 出発 → ヘイリ散策 → ブランチカフェ → ギャラリー撮影",8:"15:00 開始 → テーマカフェ → ストリートゲームショップ → フォトスポット",9:"17:00 開始 → 駱山ライトウォーク → 城郭の夜道",10:"16:30 開始 → 鐘路の韓屋路地 → 夕景撮影",11:"08:00 集合 → トレイルヘッドへ移動 → ハイキング/ソウル展望 → 下山＆リフレッシュ"}
-  };
-
-  function formatDurationLocal(dur, locale){
-    const n = String(dur).replace(/h/g,'');
-    if(locale==='kr') return n + '시간';
-    if(locale==='ja') return n + '時間';
-    if(locale==='zh') return n + '小时';
-    if(locale==='zhHant') return n + '小時';
-    if(locale==='es') return n + ' h';
-    return dur;
-  }
-
-  const AREA_KEYS = ['Seoul','Gyeonggi','Various','Hangang','Hongdae','Jongno','Naksan','Fortress','Myeongdong','Gangnam','DDP','Euljiro','Seongsu','Ikseon','Bukchon','Paju (Heyri)','Bukhansan','Inwangsan'];
-  const AREA_MAP = {
-    kr:{Seoul:'서울',Gyeonggi:'경기',Various:'다양한 지역',Hangang:'한강',Hongdae:'홍대',Jongno:'종로',Naksan:'낙산',Fortress:'성곽',Myeongdong:'명동',Gangnam:'강남',DDP:'DDP',Euljiro:'을지로',Seongsu:'성수',Ikseon:'익선',Bukchon:'북촌','Paju (Heyri)':'파주(헤이리)',Bukhansan:'북한산',Inwangsan:'인왕산'},
-    en:{},
-    es:{Seoul:'Seúl',Gyeonggi:'Gyeonggi',Various:'Varios',Hangang:'Han',Hongdae:'Hongdae',Jongno:'Jongno',Naksan:'Naksan',Fortress:'Muralla',Myeongdong:'Myeongdong',Gangnam:'Gangnam',DDP:'DDP',Euljiro:'Euljiro',Seongsu:'Seongsu',Ikseon:'Ikseon',Bukchon:'Bukchon','Paju (Heyri)':'Paju (Heyri)',Bukhansan:'Bukhansan',Inwangsan:'Inwangsan'},
-    zh:{Seoul:'首尔',Gyeonggi:'京畿',Various:'多地区',Hangang:'汉江',Hongdae:'弘大',Jongno:'钟路',Naksan:'骆山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'圣水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(Heyri)',Bukhansan:'北汉山',Inwangsan:'仁王山'},
-    zhHant:{Seoul:'首爾',Gyeonggi:'京畿',Various:'多地',Hangang:'漢江',Hongdae:'弘大',Jongno:'鐘路',Naksan:'駱山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'聖水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(Heyri)',Bukhansan:'北漢山',Inwangsan:'仁王山'},
-    ja:{Seoul:'ソウル',Gyeonggi:'京畿',Various:'各所',Hangang:'漢江',Hongdae:'弘大',Jongno:'鐘路',Naksan:'駱山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'聖水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(ヘイリ)',Bukhansan:'北漢山',Inwangsan:'仁王山'}
-  };
-  function localizeArea(area, locale){
-    let out = area;
-    const map = AREA_MAP[locale]||{};
-    AREA_KEYS.forEach(k=>{ if(map[k]){ var re = new RegExp(k,'g'); out = out.replace(re, map[k]); } });
-    return out;
-  }
-
-  function localizeMeet(meet, locale){
-    var lower = meet.toLowerCase();
-    if(lower.indexOf('to be confirmed (varies by pop-up)')>-1){
-      if(locale==='kr') return '변동(팝업별 상이)';
-      if(locale==='es') return 'Por confirmar (según pop-up)';
-      if(locale==='zh') return '待定（依快閃而異）';
-      if(locale==='zhHant') return '待定（因快閃而異）';
-      if(locale==='ja') return '未定（ポップアップにより異なる）';
-      return meet;
-    }
-    if(lower.indexOf('to be confirmed(route/season)')>-1 || lower.indexOf('to be confirmed (route/season)')>-1){
-      if(locale==='kr') return '확정 예정(노선/시즌)';
-      if(locale==='es') return 'Por confirmar (ruta/temporada)';
-      if(locale==='zh') return '待定（路线/季节）';
-      if(locale==='zhHant') return '待定（路線/季節）';
-      if(locale==='ja') return '未定（ルート/季節）';
-      return meet;
-    }
-    if(meet.indexOf('Heyri Art Village Gate')>-1){
-      if(locale==='kr') return '헤이리 아트빌리지 정문';
-      if(locale==='es') return 'Puerta de Heyri Art Village';
-      if(locale==='zh') return 'Heyri艺术村 大门';
-      if(locale==='zhHant') return 'Heyri藝術村 大門';
-      if(locale==='ja') return 'ヘイリ・アートビレッジ正門';
-      return meet;
-    }
-    var m = meet.match(/^(.*) Station Exit ([0-9]+)/);
-    if(m){
-      var station = m[1].trim();
-      var exit = m[2];
-      if(locale==='kr') return (station + '역 ' + exit + '번 출구');
-      if(locale==='ja') return (station + '駅 ' + exit + '番 出口');
-      if(locale==='zh') return (station + '站 ' + exit + '号出口');
-      if(locale==='zhHant') return (station + '站 ' + exit + '號出口');
-      if(locale==='es') return (station + ' Estación Salida ' + exit);
-      return (station + ' Station Exit ' + exit);
-    }
-    return meet;
-  }
-
-  function getSchedule(t, locale){
-    var num = Number(String(t.id).replace(/[^0-9]/g,''));
-    return (I18N_SCHEDULES[locale] && I18N_SCHEDULES[locale][num]) || t.schedule;
-  }
-
-  // Initial render
-  renderAllButHeader();
+  /* 검색 placeholder 다국어 */
+  const UI={kr:{placeholder:"태그/지역/이름 검색…",search:"검색"},en:{placeholder:"Search tags, area, name…",search:"Search"},es:{placeholder:"Buscar etiquetas, zona, nombre…",search:"Buscar"},zh:{placeholder:"搜索 标签/区域/名称…",search:"搜索"},zhHant:{placeholder:"搜尋 標籤/區域/名稱…",search:"搜尋"},ja:{placeholder:"タグ/エリア/名称を検索…",search:"検索"}};
+  /* 다국어 텍스트 (검색/FAQ/문의/푸터 등) */
+  const COPY={kr:{adv:{title:"상세 검색",city:"도시",date:"출발일",guests:"인원",budget:"예산",search:"검색",cityOpts:["서울","경기"],paxOpts:["1명","2명","3명","4명","5명+"],budgetOpts:["~50,000원","~70,000원","~100,000원","100,000원+"]},why:{title:"왜 Sezmiee International?",pill:"간단 · 안전 · 유연",a:"현지 검증 코스",b:"투명한 가격",c:"유연한 커스터마이즈"},faq:{title:"FAQ",q1:"예약/결제는 어떻게 하나요?",a1:"문의 → 가이드 확인 → 입금 → 확정.",q2:"픽업 가능 지역?",a2:"서울 전역 + 김포/인천(일부 추가요금)",q3:"취소 규정?",a3:"7일 전 전액 / 3일 전 50% / 24시간 내 불가"},contact:{title:"문의하기",hours:"평일 10:00–18:00 / 익영업일 회신",name:"이름",email:"이메일",subject:"관심 상품/도시",message:"메시지",placeholderSubj:"예: Seoul Demon Tour",placeholderMsg:"일정/인원/예산 등 자유롭게 적어주세요",submit:"문의 전송(데모)",note:"실제 메일은 발송되지 않고 하단에 미리보기로 저장됩니다."},footer:{copy:"© 2025 Sezmiee International. 데모 — 백엔드 없음.",quick:"빠른 링크",links:["Tours","Why Us","FAQ","Contact"],policy:"정책 (데모)",policies:"TOS · Privacy · Cancellation"}},en:{adv:{title:"Search",city:"City",date:"Date",guests:"Guests",budget:"Budget",search:"Search",cityOpts:["Seoul","Gyeonggi"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"Why Sezmiee International?",pill:"Simple · Safe · Flexible",a:"Locally-verified routes",b:"Transparent pricing",c:"Flexible customization"},faq:{title:"FAQ",q1:"How do I book/pay?",a1:"Inquiry → confirm guide → bank transfer → confirmed.",q2:"Where is pickup available?",a2:"Seoul + Gimpo/Incheon (surcharge in some areas).",q3:"Cancellation policy?",a3:"Full refund up to 7 days; 50% until 3 days; none within 24h."},contact:{title:"Contact Us",hours:"Weekdays 10:00–18:00 / reply next business day",name:"Name",email:"Email",subject:"Tour/City of Interest",message:"Message",placeholderSubj:"e.g., Seoul Demon Tour",placeholderMsg:"Share date/guests/budget, etc.",submit:"Send Inquiry (Demo)",note:"Submissions are saved as a preview; no real email is sent."},footer:{copy:"© 2025 Sezmiee International. Demo only — no backend.",quick:"Quick Links",links:["Tours","Why Us","FAQ","Contact"],policy:"Policies (Demo)",policies:"TOS · Privacy · Cancellation"}},es:{adv:{title:"Búsqueda",city:"Ciudad",date:"Fecha",guests:"Personas",budget:"Presupuesto",search:"Buscar",cityOpts:["Seúl","Gyeonggi"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"¿Por qué Sezmiee International?",pill:"Simple · Seguro · Flexible",a:"Rutas verificadas",b:"Precio transparente",c:"Personalización flexible"},faq:{title:"FAQ",q1:"¿Cómo reservo/pago?",a1:"Consulta → confirmar guía → transferencia → confirmado.",q2:"¿Dónde hay recogida?",a2:"Seúl + Gimpo/Incheon (algunas zonas con recargo).",q3:"¿Cancelación?",a3:"Reembolso total hasta 7 días; 50% hasta 3; no dentro de 24h."},contact:{title:"Contacto",hours:"Lun–Vie 10:00–18:00 / respuesta siguiente día hábil",name:"Nombre",email:"Correo",subject:"Tour/Ciudad de interés",message:"Mensaje",placeholderSubj:"p.ej., Seoul Demon Tour",placeholderMsg:"Indica fecha/personas/presupuesto…",submit:"Enviar consulta (Demo)",note:"Solo vista previa; no se envía correo."},footer:{copy:"© 2025 Sezmiee International. Solo demo.",quick:"Enlaces rápidos",links:["Tours","Why Us","FAQ","Contact"],policy:"Políticas (Demo)",policies:"TOS · Privacidad · Cancelación"}},zh:{adv:{title:"搜索",city:"城市",date:"日期",guests:"人数",budget:"预算",search:"搜索",cityOpts:["首尔","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"为什么选择 Sezmiee International?",pill:"简单 · 安全 · 灵活",a:"本地验证路线",b:"透明定价",c:"灵活定制"},faq:{title:"常见问题",q1:"如何预订/付款？",a1:"咨询 → 确认向导 → 转账 → 确认。",q2:"接送范围？",a2:"首尔 + 金浦/仁川（部分加价）",q3:"取消政策？",a3:"7天前全退；3天前50%；24小时内不退。"},contact:{title:"联系我们",hours:"工作日10:00–18:00 / 次营业日回复",name:"姓名",email:"邮箱",subject:"意向行程/城市",message:"留言",placeholderSubj:"例如：Seoul Demon Tour",placeholderMsg:"请注明日期/人数/预算等",submit:"发送咨询（演示）",note:"仅保存预览，不会发送邮件。"},footer:{copy:"© 2025 Sezmiee International. 演示页面。",quick:"快速链接",links:["Tours","Why Us","FAQ","Contact"],policy:"政策（演示）",policies:"条款 · 隐私 · 取消"}},zhHant:{adv:{title:"搜尋",city:"城市",date:"日期",guests:"人數",budget:"預算",search:"搜尋",cityOpts:["首爾","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"為什麼選擇 Sezmiee International？",pill:"簡單 · 安全 · 彈性",a:"在地驗證路線",b:"透明定價",c:"彈性客製化"},faq:{title:"常見問題",q1:"如何預訂/付款？",a1:"諮詢 → 確認嚮導 → 匯款 → 成立。",q2:"接送範圍？",a2:"首爾 + 金浦/仁川（部分區域需加價）",q3:"取消政策？",a3:"7天前全額；3日前50%；24小時內不可。"},contact:{title:"聯絡我們",hours:"平日10:00–18:00／次營業日回覆",name:"姓名",email:"電子郵件",subject:"有興趣的行程/城市",message:"訊息",placeholderSubj:"例如：Seoul Demon Tour",placeholderMsg:"請告知日期/人數/預算等",submit:"送出詢問（示範）",note:"提交內容僅供預覽，不會寄出電子郵件。"},footer:{copy:"© 2025 Sezmiee International. 示範頁面 — 無後端。",quick:"快速連結",links:["Tours","Why Us","FAQ","Contact"],policy:"政策（示範）",policies:"條款 · 隱私 · 取消"}},ja:{adv:{title:"検索",city:"都市",date:"日付",guests:"人数",budget:"予算",search:"検索",cityOpts:["ソウル","京畿"],paxOpts:["1","2","3","4","5+"],budgetOpts:["~50,000₩","~70,000₩","~100,000₩","100,000₩+"]},why:{title:"Why Sezmiee International?",pill:"シンプル・安全・柔軟",a:"現地検証ルート",b:"透明価格",c:"柔軟なカスタマイズ"},faq:{title:"FAQ",q1:"予約/支払い方法は？",a1:"問い合わせ → ガイド確認 → 振込 → 確定。",q2:"送迎エリアは？",a2:"ソウル全域＋金浦/仁川（一部追加料金）",q3:"キャンセルポリシーは？",a3:"7日前まで全額、3日前まで50%、24時間以内不可。"},contact:{title:"お問い合わせ",hours:"平日10:00–18:00 / 次営業日返信",name:"お名前",email:"メール",subject:"興味のあるツアー/都市",message:"メッセージ",placeholderSubj:"例: Seoul Demon Tour",placeholderMsg:"日付/人数/予算など",submit:"送信（デモ）",note:"送信されず、プレビュー保存のみ。"},footer:{copy:"© 2025 Sezmiee International. デモ。",quick:"クイックリンク",links:["Tours","Why Us","FAQ","Contact"],policy:"ポリシー（デモ）",policies:"利用規約 · プライバシー · キャンセル"}}};
+  /* 투어 제목/설명 다국어 */
+  const I18N_TOURS={en:{1:{title:"Seoul Instagrammable Café-Hop Tour",desc:"3 popular IG-worthy cafés + photo walk"},2:{title:"Seoul Hidden-Gem City Walk Experience",desc:"Lesser-known alleys with a local guide"},3:{title:"Seoul Trendspotting Photo-Tour",desc:"Pro photographer + on-trend spaces"},4:{title:"Seoul Popup-Culture Hopping Tour",desc:"Pop-ups, street art, flea markets + creators"},5:{title:"Seoul Lifestyle Travel Outing",desc:"Café break + Hangang walk + photo spots"},6:{title:"Seoul Demon Tour: K-Pop & Night Walk",desc:"Myeongdong K-Pop goods + SMTOWN + Hangang River"},7:{title:"Gyeonggi Art Village Brunch & Café Tour",desc:"Heyri art village + brunch café + gallery"},8:{title:"Hongdae Animation & Game Theme Café Walk",desc:"Anime/game/webtoon cafés + street game shops"},9:{title:"Seoul Nighttime Hidden-Gems Walking Tour",desc:"Night walk with a history guide"},10:{title:"Seoul Heritage & Sunset Photo Tour",desc:"Hanok alleys + sunset with a pro photographer"},11:{title:"Seoul Mountain Hiking Adventure – Bukhansan/Inwang views",desc:"Hike Bukhansan or Inwangsan with panoramic Seoul views + guide"}},kr:{1:{title:"서울 인스타그램 카페투어",desc:"핫한 카페 3곳 + 포토 워크"},2:{title:"서울 숨은 명소 도보투어",desc:"현지 가이드와 골목 산책"},3:{title:"서울 트렌드스포팅 포토투어",desc:"프로 사진가 + 트렌디 공간"},4:{title:"서울 팝업컬처 하핑 투어",desc:"팝업/스트리트아트/플리마켓"},5:{title:"서울 라이프스타일 나들이",desc:"카페 휴식 + 한강 산책 + 포토"},6:{title:"서울 데몬 투어: 케이팝 & 나이트",desc:"명동 굿즈 + SMTOWN + 한강 야경"},7:{title:"경기 헤이리 아트빌리지 브런치 & 카페",desc:"헤이리 + 브런치 + 갤러리"},8:{title:"홍대 애니·게임 테마카페 워킹투어",desc:"테마카페 + 게임숍"},9:{title:"서울 명소 나이트 워킹투어",desc:"역사가이드와 야간 산책"},10:{title:"서울 헤리티지 & 선셋 포토투어",desc:"한옥 골목 + 프로 촬영"},11:{title:"서울 등산 어드벤처 – 북한산/인왕산",desc:"등산 + 서울 전경 + 가이드"}},es:{1:{title:"Tour de cafés instagrammables en Seúl",desc:"3 cafés + paseo fotográfico"},2:{title:"Paseo urbano de joyas ocultas",desc:"Callejones poco conocidos"},3:{title:"Tour fotográfico de tendencias",desc:"Fotógrafo + espacios de moda"},4:{title:"Ruta de cultura pop-up",desc:"Pop-ups y mercadillos"},5:{title:"Salida lifestyle por Seúl",desc:"Café + río Han"},6:{title:"Seoul Demon Tour: K-Pop y noche",desc:"Compras K-Pop + Han"},7:{title:"Brunch en aldea de arte",desc:"Heyri + brunch + galería"},8:{title:"Cafés temáticos en Hongdae",desc:"Anime/game cafés"},9:{title:"Seúl nocturno a pie",desc:"Paseo con guía"},10:{title:"Patrimonio y atardecer",desc:"Hanok + atardecer"},11:{title:"Aventura de senderismo en Seúl",desc:"Bukhansan/Inwang vistas"}},zh:{1:{title:"首尔网红咖啡巡礼",desc:"3家网红咖啡+街拍"},2:{title:"首尔城市秘境徒步",desc:"当地导游带路"},3:{title:"首尔潮流摄影之旅",desc:"专业摄影+潮流空间"},4:{title:"首尔快闪文化巡游",desc:"快闪/市集/街拍"},5:{title:"首尔生活方式小旅行",desc:"咖啡+汉江散步"},6:{title:"恶魔之旅：K-Pop夜行",desc:"明洞+SMTOWN+汉江"},7:{title:"京畿艺术村早午餐",desc:"Heyri+早午餐"},8:{title:"弘大动漫游戏咖啡",desc:"主题咖啡+游戏店"},9:{title:"首尔夜间秘境徒步",desc:"历史夜游"},10:{title:"首尔遗产与日落",desc:"韩屋+日落拍摄"},11:{title:"首尔登山探险",desc:"北汉山/仁王山"}},zhHant:{1:{title:"首爾網紅咖啡巡禮",desc:"3間咖啡+街拍"},2:{title:"首爾城市秘境徒步",desc:"在地嚮導帶路"},3:{title:"首爾潮流攝影之旅",desc:"專業攝影+潮流空間"},4:{title:"首爾快閃文化巡遊",desc:"快閃/市集/街拍"},5:{title:"首爾生活風格小旅行",desc:"咖啡+漢江散步"},6:{title:"惡魔之旅：K-Pop 夜行",desc:"明洞+SMTOWN+漢江"},7:{title:"京畿藝術村早午餐",desc:"Heyri+早午餐"},8:{title:"弘大動漫遊戲咖啡",desc:"主題咖啡+遊戲店"},9:{title:"首爾夜間秘境徒步",desc:"歷史夜遊"},10:{title:"首爾文化遺產與夕照",desc:"韓屋+夕照"},11:{title:"首爾登山冒險",desc:"北漢山/仁王山"}},ja:{1:{title:"ソウル インスタ映えカフェ巡り",desc:"人気カフェ3軒+フォト"},2:{title:"ソウル隠れスポット街歩き",desc:"ローカルガイド"},3:{title:"ソウル トレンド撮影ツアー",desc:"プロカメラマン"},4:{title:"ソウル ポップアップ文化ホッピング",desc:"ポップアップ/フリマ"},5:{title:"ソウル ライフスタイル小旅行",desc:"カフェ+漢江散歩"},6:{title:"デーモンツアー：K-Pop&ナイト",desc:"明洞+SMTOWN+漢江"},7:{title:"京畿アート村ブランチ",desc:"ヘイリ+ブランチ"},8:{title:"弘大アニメ&ゲームカフェ",desc:"テーマカフェ"},9:{title:"ソウル夜の秘境ウォーク",desc:"歴史ガイド"},10:{title:"ソウル遺産&サンセット",desc:"韓屋+夕景"},11:{title:"ソウル登山アドベンチャー",desc:"北漢山/仁王山"}}};
+  /* 일정 다국어 */
+  const I18N_SCHEDULES={en:{1:"Meet 10:00 → Café A → Café B → Photo walk → Café C",2:"14:00 start → Ikseon alleys → Bukchon photo → Local café",3:"09:30 depart → Cheonggyecheon snaps → Sewoon spot → DDP exterior",4:"13:00 start → Hot pop-up → Street-art photo → Flea/check",5:"16:00 start → Café break → Hangang walk & photo → Sunset",6:"18:30 start → Myeongdong goods → SMTOWN/Gangnam spot → Hangang night",7:"10:00 depart → Heyri stroll → Brunch café → Gallery photo",8:"15:00 start → Theme café → Street game shop → Photo spot",9:"17:00 start → Naksan light walk → Fortress night path",10:"16:30 start → Jongno hanok alleys → Sunset shooting",11:"08:00 meet → transfer to trailhead → hike/Seoul viewpoints → descent & refresh"},kr:{1:"10:00 미팅 → 카페 A → 카페 B → 포토 워크 → 카페 C",2:"14:00 시작 → 익선 골목 산책 → 북촌 사진 → 로컬 카페",3:"09:30 출발 → 청계천 스냅 → 세운스팟 → DDP 외관",4:"13:00 시작 → 핫한 팝업 → 스트리트아트 촬영 → 플리마켓 체크",5:"16:00 시작 → 카페 브레이크 → 한강 산책 & 사진 → 석양",6:"18:30 시작 → 명동 굿즈 숍 → SMTOWN/강남 스팟 → 한강 야경",7:"10:00 출발 → 헤이리 산책 → 브런치 카페 → 갤러리 촬영",8:"15:00 시작 → 테마 카페 → 거리 게임숍 → 포토 스팟",9:"17:00 시작 → 낙산 야경 산책 → 한양도성 야간길",10:"16:30 시작 → 종로 한옥 골목 → 선셋 촬영",11:"08:00 미팅 → 트레일헤드 이동 → 하이킹/서울 전망 → 하산 & 리프레시"},es:{1:"Encuentro 10:00 → Café A → Café B → Paseo fotográfico → Café C",2:"Inicio 14:00 → Callejones de Ikseon → Foto en Bukchon → Café local",3:"Salida 09:30 → Fotos en Cheonggyecheon → Punto Sewoon → Exterior del DDP",4:"Inicio 13:00 → Pop-up de moda → Foto de arte urbano → Revisión de mercadillo",5:"Inicio 16:00 → Pausa de café → Paseo por el Han & fotos → Atardecer",6:"Inicio 18:30 → Tiendas K-Pop en Myeongdong → Punto SMTOWN/Gangnam → Noche en el Han",7:"Salida 10:00 → Paseo por Heyri → Café-brunch → Foto en galería",8:"Inicio 15:00 → Café temático → Tienda de juegos de calle → Punto de foto",9:"Inicio 17:00 → Paseo nocturno por Naksan → Senda nocturna de la muralla",10:"Inicio 16:30 → Callejones hanok en Jongno → Sesión de atardecer",11:"Encuentro 08:00 → Traslado al inicio del sendero → Caminata/vistas de Seúl → Descenso y descanso"},zh:{1:"10:00 集合 → 咖啡馆A → 咖啡馆B → 街拍散步 → 咖啡馆C",2:"14:00 开始 → 益善洞小巷 → 北村拍照 → 本地咖啡馆",3:"09:30 出发 → 清溪川抓拍 → 世运点位 → DDP 外立面",4:"13:00 开始 → 热门快闪 → 街头艺术拍摄 → 跳蚤市场看看",5:"16:00 开始 → 咖啡休息 → 汉江步行&拍照 → 日落",6:"18:30 开始 → 明洞K-Pop周边 → SMTOWN/江南点位 → 汉江夜景",7:"10:00 出发 → Heyri 漫步 → 早午餐咖啡 → 画廊拍照",8:"15:00 开始 → 主题咖啡 → 街头游戏店 → 打卡点",9:"17:00 开始 → 骆山灯光散步 → 城郭夜间步道",10:"16:30 开始 → 钟路韩屋小巷 → 日落拍摄",11:"08:00 集合 → 前往登山口 → 徒步/首尔观景 → 下山&休整"},zhHant:{1:"10:00 集合 → 咖啡A → 咖啡B → 街拍散步 → 咖啡C",2:"14:00 開始 → 益善洞巷弄 → 北村拍照 → 在地咖啡",3:"09:30 出發 → 清溪川快拍 → 世運場景 → DDP 外觀",4:"13:00 開始 → 熱門快閃 → 街頭藝術拍攝 → 逛逛市集",5:"16:00 開始 → 咖啡休息 → 漢江散步與拍照 → 夕陽",6:"18:30 開始 → 明洞K-Pop商店 → SMTOWN/江南景點 → 漢江夜景",7:"10:00 出發 → Heyri 漫步 → 早午餐咖啡 → 畫廊拍照",8:"15:00 開始 → 主題咖啡 → 街頭遊戲店 → 打卡點",9:"17:00 開始 → 駱山燈光散步 → 城郭夜間步道",10:"16:30 開始 → 鐘路的韓屋巷弄 → 夕照攝影",11:"08:00 開始 → 前往登山口 → 健行/首爾展望 → 下山休息"},ja:{1:"10:00 集合 → カフェA → カフェB → フォトウォーク → カフェC",2:"14:00 開始 → 益善洞の路地歩き → 北村で撮影 → ローカルカフェ",3:"09:30 出発 → 清渓川スナップ → セウンスポット → DDP外観",4:"13:00 開始 → 人気ポップアップ → ストリートアート撮影 → フリマチェック",5:"16:00 開始 → カフェ休憩 → 漢江さんぽ＆撮影 → サンセット",6:"18:30 開始 → 明洞K-Popグッズ → SMTOWN/江南スポット → 漢江ナイトビュー",7:"10:00 出発 → ヘイリ散策 → ブランチカフェ → ギャラリー撮影",8:"15:00 開始 → テーマカフェ → ストリートゲームショップ → フォトスポット",9:"17:00 開始 → 駱山ライトウォーク → 城郭の夜道",10:"16:30 開始 → 鐘路の韓屋路地 → 夕景撮影",11:"08:00 開始 → トレイルヘッドへ移動 → ハイキング/ソウル展望 → 下山＆リフレッシュ"}};
+  /* 미팅포인트 다국어 */
+  const I18N_MEETS={kr:{1:'서울 · 성수 · 성수역 3번 출구',2:'서울 · 익선 & 북촌 · 종로3가역 4번 출구',3:'서울 · DDP & 을지로 · 동대문역사문화공원역 1번 출구',4:'서울 · 팝업존 · 일정별 변동',5:'서울 · 한강 · 여의나루역 2번 출구',6:'서울 · 명동 & 강남 · 명동역 6번 출구',7:'경기 · 파주(헤이리) · 아트빌리지 정문',8:'서울 · 홍대 · 홍대입구역 9번 출구',9:'서울 · 낙산/성곽 · 혜화역 2번 출구',10:'서울 · 종로 · 안국역 2번 출구',11:'서울 · 등산(계절/루트별 변동)'},en:{1:'Seoul · Seongsu · Seongsu Stn. Exit 3',2:'Seoul · Ikseon & Bukchon · Jongno 3-ga Stn. Exit 4',3:'Seoul · DDP & Euljiro · Dongdaemun History & Culture Park Exit 1',4:'Seoul · Pop-up zone · Varies by event',5:'Seoul · Hangang · Yeouinaru Stn. Exit 2',6:'Seoul · Myeongdong & Gangnam · Myeongdong Stn. Exit 6',7:'Gyeonggi · Paju (Heyri) · Art Village Main Gate',8:'Seoul · Hongdae · Hongik Univ. Stn. Exit 9',9:'Seoul · Naksan/Fortress · Hyehwa Stn. Exit 2',10:'Seoul · Jongno · Anguk Stn. Exit 2',11:'Seoul · Hiking (route/season varies)'},es:{1:'Seúl · Seongsu · Est. Seongsu Salida 3',2:'Seúl · Ikseon & Bukchon · Est. Jongno 3-ga Salida 4',3:'Seúl · DDP & Euljiro · Dongdaemun History & Culture Park Salida 1',4:'Seúl · Zona pop-up · Varía según evento',5:'Seúl · Río Han · Est. Yeouinaru Salida 2',6:'Seúl · Myeongdong & Gangnam · Est. Myeongdong Salida 6',7:'Gyeonggi · Paju (Heyri) · Puerta principal',8:'Seúl · Hongdae · Est. Hongik Univ. Salida 9',9:'Seúl · Naksan/Muralla · Est. Hyehwa Salida 2',10:'Seúl · Jongno · Est. Anguk Salida 2',11:'Seúl · Senderismo (ruta/temporada variable)'},zh:{1:'首尔 · 圣水 · 圣水站 3号出口',2:'首尔 · 益善洞&北村 · 钟路3街站 4号出口',3:'首尔 · DDP&乙支路 · 东大门历史文化公园站 1号出口',4:'首尔 · 快闪区 · 依活动而定',5:'首尔 · 汉江 · 汝矣纳鲁站 2号出口',6:'首尔 · 明洞&江南 · 明洞站 6号出口',7:'京畿 · 坡州(Heyri) · 艺术村正门',8:'首尔 · 弘大 · 弘大入口站 9号出口',9:'首尔 · 骆山/城郭 · 惠化站 2号出口',10:'首尔 · 钟路 · 安国站 2号出口',11:'首尔 · 徒步（路线/季节不定）'},zhHant:{1:'首爾 · 聖水 · 聖水站 3號出口',2:'首爾 · 益善洞&北村 · 鐘路3街站 4號出口',3:'首爾 · DDP&乙支路 · 東大門歷史文化公園站 1號出口',4:'首爾 · 快閃區 · 因活動而異',5:'首爾 · 漢江 · 汝矣納魯站 2號出口',6:'首爾 · 明洞&江南 · 明洞站 6號出口',7:'京畿 · 坡州(Heyri) · 藝術村正門',8:'首爾 · 弘大 · 弘大入口站 9號出口',9:'首爾 · 駱山/城郭 · 惠化站 2號出口',10:'首爾 · 鐘路 · 安國站 2號出口',11:'首爾 · 健行（路線/季節不定）'},ja:{1:'ソウル · 聖水 · 聖水駅 3番出口',2:'ソウル · 益善&北村 · 鐘路3街駅 4番出口',3:'ソウル · DDP&乙支路 · 東大門歴史文化公園駅 1番出口',4:'ソウル · ポップアップゾーン · 日程により変動',5:'ソウル · 漢江 · 汝矣ナル駅 2番出口',6:'ソウル · 明洞&江南 · 明洞駅 6番出口',7:'京畿 · 坡州(ヘイリ) · アートビレッジ正門',8:'ソウル · 弘大 · 弘大入口駅 9番出口',9:'ソウル · 駱山/城郭 · 恵化駅 2番出口',10:'ソウル · 鐘路 · 安国駅 2番出口',11:'ソウル · ハイキング（ルート/季節により変動）'}};
+  /* 지역 키워드 */
+  const AREA_KEYS=['Seoul','Gyeonggi','Various','Hangang','Hongdae','Jongno','Naksan','Fortress','Myeongdong','Gangnam','DDP','Euljiro','Seongsu','Ikseon','Bukchon','Paju (Heyri)','Bukhansan','Inwangsan'];
+  /* 지역 다국어 맵핑 */
+  const AREA_MAP={kr:{Seoul:'서울',Gyeonggi:'경기',Various:'다양한 지역',Hangang:'한강',Hongdae:'홍대',Jongno:'종로',Naksan:'낙산',Fortress:'성곽',Myeongdong:'명동',Gangnam:'강남',DDP:'DDP',Euljiro:'을지로',Seongsu:'성수',Ikseon:'익선',Bukchon:'북촌','Paju (Heyri)':'파주(헤이리)',Bukhansan:'북한산',Inwangsan:'인왕산'},en:{},es:{Seoul:'Seúl',Gyeonggi:'Gyeonggi',Various:'Varios',Hangang:'Han',Hongdae:'Hongdae',Jongno:'Jongno',Naksan:'Naksan',Fortress:'Muralla',Myeongdong:'Myeongdong',Gangnam:'Gangnam',DDP:'DDP',Euljiro:'Euljiro',Seongsu:'Seongsu',Ikseon:'Ikseon',Bukchon:'Bukchon','Paju (Heyri)':'Paju (Heyri)',Bukhansan:'Bukhansan',Inwangsan:'Inwangsan'},zh:{Seoul:'首尔',Gyeonggi:'京畿',Various:'多地区',Hangang:'汉江',Hongdae:'弘大',Jongno:'钟路',Naksan:'骆山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'圣水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(Heyri)',Bukhansan:'北汉山',Inwangsan:'仁王山'},zhHant:{Seoul:'首爾',Gyeonggi:'京畿',Various:'多地',Hangang:'漢江',Hongdae:'弘大',Jongno:'鐘路',Naksan:'駱山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'聖水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(Heyri)',Bukhansan:'北漢山',Inwangsan:'仁王山'},ja:{Seoul:'ソウル',Gyeonggi:'京畿',Various:'各所',Hangang:'漢江',Hongdae:'弘大',Jongno:'鐘路',Naksan:'駱山',Fortress:'城郭',Myeongdong:'明洞',Gangnam:'江南',DDP:'DDP',Euljiro:'乙支路',Seongsu:'聖水',Ikseon:'益善',Bukchon:'北村','Paju (Heyri)':'坡州(ヘイリ)',Bukhansan:'北漢山',Inwangsan:'仁王山'}};
+ /* ──────────────────────────────────────
+     2️⃣ 유틸리티 함수 (언어/지역 변환 등)
+  ────────────────────────────────────── */
+  //다국어 일정 변환
+  function getSchedule(t,l){const n=Number(String(t.id).replace(/\D/g,''));return(I18N_SCHEDULES[l]&&I18N_SCHEDULES[l][n])||t.schedule;}
+  //다국어 미팅포인트
+  function getMeet(t,l){const n=Number(String(t.id).replace(/\D/g,''));return(I18N_MEETS[l]&&I18N_MEETS[l][n])||t.meetPoint;}
+  //KRW 통화 포맷
+  const formatKRW=v=>new Intl.NumberFormat("ko-KR",{style:"currency",currency:"KRW",maximumFractionDigits:0}).format(v);
+  //다국어 투어 소요시간
+  function formatDurationLocal(d,l){return!d?"":l==="kr"?d.replace(/h/g,"시간"):l==="zh"||l==="zhHant"?d.replace(/h/g,"小时"):l==="ja"?d.replace(/h/g,"時間"):l==="es"?d.replace(/h/g,"h"):d;}
+  //지역명 변환
+  function localizeArea(a,l){let o=a;const m=AREA_MAP[l]||{};AREA_KEYS.forEach(k=>{if(m[k]){const re=new RegExp(k,'g');o=o.replace(re,m[k]);}});return o;}
+  //투어 제목/설명 변환
+  const getLocalized=(t,l)=>{const n=Number(String(t.id).replace(/\D/g,''));const p=(I18N_TOURS[l]||{})[n];return{name:p?.title||t.name,short:p?.desc||t.short};};
+ /* ────────────────────────────────
+     3️⃣ 상태(state) 관리
+  ──────────────────────────────── */
+  let state={locale:'kr',query:'',adv:{city:'',date:'',guests:'',budget:''},inbox:[]};
+  const qs=(s,el=document)=>el.querySelector(s);
+  const qsa=(s,el=document)=>[...el.querySelectorAll(s)];
+ /* ────────────────────────────────
+     4️⃣ 렌더링 함수들
+  ──────────────────────────────── */
+  //(1) 상세검색 영역
+  function renderAdvancedSearch(){const L=COPY[state.locale].adv;qs('#advSection').innerHTML=`<div class="mb-3 text-sm font-semibold">${L.title}</div><div class="grid grid-cols-1 md:grid-cols-5 gap-3"><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.city}</label><select id="city" class="rounded-xl border px-3 py-2">${L.cityOpts.map(c=>`<option>${c}</option>`).join('')}</select></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.date}</label><input id="date" type="date" class="rounded-xl border px-3 py-2" /></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.guests}</label><select id="guests" class="rounded-xl border px-3 py-2">${L.paxOpts.map(p=>`<option>${p}</option>`).join('')}</select></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${L.budget}</label><select id="budget" class="rounded-xl border px-3 py-2">${L.budgetOpts.map(b=>`<option>${b}</option>`).join('')}</select></div><div class="flex items-end"><button id="advApply" class="w-full rounded-2xl border px-4 py-2 hover:bg-gray-50 font-medium">${L.search}</button></div></div>`;qs('#city').value=L.cityOpts[0]||'';qs('#guests').value=L.paxOpts[0]||'';qs('#budget').value=L.budgetOpts[0]||'';qs('#advApply').onclick=()=>{state.adv={city:qs('#city').value,date:qs('#date').value,guests:qs('#guests').value,budget:qs('#budget').value};renderCards();};}
+  //(2) 툴바 (언어 선택, 검색창)
+  function renderToolbar(){const langBtns=['kr','en','es','zh','zhHant','ja'].map(l=>{const label=l==='kr'?'한국어':l==='en'?'English':l==='es'?'Español':l==='zh'?'简体':l==='zhHant'?'繁體':'日本語';const active=l===state.locale?'bg-black text-white':'bg-white';return `<button data-lang="${l}" class="rounded-2xl px-3 py-1.5 text-sm border ${active}">${label}</button>`;}).join('');const ui=UI[state.locale];qs('#toolbar').innerHTML=`<div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><div class="flex flex-wrap justify-center gap-2 md:justify-start">${langBtns}</div><div class="flex w-full md:w-auto items-center gap-2"><input id="searchInput" class="w-full md:w-80 rounded-2xl border px-4 py-2" placeholder="${ui.placeholder}" /><button id="clearBtn" aria-label="Clear" class="hidden rounded-2xl border px-3 py-2 hover:bg-gray-50">✕</button><button id="searchBtn" class="rounded-2xl border px-4 py-2 hover:bg-gray-50">${ui.search}</button></div></div>`;qsa('button[data-lang]').forEach(btn=>{btn.onclick=()=>{state.locale=btn.dataset.lang;renderAllButHeader();};});const input=qs('#searchInput');const clearBtn=qs('#clearBtn');const apply=()=>{state.query=input.value.trim();renderCards();};input.addEventListener('input',()=>{clearBtn.classList.toggle('hidden',!input.value);apply();});input.addEventListener('keydown',e=>{if(e.key==='Enter')apply();});qs('#searchBtn').onclick=apply;clearBtn.onclick=()=>{input.value='';clearBtn.classList.add('hidden');apply();};}
+  //(3) 카드 필터링 (검색/조건 적용)
+  function filterList(){const adv=state.adv;let list=tours.slice();if(adv.city){if(/Seoul|서울/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('seoul'));else if(/Gyeonggi|경기/.test(adv.city))list=list.filter(t=>t.area.toLowerCase().includes('gyeonggi'));}if(adv.budget){const b=adv.budget;if(b.includes('50'))list=list.filter(t=>t.priceKRW<=50000);else if(b.includes('70'))list=list.filter(t=>t.priceKRW<=70000);else if(b.includes('100')&&b.includes('+'))list=list.filter(t=>t.priceKRW>100000);else if(b.includes('100'))list=list.filter(t=>t.priceKRW<=100000);}const q=(state.query||'').toLowerCase();if(!q)return list;return list.filter(t=>{const loc=getLocalized(t,state.locale);return [loc.name,t.area,loc.short,getSchedule(t,state.locale),t.tags.join(' ')].join(' ').toLowerCase().includes(q);});}
+  //(4) 투어 카드 생성 (클릭 시 tour.html로 이동)
+  function cardTemplate(t){const loc=getLocalized(t,state.locale);const price=formatKRW(t.priceKRW);const meet=getMeet(t,state.locale);const schedule=getSchedule(t,state.locale);const detailUrl=`tour.html?id=${t.id}`;const shareUrl=`${window.location.origin}${window.location.pathname}?tour=${t.id}`;return`<div class="relative fade-up group rounded-2xl border bg-white shadow-sm hover:shadow-lg flex flex-col h-full overflow-hidden"><a href="${detailUrl}" class="absolute inset-0 z-0" aria-label="${loc.name}"></a><div class="ratio-16x9 overflow-hidden rounded-t-2xl relative z-10"><img src="${t.heroImg}" alt="${loc.name}" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/></div><div class="p-5 flex-1 flex flex-col gap-3 relative z-10"><div class="flex items-start justify-between gap-3"><h3 class="text-lg font-semibold leading-snug flex-1">${loc.name}</h3><span class="text-sm text-gray-500 whitespace-nowrap">${t.duration}</span></div><p class="text-sm text-gray-600 line-clamp-2">${loc.short}</p><p class="text-xs text-gray-500">${schedule}</p><p class="text-xs text-gray-500">${meet}</p><div class="flex flex-wrap gap-2">${t.tags.map(tag=>`<span class="text-xs rounded-full border px-2 py-0.5 bg-white/40">${tag}</span>`).join('')}</div><div class="mt-auto pt-2 flex items-center justify-between gap-2 border-t"><div class="text-base font-bold">${price}</div><div class="flex items-center gap-2"><a href="${t.meetMapUrl}" target="_blank" rel="noreferrer" class="relative z-20 rounded-2xl px-3 py-1.5 text-sm border hover:bg-gray-50">Map</a><a href="${t.bookingUrl}" target="_blank" rel="noreferrer" class="relative z-20 rounded-2xl px-4 py-1.5 text-sm bg-black text-white hover:opacity-90">Book</a><button type="button" class="shareBtn relative z-20 rounded-2xl px-3 py-1.5 text-sm border hover:bg-gray-50" data-share="${shareUrl}">🔗</button></div></div></div></div>`;}
+  // (5) 카드 리스트 렌더링 (IntersectionObserver + 공유버튼)
+  function renderCards(){const container=qs('#cards');const list=filterList();container.innerHTML=list.map(cardTemplate).join('');const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show');});},{threshold:0.1});qsa('.fade-up',container).forEach(el=>io.observe(el));qsa('.shareBtn',container).forEach(btn=>{btn.onclick=async()=>{const link=btn.dataset.share;try{if(navigator.share){await navigator.share({title:'Sezmiee Tour',text:'Check this tour',url:link});}else if(navigator.clipboard){await navigator.clipboard.writeText(link);alert('링크를 복사했어요 📋');}else{prompt('이 링크를 복사하세요',link);} }catch(e){prompt('이 링크를 복사하세요',link);} };});}
+  // (6) Why Sezmiee 섹션
+  function renderWhy(){const c=COPY[state.locale].why;qs('#why').innerHTML=`<div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="rounded-full border px-3 py-1 text-xs">${c.pill}</span></div><div class="grid md:grid-cols-3 gap-3 mt-4"><div class="rounded-xl border p-4 text-sm">${c.a}</div><div class="rounded-xl border p-4 text-sm">${c.b}</div><div class="rounded-xl border p-4 text-sm">${c.c}</div></div>`;}
+  // (7) FAQ 섹션
+  function renderFAQ(){const f=COPY[state.locale].faq;qs('#faq').innerHTML=`<h2 class="text-xl font-semibold mb-2">${f.title}</h2><details class="rounded-xl border p-4"><summary class="font-medium">${f.q1}</summary><p class="text-sm text-gray-600 mt-2">${f.a1}</p></details><details class="rounded-xl border p-4 mt-2"><summary class="font-medium">${f.q2}</summary><p class="text-sm text-gray-600 mt-2">${f.a2}</p></details><details class="rounded-xl border p-4 mt-2"><summary class="font-medium">${f.q3}</summary><p class="text-sm text-gray-600 mt-2">${f.a3}</p></details>`;}
+  // (8) 문의 폼
+  function renderContact(){const c=COPY[state.locale].contact;qs('#contact').innerHTML=`<div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="text-xs text-gray-500">${c.hours}</span></div><div class="grid md:grid-cols-2 gap-3 mt-3"><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.name}</label><input id="iName" class="rounded-xl border px-3 py-2" placeholder="${c.name==='이름'?'홍길동':'Name'}" /></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.email}</label><input id="iEmail" class="rounded-xl border px-3 py-2" type="email" placeholder="you@example.com" /></div><div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.subject}</label><input id="iSubject" class="rounded-xl border px-3 py-2" placeholder="${c.placeholderSubj}" /></div><div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.message}</label><textarea id="iMessage" class="rounded-xl border px-3 py-2" rows="4" placeholder="${c.placeholderMsg}"></textarea></div><div class="md:col-span-2 flex items-center justify-between"><span class="text-xs text-gray-500">${c.note}</span><button id="sendBtn" class="rounded-2xl bg-black text-white px-4 py-2 text-sm">${c.submit}</button></div></div>`;qs('#sendBtn').onclick=()=>{const payload={name:qs('#iName').value,email:qs('#iEmail').value,subject:qs('#iSubject').value,message:qs('#iMessage').value,ts:Date.now()};state.inbox=[payload,...state.inbox];renderInbox();window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});};}
+  // (9) 문의 폼 (EmailJS 실제 전송)
+  function renderContact(){ const c=COPY[state.locale].contact;qs('#contact').innerHTML=<div class="flex items-center justify-between"><h2 class="text-xl font-semibold">${c.title}</h2><span class="text-xs text-gray-500">${c.hours}</span></div><div class="grid md:grid-cols-2 gap-3 mt-3"><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.name}</label><input id="iName" class="rounded-xl border px-3 py-2" placeholder="${c.name==='이름'?'홍길동':'Name'}" required/></div><div class="flex flex-col gap-1"><label class="text-xs text-gray-600">${c.email}</label><input id="iEmail" class="rounded-xl border px-3 py-2" type="email" placeholder="you@example.com" required/></div><div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.subject}</label><input id="iSubject" class="rounded-xl border px-3 py-2" placeholder="${c.placeholderSubj}" required/></div><div class="flex flex-col gap-1 md:col-span-2"><label class="text-xs text-gray-600">${c.message}</label><textarea id="iMessage" class="rounded-xl border px-3 py-2" rows="4" placeholder="${c.placeholderMsg}" required></textarea></div><div class="md:col-span-2 flex items-center justify-between"><span class="text-xs text-gray-500">${c.note}</span><button id="sendBtn" class="rounded-2xl bg-black text-white px-4 py-2 text-sm hover:opacity-90">${c.submit}</button></div></div>; const sendMail=()=>{const name=qs('#iName').value.trim(),email=qs('#iEmail').value.trim(),subject=qs('#iSubject').value.trim(),message=qs('#iMessage').value.trim();if(!name||!email||!message){alert("Please enter all.");return;} emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{from_name:name,from_email:email,subject:subject,message:message,to_email:"sezmiee.project@gmail.com"}).then(()=>{alert("✅Sent mail");['#iName','#iEmail','#iSubject','#iMessage'].forEach(id=>qs(id).value='');}).catch(err=>{console.error(err);alert("❌Failed");});};qs('#sendBtn').onclick=sendMail;}
+  // (10) 푸터
+  function renderFooter(){const f=COPY[state.locale].footer;qs('#footer').innerHTML=`<div class="mb-2 font-semibold">Sezmiee International</div><div class="mb-2">${f.copy}</div><div class="flex items-center justify-center gap-3 flex-wrap mb-2">${f.links.map(l=>`<a href="#${l.toLowerCase().replace(/\s/g,'')}" class="hover:underline">${l}</a>`).join('')}</div><div class="text-gray-400">${f.policy} · ${f.policies}</div>`;}
+  // (11) 초기 렌더 (헤더 제외 전체)
+  function renderAllButHeader(){renderAdvancedSearch();renderToolbar();renderCards();renderWhy();renderFAQ();renderContact();renderFooter();}
+  /* ────────────────────────────────
+     5️⃣ 초기 실행
+  ──────────────────────────────── */
+  document.addEventListener('DOMContentLoaded',renderAllButHeader);
   </script>
 </body>
 </html>

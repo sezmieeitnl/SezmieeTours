@@ -196,7 +196,8 @@ let locale = savedLocale || 'kr';
   localStorage.setItem('sez_lang', l);
   localStorage.setItem('sezmiee_locale', l);
   qs('#lang').value = l;
-  applyLang();
+  applyLang();   // UI 라벨 (Home, Back 등)
+  fill();        // ✅ 투어 내용(제목, 일정, 미팅포인트 등)도 다시 그리기
   }
   function applyLang(){
     const pack = I18N[lang]||I18N.kr; 
@@ -236,7 +237,9 @@ let locale = savedLocale || 'kr';
   const g = qs('#gallery');
   const pics = Array.isArray(tour.gallery) && tour.gallery.length ? tour.gallery : [tour.heroImg];
   g.innerHTML = pics.map(src=>`<img src="${src}" class="w-full h-28 md:h-36 object-cover rounded-xl" loading="lazy"/>`).join('');
-
+  
+  renderFAQ();
+    
   // similar (언어 반영)
   const similar = Data.filter(t=> t.id!==tour.id && (t.area.split('·')[0]===tour.area.split('·')[0] || t.tags.some(tag=> tour.tags.includes(tag)))).slice(0,3);
   qs('#similar').innerHTML = similar.map(t=>{
@@ -252,13 +255,36 @@ let locale = savedLocale || 'kr';
       </a>`;
   }).join('');
   }
-
+  // ✅ FAQ 다국어 반영
+function renderFAQ(){
+  const faq = COPY[lang].faq;
+  if(!faq) return;
+  const faqWrap = qs('#faq'); // HTML 내 FAQ 영역
+  if(!faqWrap) return;
+  faqWrap.innerHTML = `
+    <h2 class="text-xl font-semibold mb-3">${faq.title}</h2>
+    <div class="space-y-3">
+      <details class="border rounded-xl p-3">
+        <summary class="font-semibold cursor-pointer">${faq.q1}</summary>
+        <p class="mt-2 text-sm text-gray-600">${faq.a1}</p>
+      </details>
+      <details class="border rounded-xl p-3">
+        <summary class="font-semibold cursor-pointer">${faq.q2}</summary>
+        <p class="mt-2 text-sm text-gray-600">${faq.a2}</p>
+      </details>
+      <details class="border rounded-xl p-3">
+        <summary class="font-semibold cursor-pointer">${faq.q3}</summary>
+        <p class="mt-2 text-sm text-gray-600">${faq.a3}</p>
+      </details>
+    </div>
+  `;
+}
   function init(){
     // initial language value
-    qs('#lang').value = lang;
+    qs('#lang').addEventListener('change', e => setLang(e.target.value));
     applyLang();
     fill();
-
+    
     // QR
     qs('#qr').addEventListener('click',()=>{
       const wrap = qs('#qrWrap'); wrap.classList.toggle('hidden');
@@ -277,7 +303,8 @@ let locale = savedLocale || 'kr';
     qs('#lang').addEventListener('change', (e)=>{ setLang(e.target.value); });
   }
 
-  init();
+  document.addEventListener('DOMContentLoaded', init);
+  
 </script>
 </body>
 </html>

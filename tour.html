@@ -81,7 +81,7 @@
         </div>
 
         <!-- FAQ -->
-        <div class="rounded-2xl border bg-white p-4 md:p-5">
+        <div id="faq" class="rounded-2xl border bg-white p-4 md:p-5">
           <h2 class="text-lg font-semibold mb-3">FAQ</h2>
           <details class="rounded-xl border p-4"><summary class="font-medium" data-i="faq1q">예약/결제는 어떻게 하나요?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq1a">문의 → 가이드 확인 → 입금 → 확정.</p></details>
           <details class="rounded-xl border p-4 mt-2"><summary class="font-medium" data-i="faq2q">픽업 가능 지역?</summary><p class="text-sm text-gray-600 mt-2" data-i="faq2a">서울 전역 + 김포/인천(일부 추가요금)</p></details>
@@ -290,7 +290,7 @@ function renderFAQ(){
   // ✅ 이벤트 등록 (언어 변경 시 즉시 반영)
   qs('#lang').addEventListener('change', e => setLang(e.target.value));
 
-  // QR 코드, 애니메이션 등 기타 나머지 기능
+  // ✅ 애니메이션 + QR 코드
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) e.target.classList.add('show');
   }), {threshold: .1});
@@ -305,18 +305,10 @@ function renderFAQ(){
       });
     }
   });
-  }
+}
 
-    // reveal animations
-    const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }),{threshold:.1});
-    qsa('.fade-up').forEach(el=> io.observe(el));
-
-    // language switch
-    qs('#lang').addEventListener('change', (e)=>{ setLang(e.target.value); });
-  }
-
-  document.addEventListener('DOMContentLoaded', init);
-  
+// ✅ HTML이 다 로드된 후 init 실행
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>

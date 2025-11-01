@@ -241,19 +241,30 @@ let locale = savedLocale || 'kr';
   renderFAQ();
     
   // similar (언어 반영)
-  const similar = Data.filter(t=> t.id!==tour.id && (t.area.split('·')[0]===tour.area.split('·')[0] || t.tags.some(tag=> tour.tags.includes(tag)))).slice(0,3);
-  qs('#similar').innerHTML = similar.map(t=>{
-    const i18n = I18N_TOURS[lang][t.id] || I18N_TOURS['en'][t.id];
-    return `
-      <a href="tour.html?slug=${t.slug}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
-        <div class="aspect-[16/9] overflow-hidden"><img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/></div>
-        <div class="p-3">
-          <div class="flex items-center justify-between"><h3 class="text-sm font-semibold">${i18n.title}</h3><span class="text-xs text-gray-500">${t.duration}</span></div>
-          <div class="text-xs text-gray-500">${I18N_MEETS[lang][t.id].split('·')[0].trim()}</div>
-          <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
+  const similar = Data.filter(t=> 
+  t.id!==tour.id && 
+  (t.area.split('·')[0]===tour.area.split('·')[0] || t.tags.some(tag=> tour.tags.includes(tag)))
+).slice(0,3);
+
+qs('#similar').innerHTML = similar.map(t=>{
+  const tid = parseInt(t.id.replace('t','')); // ✅ "t1" → 1
+  const i18n = I18N_TOURS[lang][tid] || I18N_TOURS['en'][tid];
+  const meetCity = I18N_MEETS[lang][tid]?.split('·')[0]?.trim() || '';
+  return `
+    <a href="tour.html?id=${t.id}&lang=${lang}" class="group rounded-2xl border overflow-hidden bg-white block">
+      <div class="aspect-[16/9] overflow-hidden">
+        <img src="${t.heroImg}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"/>
+      </div>
+      <div class="p-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-semibold">${i18n?.title || t.name}</h3>
+          <span class="text-xs text-gray-500">${t.duration}</span>
         </div>
-      </a>`;
-  }).join('');
+        <div class="text-xs text-gray-500">${meetCity}</div>
+        <div class="text-sm font-bold mt-1">${KRW(t.priceKRW)}</div>
+      </div>
+    </a>`;
+}).join('');
   }
   // ✅ FAQ 다국어 반영
 function renderFAQ(){

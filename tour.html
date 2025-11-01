@@ -280,20 +280,32 @@ function renderFAQ(){
   `;
 }
   function init(){
-    // initial language value
-    qs('#lang').addEventListener('change', e => setLang(e.target.value));
-    applyLang();
-    fill();
-    
-    // QR
-    qs('#qr').addEventListener('click',()=>{
-      const wrap = qs('#qrWrap'); wrap.classList.toggle('hidden');
-      if(!wrap.dataset.loaded){
-        QRCode.toCanvas(qs('#qrCanvas'), qs('#book').href, {margin:1,scale:6}, (err)=>{
-          if(!err){ wrap.dataset.loaded='1'; }
-        });
-      }
-    });
+  // ✅ 언어 복원 (가장 먼저)
+  qs('#lang').value = lang;  
+
+  // ✅ 언어 적용 (UI/텍스트 동기화)
+  applyLang();
+  fill();
+
+  // ✅ 이벤트 등록 (언어 변경 시 즉시 반영)
+  qs('#lang').addEventListener('change', e => setLang(e.target.value));
+
+  // QR 코드, 애니메이션 등 기타 나머지 기능
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('show');
+  }), {threshold: .1});
+  qsa('.fade-up').forEach(el => io.observe(el));
+
+  qs('#qr').addEventListener('click',()=>{
+    const wrap = qs('#qrWrap');
+    wrap.classList.toggle('hidden');
+    if(!wrap.dataset.loaded){
+      QRCode.toCanvas(qs('#qrCanvas'), qs('#book').href, {margin:1,scale:6}, (err)=>{
+        if(!err){ wrap.dataset.loaded='1'; }
+      });
+    }
+  });
+  }
 
     // reveal animations
     const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }),{threshold:.1});
